@@ -1,0 +1,31 @@
+package com.soprahr.models;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Formation implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue
+	private int id;
+	private String nom;
+	private String description;
+	private String niveauRequis;
+	private String niveauObtenu;
+	private float duree;
+	private String type;
+	private List<Module> listModules;
+	
+
+	
+}

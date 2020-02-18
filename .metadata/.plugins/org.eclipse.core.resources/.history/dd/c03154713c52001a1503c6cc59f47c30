@@ -1,0 +1,13 @@
+package com.soprahr.Services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.soprahr.Repository.ThemeRepository;
+
+@Service
+public class ThemeServices {
+
+	@Autowired
+	public ThemeRepository repository;
+}

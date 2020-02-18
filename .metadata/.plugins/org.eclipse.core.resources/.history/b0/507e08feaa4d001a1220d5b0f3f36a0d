@@ -1,0 +1,5 @@
+package com.soprahr.Repository;
+
+public interface Repository {
+
+}

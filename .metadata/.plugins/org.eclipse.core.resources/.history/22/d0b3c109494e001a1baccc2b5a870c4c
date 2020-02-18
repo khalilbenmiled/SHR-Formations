@@ -1,0 +1,9 @@
+package com.soprahr.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.soprahr.models.Users;
+
+public interface UsersRepository extends JpaRepository<User, Integer> {
+
+}

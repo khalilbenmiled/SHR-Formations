@@ -1,0 +1,7 @@
+package com.soprahr.models;
+
+import java.io.Serializable;
+
+public class Programme implements Serializable{
+
+}

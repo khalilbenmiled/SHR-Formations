@@ -1,0 +1,36 @@
+package com.soprahr.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.soprahr.models.User;
+import com.soprahr.repository.UsersRepository;
+
+import net.bytebuddy.implementation.bytecode.Throw;
+import net.minidev.json.JSONObject;
+
+@Service
+public class UsersService {
+
+	@Autowired
+	public UsersRepository repository;
+
+	public User logIn(String email, String password) {
+		
+	
+		User user = repository.getUserByEmail(email);
+		if (user != null) {
+			if (repository.getVerifyPassword(user.getPassword()) != null) {
+
+				return user;
+			} else {
+
+				return null;
+			}
+		} else {
+
+			return null;
+		}
+
+	}
+}

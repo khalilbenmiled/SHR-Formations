@@ -1,0 +1,5 @@
+package com.soprahr.models;
+
+public class Collaborateur {
+
+}

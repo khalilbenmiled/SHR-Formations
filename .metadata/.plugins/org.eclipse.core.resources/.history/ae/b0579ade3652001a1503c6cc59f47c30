@@ -1,0 +1,31 @@
+package com.soprahr.models;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Besoin implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue
+	private int id;
+	private BU bu;
+	private Projet projet;
+	private String type; //Présence ou e-learnig
+	private int nbrPrevu; //nombre de participants prévu
+	private String recommendation; // cabinet ou formateur
+	private int priorite;
+	private Theme theme; // action de formation envisagé
+	private List<Module>
+
+}

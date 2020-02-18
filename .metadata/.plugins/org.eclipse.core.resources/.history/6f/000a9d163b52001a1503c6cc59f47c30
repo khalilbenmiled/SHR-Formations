@@ -1,0 +1,66 @@
+package com.soprahr.Services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+import com.soprahr.Repository.ProjetRepository;
+import com.soprahr.models.Besoin;
+import com.soprahr.models.Projet;
+
+import net.minidev.json.JSONObject;
+
+@Service
+public class ProjetServices {
+
+	@Autowired
+	public ProjetRepository repositoryP;
+	
+	
+	
+	
+	/*********************************** AJOUTER UN PROJET ***************************************/
+	public JSONObject addProjet(Projet projet) {
+		JSONObject jo = new JSONObject();
+		jo.put("Projet",repositoryP.save(projet));
+		return jo;
+	}
+	
+	/*********************************** LISTE PROJETS ***************************************/
+	public JSONObject getAllBesoins() {
+		JSONObject jo = new JSONObject();
+		if ( repositoryB.findAll().size() != 0 ) {
+			jo.put("Besoins" , repositoryB.findAll());
+			return jo;
+		}else {
+			jo.put("Error" , "La liste des besoins est vide");
+			return jo;
+		}
+	}
+	
+	/*********************************** SUPPRIMER UN BESOIN ***************************************/
+	public JSONObject deleteBesoin(int id) {
+		JSONObject jo = new JSONObject();
+		if(repositoryB.findById(id).isPresent()) {
+			repositoryB.delete(repositoryB.findById(id).get());
+			jo.put("Success", "Besoin supprimé");
+			return jo;
+		}else {
+			jo.put("Error" , "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** RECHERCHER UN BESOIN PAR ID ***************************************/
+	public JSONObject getBesoinById(int id) {
+		JSONObject jo = new JSONObject();
+		if(repositoryB.findById(id).isPresent()) {
+			jo.put("Besoin", repositoryB.findById(id).get());
+			return jo;
+		}else {
+			jo.put("Error" , "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
+}

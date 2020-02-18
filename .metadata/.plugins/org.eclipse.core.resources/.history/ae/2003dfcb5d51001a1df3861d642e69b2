@@ -1,0 +1,30 @@
+package com.soprahr.API;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.soprahr.Services.FormateurServices;
+import com.soprahr.models.Formateur;
+
+import net.minidev.json.JSONObject;
+
+@RestController
+@RequestMapping(value = "/api")
+public class FormateurAPI {
+
+	@Autowired
+	public FormateurServices service;
+	
+	/**
+	 * @param formateur
+	 * @return
+	 */
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject addUser(@RequestBody Formateur formateur) {
+		service.addFormateur(formateur);
+	}
+}

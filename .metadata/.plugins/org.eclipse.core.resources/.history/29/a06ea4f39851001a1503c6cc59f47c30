@@ -1,0 +1,64 @@
+package com.soprahr.Services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.soprahr.Repository.ProgrammeRepository;
+import com.soprahr.Repository.SalleRepository;
+import com.soprahr.models.Salle;
+
+import net.minidev.json.JSONObject;
+
+@Service
+public class ProgrammeServices {
+
+
+	@Autowired
+	public ProgrammeRepository repository;
+
+	
+	/*********************************** AJOUTER UN PROGRAMME ***************************************/
+	public JSONObject addProgramme(Salle salle) {
+		JSONObject jo = new JSONObject();
+		jo.put("Salle",repository.save(salle));
+		return jo;
+	}
+	
+	/*********************************** LISTE SALLES ***************************************/
+	public JSONObject getAllSalles() {
+		JSONObject jo = new JSONObject();
+		if ( repository.findAll().size() != 0 ) {
+			jo.put("Salles" , repository.findAll());
+			return jo;
+		}else {
+			jo.put("Error" , "La liste des salles est vide");
+			return jo;
+		}
+	}
+	
+	/*********************************** SUPPRIMER UNE SALLE ***************************************/
+	public JSONObject deleteSalle(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			repository.delete(repository.findById(id).get());
+			jo.put("Success", "Salle supprimé");
+			return jo;
+		}else {
+			jo.put("Error" , "Salle n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** RECHERCHER UNE SALLE PAR ID ***************************************/
+	public JSONObject getSalleById(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			jo.put("Salle", repository.findById(id).get());
+			return jo;
+		}else {
+			jo.put("Error" , "Salle n'existe pas !");
+			return jo;
+		}
+	}
+	
+}
