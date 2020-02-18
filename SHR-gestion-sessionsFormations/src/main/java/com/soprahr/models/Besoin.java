@@ -34,6 +34,7 @@ public class Besoin implements Serializable {
 	private List<Module> listModules; //contenu souhaité
 	@OneToOne
 	private Projet projet;
+	private boolean valide;
 	public int getId() {
 		return id;
 	}
@@ -100,11 +101,17 @@ public class Besoin implements Serializable {
 	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
+	public boolean isValide() {
+		return valide;
+	}
+	public void setValide(boolean valide) {
+		this.valide = valide;
+	}
 	public Besoin() {
 		super();
 	}
 	public Besoin(int id, BU bu, Date dateDebut, Date dateFin, String type, int nbrPrevu, String recommendation,
-			int priorite, Theme theme, List<Module> listModules, Projet projet) {
+			int priorite, Theme theme, List<Module> listModules, Projet projet, boolean valide) {
 		super();
 		this.id = id;
 		this.bu = bu;
@@ -117,6 +124,7 @@ public class Besoin implements Serializable {
 		this.theme = theme;
 		this.listModules = listModules;
 		this.projet = projet;
+		this.valide = valide;
 	}
 	
 	

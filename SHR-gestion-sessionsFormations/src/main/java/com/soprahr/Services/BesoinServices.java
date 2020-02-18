@@ -18,6 +18,7 @@ public class BesoinServices {
 	/*********************************** AJOUTER UN BESOIN ***************************************/
 	public JSONObject addBesoin(Besoin besoin) {
 		JSONObject jo = new JSONObject();
+		besoin.setValide(false);
 		jo.put("Besoin",repositoryB.save(besoin));
 		return jo;
 	}
@@ -59,6 +60,21 @@ public class BesoinServices {
 		}
 	}
 	
+	/*********************************** VALIDER UN BESOIN ***************************************/
+	public JSONObject validerBesoin(int idBesoin , int priorite) {
+		JSONObject jo = new JSONObject();
+		if(repositoryB.findById(idBesoin).isPresent()) {
+			Besoin besoin = repositoryB.findById(idBesoin).get();
+			besoin.setPriorite(priorite);
+			besoin.setValide(true);
+			repositoryB.save(besoin);
+			jo.put("Success", besoin);
+			return jo;
+		}else {
+			jo.put("Error" , "Besoin n'existe pas !");
+			return jo;
+		}
+	}
 
 	
 	

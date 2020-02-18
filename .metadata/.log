@@ -14047,3 +14047,997 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.ui 2 2 2020-02-18 14:00:01.628
+!MESSAGE Invalid property category path: org.springframework.ide.eclipse.beans.ui.properties.ProjectPropertyPage (bundle: org.springframework.ide.eclipse.xml.namespaces, propertyPage: org.springframework.ide.eclipse.beans.ui.namespaces.projectPropertyPage)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:24.455
+!MESSAGE Entering DelegatingStreamConnectionProvider()
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:24.514
+!MESSAGE DelegatingStreamConnectionProvider classloader = org.eclipse.osgi.internal.loader.EquinoxClassLoader@742e21b7[org.springframework.tooling.boot.ls:1.15.0.202001210741(id=530)]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:24.536
+!MESSAGE SpringBootLanguageServer exists!
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:24.671
+!MESSAGE Instantiating ReusableClasspathListenerHandler
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:27.085
+!MESSAGE Entering DelegatingStreamConnectionProvider()
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:27.208
+!MESSAGE DelegatingStreamConnectionProvider classloader = org.eclipse.osgi.internal.loader.EquinoxClassLoader@742e21b7[org.springframework.tooling.boot.ls:1.15.0.202001210741(id=530)]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:27.263
+!MESSAGE SpringBootLanguageServer exists!
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:33.572
+!MESSAGE Boot LS startup time from start to initialized: 6253ms
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:33.753
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.hzmVLYUKisBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.060
+!MESSAGE subscribing to classpath changes: sts4.classpath.hzmVLYUK isBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.093
+!MESSAGE Setting up ClasspathListenerManager
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.119
+!MESSAGE subsribers = {sts4.classpath.hzmVLYUK=Send Classpath Notifications(800)}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.135
+!MESSAGE Sending initial event for all projects ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.151
+!MESSAGE project SHR-gestion-sessionsFormations ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.169
+!MESSAGE project SHR-gestion-collaborateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.184
+!MESSAGE Preparing classpath changed notification SHR-gestion-sessionsFormations
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.199
+!MESSAGE project SHR-gestion-formateursCabinets ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.214
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.230
+!MESSAGE project SHR-gestion-salles ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.245
+!MESSAGE project SHR-gestion-utilisateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.261
+!MESSAGE project eureka-server ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.275
+!MESSAGE Sending initial event for all projects DONE
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.292
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.hzmVLYUK => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.313
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.352
+!MESSAGE buffering callback sts4.classpath.hzmVLYUK SHR-gestion-sessionsFormations false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.368
+!MESSAGE Preparing classpath changed notification SHR-gestion-collaborateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.393
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.440
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.475
+!MESSAGE buffering callback sts4.classpath.hzmVLYUK SHR-gestion-collaborateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.490
+!MESSAGE Preparing classpath changed notification SHR-gestion-formateursCabinets
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.507
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.557
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.610
+!MESSAGE buffering callback sts4.classpath.hzmVLYUK SHR-gestion-formateursCabinets false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.625
+!MESSAGE Preparing classpath changed notification SHR-gestion-salles
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.640
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.681
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.716
+!MESSAGE buffering callback sts4.classpath.hzmVLYUK SHR-gestion-salles false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.731
+!MESSAGE Preparing classpath changed notification SHR-gestion-utilisateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.749
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.803
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.841
+!MESSAGE buffering callback sts4.classpath.hzmVLYUK SHR-gestion-utilisateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.857
+!MESSAGE Preparing classpath changed notification eureka-server
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.873
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.943
+!MESSAGE classpath=176 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:34.995
+!MESSAGE buffering callback sts4.classpath.hzmVLYUK eureka-server false 176
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:35.018
+!MESSAGE executing callback sts4.classpath.hzmVLYUK 6 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:00:35.221
+!MESSAGE executing callback sts4.classpath.hzmVLYUK SUCCESS [done]
+
+!ENTRY org.eclipse.lsp4e 4 0 2020-02-18 14:03:14.654
+!MESSAGE 
+!STACK 0
+java.lang.InterruptedException
+	at java.util.concurrent.CompletableFuture.reportGet(Unknown Source)
+	at java.util.concurrent.CompletableFuture.get(Unknown Source)
+	at org.springframework.tooling.boot.ls.jdt.LSPTextHover.getHoverInfo(LSPTextHover.java:109)
+	at org.springframework.tooling.boot.ls.jdt.SpringBootJavaHoverProvider.getHoverInfo2(SpringBootJavaHoverProvider.java:42)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:165)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:132)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$4.run(TextViewerHoverManager.java:169)
+
+!ENTRY org.eclipse.lsp4e 4 0 2020-02-18 14:03:46.840
+!MESSAGE 
+!STACK 0
+java.lang.InterruptedException
+	at java.util.concurrent.CompletableFuture.reportGet(Unknown Source)
+	at java.util.concurrent.CompletableFuture.get(Unknown Source)
+	at org.springframework.tooling.boot.ls.jdt.LSPTextHover.getHoverInfo(LSPTextHover.java:109)
+	at org.springframework.tooling.boot.ls.jdt.SpringBootJavaHoverProvider.getHoverInfo2(SpringBootJavaHoverProvider.java:42)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:165)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:132)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$4.run(TextViewerHoverManager.java:169)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:07.028
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.hzmVLYUK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:07.046
+!MESSAGE unsubscribing from classpath changes: sts4.classpath.hzmVLYUK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:07.077
+!MESSAGE subsribers = {}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:07.094
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.hzmVLYUK => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:11.929
+!MESSAGE Entering DelegatingStreamConnectionProvider()
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:11.945
+!MESSAGE DelegatingStreamConnectionProvider classloader = org.eclipse.osgi.internal.loader.EquinoxClassLoader@742e21b7[org.springframework.tooling.boot.ls:1.15.0.202001210741(id=530)]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:11.958
+!MESSAGE SpringBootLanguageServer exists!
+
+!ENTRY org.eclipse.lsp4e 4 0 2020-02-18 14:09:13.426
+!MESSAGE 
+!STACK 0
+java.util.concurrent.TimeoutException
+	at java.util.concurrent.CompletableFuture.timedGet(Unknown Source)
+	at java.util.concurrent.CompletableFuture.get(Unknown Source)
+	at org.springframework.tooling.boot.ls.jdt.LSPTextHover.getHoverInfo(LSPTextHover.java:109)
+	at org.springframework.tooling.boot.ls.jdt.SpringBootJavaHoverProvider.getHoverInfo2(SpringBootJavaHoverProvider.java:42)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:165)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:132)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$4.run(TextViewerHoverManager.java:169)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.756
+!MESSAGE Boot LS startup time from start to initialized: 3783ms
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.822
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.uKwTSGCVisBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.838
+!MESSAGE subscribing to classpath changes: sts4.classpath.uKwTSGCV isBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.856
+!MESSAGE Setting up ClasspathListenerManager
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.871
+!MESSAGE subsribers = {sts4.classpath.uKwTSGCV=Send Classpath Notifications(1180)}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.886
+!MESSAGE Sending initial event for all projects ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.903
+!MESSAGE project SHR-gestion-sessionsFormations ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.918
+!MESSAGE Preparing classpath changed notification SHR-gestion-sessionsFormations
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.933
+!MESSAGE project SHR-gestion-collaborateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.949
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.965
+!MESSAGE project SHR-gestion-formateursCabinets ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.980
+!MESSAGE project SHR-gestion-salles ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:15.995
+!MESSAGE project SHR-gestion-utilisateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.008
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.019
+!MESSAGE project eureka-server ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.034
+!MESSAGE Sending initial event for all projects DONE
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.046
+!MESSAGE buffering callback sts4.classpath.uKwTSGCV SHR-gestion-sessionsFormations false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.057
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.uKwTSGCV => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.069
+!MESSAGE Preparing classpath changed notification SHR-gestion-collaborateurs
+
+!ENTRY org.eclipse.lsp4e 4 0 2020-02-18 14:09:16.081
+!MESSAGE org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Internal error.
+!STACK 0
+java.util.concurrent.ExecutionException: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Internal error.
+	at java.util.concurrent.CompletableFuture.reportGet(Unknown Source)
+	at java.util.concurrent.CompletableFuture.get(Unknown Source)
+	at org.springframework.tooling.boot.ls.jdt.LSPTextHover.lambda$11(LSPTextHover.java:237)
+	at java.util.stream.ReferencePipeline$3$1.accept(Unknown Source)
+	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(Unknown Source)
+	at java.util.stream.AbstractPipeline.copyInto(Unknown Source)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(Unknown Source)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(Unknown Source)
+	at java.util.stream.AbstractPipeline.evaluate(Unknown Source)
+	at java.util.stream.ReferencePipeline.collect(Unknown Source)
+	at org.springframework.tooling.boot.ls.jdt.LSPTextHover.lambda$10(LSPTextHover.java:246)
+	at java.util.concurrent.CompletableFuture.uniApply(Unknown Source)
+	at java.util.concurrent.CompletableFuture$UniApply.tryFire(Unknown Source)
+	at java.util.concurrent.CompletableFuture$Completion.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Internal error.
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:209)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:193)
+	at org.eclipse.lsp4e.LanguageServerWrapper.lambda$1(LanguageServerWrapper.java:244)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.093
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.148
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.178
+!MESSAGE buffering callback sts4.classpath.uKwTSGCV SHR-gestion-collaborateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.190
+!MESSAGE Preparing classpath changed notification SHR-gestion-formateursCabinets
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.203
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.234
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.263
+!MESSAGE buffering callback sts4.classpath.uKwTSGCV SHR-gestion-formateursCabinets false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.277
+!MESSAGE Preparing classpath changed notification SHR-gestion-salles
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.290
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.320
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.348
+!MESSAGE buffering callback sts4.classpath.uKwTSGCV SHR-gestion-salles false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.361
+!MESSAGE Preparing classpath changed notification SHR-gestion-utilisateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.374
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.404
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.433
+!MESSAGE buffering callback sts4.classpath.uKwTSGCV SHR-gestion-utilisateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.446
+!MESSAGE Preparing classpath changed notification eureka-server
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.458
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.486
+!MESSAGE classpath=176 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.518
+!MESSAGE buffering callback sts4.classpath.uKwTSGCV eureka-server false 176
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.529
+!MESSAGE executing callback sts4.classpath.uKwTSGCV 6 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:09:16.672
+!MESSAGE executing callback sts4.classpath.uKwTSGCV SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:41.991
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.uKwTSGCV
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:42.008
+!MESSAGE unsubscribing from classpath changes: sts4.classpath.uKwTSGCV
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:42.035
+!MESSAGE subsribers = {}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:42.052
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.uKwTSGCV => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:51.930
+!MESSAGE Entering DelegatingStreamConnectionProvider()
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:51.957
+!MESSAGE DelegatingStreamConnectionProvider classloader = org.eclipse.osgi.internal.loader.EquinoxClassLoader@742e21b7[org.springframework.tooling.boot.ls:1.15.0.202001210741(id=530)]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:51.973
+!MESSAGE SpringBootLanguageServer exists!
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.474
+!MESSAGE Boot LS startup time from start to initialized: 3483ms
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.521
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.iecJSLWSisBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.536
+!MESSAGE subscribing to classpath changes: sts4.classpath.iecJSLWS isBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.550
+!MESSAGE Setting up ClasspathListenerManager
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.564
+!MESSAGE subsribers = {sts4.classpath.iecJSLWS=Send Classpath Notifications(1233)}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.580
+!MESSAGE Sending initial event for all projects ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.595
+!MESSAGE project SHR-gestion-sessionsFormations ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.611
+!MESSAGE Preparing classpath changed notification SHR-gestion-sessionsFormations
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.628
+!MESSAGE project SHR-gestion-collaborateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.643
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.656
+!MESSAGE project SHR-gestion-formateursCabinets ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.669
+!MESSAGE project SHR-gestion-salles ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.682
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.695
+!MESSAGE project SHR-gestion-utilisateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.709
+!MESSAGE project eureka-server ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.719
+!MESSAGE buffering callback sts4.classpath.iecJSLWS SHR-gestion-sessionsFormations false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.730
+!MESSAGE Sending initial event for all projects DONE
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.740
+!MESSAGE Preparing classpath changed notification SHR-gestion-collaborateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.753
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.iecJSLWS => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.767
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.795
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.820
+!MESSAGE buffering callback sts4.classpath.iecJSLWS SHR-gestion-collaborateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.831
+!MESSAGE Preparing classpath changed notification SHR-gestion-formateursCabinets
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.843
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.871
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.897
+!MESSAGE buffering callback sts4.classpath.iecJSLWS SHR-gestion-formateursCabinets false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.912
+!MESSAGE Preparing classpath changed notification SHR-gestion-salles
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.923
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.950
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.976
+!MESSAGE buffering callback sts4.classpath.iecJSLWS SHR-gestion-salles false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.987
+!MESSAGE Preparing classpath changed notification SHR-gestion-utilisateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:55.998
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.024
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.051
+!MESSAGE buffering callback sts4.classpath.iecJSLWS SHR-gestion-utilisateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.062
+!MESSAGE Preparing classpath changed notification eureka-server
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.075
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.100
+!MESSAGE classpath=176 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.123
+!MESSAGE buffering callback sts4.classpath.iecJSLWS eureka-server false 176
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.135
+!MESSAGE executing callback sts4.classpath.iecJSLWS 6 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:25:56.214
+!MESSAGE executing callback sts4.classpath.iecJSLWS SUCCESS [done]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:04.312
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.iecJSLWS
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:04.334
+!MESSAGE unsubscribing from classpath changes: sts4.classpath.iecJSLWS
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:04.349
+!MESSAGE subsribers = {}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:04.361
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.iecJSLWS => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:25.442
+!MESSAGE Entering DelegatingStreamConnectionProvider()
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:25.455
+!MESSAGE DelegatingStreamConnectionProvider classloader = org.eclipse.osgi.internal.loader.EquinoxClassLoader@742e21b7[org.springframework.tooling.boot.ls:1.15.0.202001210741(id=530)]
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:25.467
+!MESSAGE SpringBootLanguageServer exists!
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.547
+!MESSAGE Boot LS startup time from start to initialized: 4066ms
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.596
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.ALXGoiONisBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.611
+!MESSAGE subscribing to classpath changes: sts4.classpath.ALXGoiON isBatched = true
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.627
+!MESSAGE Setting up ClasspathListenerManager
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.642
+!MESSAGE subsribers = {sts4.classpath.ALXGoiON=Send Classpath Notifications(1497)}
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.658
+!MESSAGE Sending initial event for all projects ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.673
+!MESSAGE project SHR-gestion-sessionsFormations ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.687
+!MESSAGE Preparing classpath changed notification SHR-gestion-sessionsFormations
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.704
+!MESSAGE project SHR-gestion-collaborateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.717
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.728
+!MESSAGE project SHR-gestion-formateursCabinets ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.741
+!MESSAGE project SHR-gestion-salles ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.754
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.765
+!MESSAGE project SHR-gestion-utilisateurs ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.778
+!MESSAGE project eureka-server ...
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.789
+!MESSAGE buffering callback sts4.classpath.ALXGoiON SHR-gestion-sessionsFormations false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.800
+!MESSAGE Sending initial event for all projects DONE
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.811
+!MESSAGE Preparing classpath changed notification SHR-gestion-collaborateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.823
+!MESSAGE ClasspathListenerHandler addClasspathListener sts4.classpath.ALXGoiON => OK
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.836
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.864
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.894
+!MESSAGE buffering callback sts4.classpath.ALXGoiON SHR-gestion-collaborateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.908
+!MESSAGE Preparing classpath changed notification SHR-gestion-formateursCabinets
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.920
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.952
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.979
+!MESSAGE buffering callback sts4.classpath.ALXGoiON SHR-gestion-formateursCabinets false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:29.988
+!MESSAGE Preparing classpath changed notification SHR-gestion-salles
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.001
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.028
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.054
+!MESSAGE buffering callback sts4.classpath.ALXGoiON SHR-gestion-salles false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.066
+!MESSAGE Preparing classpath changed notification SHR-gestion-utilisateurs
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.077
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.103
+!MESSAGE classpath=193 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.129
+!MESSAGE buffering callback sts4.classpath.ALXGoiON SHR-gestion-utilisateurs false 193
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.141
+!MESSAGE Preparing classpath changed notification eureka-server
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.153
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.180
+!MESSAGE classpath=176 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.204
+!MESSAGE buffering callback sts4.classpath.ALXGoiON eureka-server false 176
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.216
+!MESSAGE executing callback sts4.classpath.ALXGoiON 6 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-18 14:36:30.293
+!MESSAGE executing callback sts4.classpath.ALXGoiON SUCCESS [done]
+
+!ENTRY org.eclipse.jdt.core 4 4 2020-02-18 14:51:06.790
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package com.soprahr.models;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Session implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue
+	private int id;
+	private String nom;
+	private String description;
+	private int trimestre;
+	private Date dateDebut;
+	private Date dateFin;
+	private List<Formation> listFormations = new Arrayli
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getTrimestre() {
+		return trimestre;
+	}
+	public void setTrimestre(int trimestre) {
+		this.trimestre = trimestre;
+	}
+	public Date getDateDebut() {
+		return dateDebut;
+	}
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+	public Date getDateFin() {
+		return dateFin;
+	}
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+	public Session() {
+		super();
+	}
+	public Session(int id, String nom, String description, int trimestre, Date dateDebut, Date dateFin) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.description = description;
+		this.trimestre = trimestre;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+	}
+	
+	
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.ASTNode.setSourceRange(ASTNode.java:3061)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToFieldDeclaration(ASTConverter.java:3391)
+	at org.eclipse.jdt.core.dom.ASTConverter.checkAndAddMultipleFieldDeclaration(ASTConverter.java:456)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:198)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3116)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1419)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:426)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:200)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1138)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:736)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:802)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1315)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.access$0(JavaReconcilingStrategy.java:113)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2020-02-18 14:51:06.807
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.ASTNode.setSourceRange(ASTNode.java:3061)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToFieldDeclaration(ASTConverter.java:3391)
+	at org.eclipse.jdt.core.dom.ASTConverter.checkAndAddMultipleFieldDeclaration(ASTConverter.java:456)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:198)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3116)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1419)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:426)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:200)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1138)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:736)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:802)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1315)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.access$0(JavaReconcilingStrategy.java:113)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2020-02-18 14:51:06.821
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.ASTNode.setSourceRange(ASTNode.java:3061)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToFieldDeclaration(ASTConverter.java:3391)
+	at org.eclipse.jdt.core.dom.ASTConverter.checkAndAddMultipleFieldDeclaration(ASTConverter.java:456)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:198)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3116)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1419)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:426)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:200)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1138)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:736)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:802)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1315)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.access$0(JavaReconcilingStrategy.java:113)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.core 4 4 2020-02-18 14:51:07.855
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package com.soprahr.models;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Session implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue
+	private int id;
+	private String nom;
+	private String description;
+	private int trimestre;
+	private Date dateDebut;
+	private Date dateFin;
+	private List<Formation> listFormations = new ArrayList<Formation>
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getTrimestre() {
+		return trimestre;
+	}
+	public void setTrimestre(int trimestre) {
+		this.trimestre = trimestre;
+	}
+	public Date getDateDebut() {
+		return dateDebut;
+	}
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+	public Date getDateFin() {
+		return dateFin;
+	}
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
+	}
+	public Session() {
+		super();
+	}
+	public Session(int id, String nom, String description, int trimestre, Date dateDebut, Date dateFin) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.description = description;
+		this.trimestre = trimestre;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+	}
+	
+	
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.ASTNode.setSourceRange(ASTNode.java:3061)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToFieldDeclaration(ASTConverter.java:3391)
+	at org.eclipse.jdt.core.dom.ASTConverter.checkAndAddMultipleFieldDeclaration(ASTConverter.java:456)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:198)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3116)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1419)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:426)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:200)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1138)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:736)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:802)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1315)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.access$0(JavaReconcilingStrategy.java:113)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2020-02-18 14:51:07.900
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.ASTNode.setSourceRange(ASTNode.java:3061)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToFieldDeclaration(ASTConverter.java:3391)
+	at org.eclipse.jdt.core.dom.ASTConverter.checkAndAddMultipleFieldDeclaration(ASTConverter.java:456)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:198)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3116)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1419)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:426)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:200)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1138)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:736)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:802)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1315)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.access$0(JavaReconcilingStrategy.java:113)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2020-02-18 14:51:07.917
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.ASTNode.setSourceRange(ASTNode.java:3061)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToFieldDeclaration(ASTConverter.java:3391)
+	at org.eclipse.jdt.core.dom.ASTConverter.checkAndAddMultipleFieldDeclaration(ASTConverter.java:456)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:198)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3116)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1419)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:426)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:200)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1138)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:736)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:802)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1315)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.access$0(JavaReconcilingStrategy.java:113)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)

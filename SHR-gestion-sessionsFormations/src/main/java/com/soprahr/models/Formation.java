@@ -19,56 +19,30 @@ public class Formation implements Serializable {
 	@Id
 	@GeneratedValue
 	private int id;
-	private String nom;
-	private String description;
-	private String niveauRequis;
-	private String niveauObtenu;
-	private float duree;
-	private String type;
-	private float prix;
+	private Theme theme;
+	private int maxParticipants; // nombre de participants MAX
 	@OneToMany
 	private List<Module> listModules;
+	private float duree; // duree ce cette formation
+	private float prix;
+	private EtatFormation etat;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNom() {
-		return nom;
+	public Theme getTheme() {
+		return theme;
 	}
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
-	public String getDescription() {
-		return description;
+	public int getMaxParticipants() {
+		return maxParticipants;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getNiveauRequis() {
-		return niveauRequis;
-	}
-	public void setNiveauRequis(String niveauRequis) {
-		this.niveauRequis = niveauRequis;
-	}
-	public String getNiveauObtenu() {
-		return niveauObtenu;
-	}
-	public void setNiveauObtenu(String niveauObtenu) {
-		this.niveauObtenu = niveauObtenu;
-	}
-	public float getDuree() {
-		return duree;
-	}
-	public void setDuree(float duree) {
-		this.duree = duree;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
+	public void setMaxParticipants(int maxParticipants) {
+		this.maxParticipants = maxParticipants;
 	}
 	public List<Module> getListModules() {
 		return listModules;
@@ -76,26 +50,34 @@ public class Formation implements Serializable {
 	public void setListModules(List<Module> listModules) {
 		this.listModules = listModules;
 	}
-	
+	public float getDuree() {
+		return duree;
+	}
+	public void setDuree(float duree) {
+		this.duree = duree;
+	}
 	public float getPrix() {
 		return prix;
 	}
 	public void setPrix(float prix) {
 		this.prix = prix;
 	}
-	
-	public Formation(int id, String nom, String description, String niveauRequis, String niveauObtenu, float duree,
-			String type, float prix, List<Module> listModules) {
+	public EtatFormation getEtat() {
+		return etat;
+	}
+	public void setEtat(EtatFormation etat) {
+		this.etat = etat;
+	}
+	public Formation(int id, Theme theme, int maxParticipants, List<Module> listModules, float duree, float prix,
+			EtatFormation etat) {
 		super();
 		this.id = id;
-		this.nom = nom;
-		this.description = description;
-		this.niveauRequis = niveauRequis;
-		this.niveauObtenu = niveauObtenu;
-		this.duree = duree;
-		this.type = type;
-		this.prix = prix;
+		this.theme = theme;
+		this.maxParticipants = maxParticipants;
 		this.listModules = listModules;
+		this.duree = duree;
+		this.prix = prix;
+		this.etat = etat;
 	}
 	public Formation() {
 		super();
