@@ -1,8 +1,0 @@
-package com.soprahr.models;
-
-import javax.persistence.Entity;
-
-@Entity
-public class Formation implements {
-
-}
