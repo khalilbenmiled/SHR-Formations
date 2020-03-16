@@ -2,7 +2,7 @@ package com.soprahr.models;
 
 public enum TypeTheme {
 
-	Technique,
-	SoftSkills,
-	Software
+	TECHNIQUE,
+	SOFTSKILLS,
+	SOFTWARE
 }

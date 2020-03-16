@@ -1,12 +1,17 @@
 package com.soprahr.API;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.soprahr.models.User;
 import com.soprahr.repository.UsersRepository;
 import com.soprahr.services.UsersService;
@@ -14,6 +19,7 @@ import com.soprahr.services.UsersService;
 import net.minidev.json.JSONObject;
 
 @RestController
+@RequestMapping(value = "/users")
 public class UsersAPI {
 
 	@Autowired
@@ -21,14 +27,52 @@ public class UsersAPI {
 	@Autowired
 	public UsersRepository repository;
 
-	@GetMapping(value = "/test")
-	public User sayHello() {
-		return repository.verifyPassword("admin", "admin");
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject addUser(@RequestBody User user) {
+		return service.addCollaborateur(user);
+	}
+	
+	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject updatePassword(@Param(value ="id") int id , @Param(value = "oldPassword") String oldPassword,@Param(value = "newPassword") String newPassword) {
+		return service.updatePassword(id, oldPassword,newPassword);
+	}
+	
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject getAllUsers() {
+		return service.getAllUsers();
 	}
 
-	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject deleteUser(@Param(value = "id") int id) {
+		return service.deleteUser(id);
+	}
+
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject getUserById(@PathParam(value = "id") int id) {
+		return service.getUserById(id);
+	}
+
+	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject logIn(@Param(value = "email") String email, @Param(value = "password") String password) {
 		return service.logIn(email, password);				
+	}
+	
+	@PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject logOut(@Param(value = "id") int id) {
+		return service.logOut(id);			
+	}
+	
+	@PostMapping(value = "/byId", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getUserByID(@Param(value = "id") int id) {
+		JSONObject jo = new JSONObject();	
+		if(repository.findById(id).isPresent()) {
+			jo.put("User" , repository.findById(id).get());
+			return jo;
+		}else {
+			jo.put("Error", "User n'existe pas !");
+			return jo;
+		}
 	}
 	
 

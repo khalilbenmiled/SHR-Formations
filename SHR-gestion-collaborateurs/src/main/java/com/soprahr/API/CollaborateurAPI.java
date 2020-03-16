@@ -1,41 +1,37 @@
 package com.soprahr.API;
 
-import java.util.List;
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soprahr.RabbitMQ.RabbitMQSender;
-import com.soprahr.Repository.CollaborateurRepository;
-import com.soprahr.models.Collaborateur;
+
+import com.soprahr.Services.CollaborateurServices;
+import net.minidev.json.JSONObject;
+
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/collaborateurs")
 public class CollaborateurAPI {
 	
 	
 	@Autowired
-	public CollaborateurRepository repository;
-	@Autowired
-	RabbitMQSender rabbitMQSender;
+	public CollaborateurServices service;
 	
-	@RabbitListener(queues = "EventFromSalle")
-	public void recievedMessage(String msg) {
-		System.out.println("Recieved Message From RabbitMQ: " + msg);
-	}
-	
-	@GetMapping
-	public List<Collaborateur> getAll(){
-		return repository.findAll();
-	}
-	
-	@PostMapping
-	public void Test() {
-		rabbitMQSender.send();
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject getCollaborateurs() {
+		return service.getAllCollaborateurs();
 	}
 
+	@PostMapping(value = "/ByTL", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject collaborateurByTL(@Param(value = "id") int id) {
+		return service.getCollaborateurByTL(id);
+	}
+	
+	
+	
 }

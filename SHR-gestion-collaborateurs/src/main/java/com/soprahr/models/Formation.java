@@ -1,8 +1,6 @@
 package com.soprahr.models;
 
 import java.io.Serializable;
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,61 +15,27 @@ public class Formation implements Serializable {
 	@Id
 	@GeneratedValue
 	private int id;
-	private String nom;
-	private Date date;
-	private String session;
-	private String description;
-	private String resultat;
+	private int idFormation;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNom() {
-		return nom;
+	public int getIdFormation() {
+		return idFormation;
 	}
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setIdFormation(int idFormation) {
+		this.idFormation = idFormation;
 	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public String getSession() {
-		return session;
-	}
-	public void setSession(String session) {
-		this.session = session;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getResultat() {
-		return resultat;
-	}
-	public void setResultat(String resultat) {
-		this.resultat = resultat;
-	}
-	public Formation(int id, String nom, Date date, String session, String description, String resultat) {
+	public Formation(int id, int idFormation) {
 		super();
 		this.id = id;
-		this.nom = nom;
-		this.date = date;
-		this.session = session;
-		this.description = description;
-		this.resultat = resultat;
+		this.idFormation = idFormation;
 	}
 	public Formation() {
 		super();
 	}
-	
-	
 	
 	
 	

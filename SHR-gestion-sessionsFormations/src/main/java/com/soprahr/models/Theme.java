@@ -1,10 +1,14 @@
 package com.soprahr.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Theme implements Serializable{
@@ -18,7 +22,10 @@ public class Theme implements Serializable{
 	@GeneratedValue
 	private int id;
 	private String nom;
+	@Enumerated(EnumType.STRING)
 	private TypeTheme type;
+	@OneToMany
+	private List<Module> listModules;
 	public int getId() {
 		return id;
 	}
@@ -37,11 +44,18 @@ public class Theme implements Serializable{
 	public void setType(TypeTheme type) {
 		this.type = type;
 	}
-	public Theme(int id, String nom, TypeTheme type) {
+	public List<Module> getListModules() {
+		return listModules;
+	}
+	public void setListModules(List<Module> listModules) {
+		this.listModules = listModules;
+	}
+	public Theme(int id, String nom, TypeTheme type, List<Module> listModules) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
+		this.listModules = listModules;
 	}
 	public Theme() {
 		super();

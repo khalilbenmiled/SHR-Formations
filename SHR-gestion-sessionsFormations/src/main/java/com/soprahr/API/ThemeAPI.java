@@ -27,7 +27,7 @@ public class ThemeAPI {
 	public JSONObject addTheme(@RequestBody Theme theme) {
 		return service.addTheme(theme);
 	}
-
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getAllThemes() {
 		return service.getAllThemes();
@@ -42,4 +42,20 @@ public class ThemeAPI {
 	public JSONObject getThemeById(@PathParam(value = "id") int id) {
 		return service.getThemeById(id);
 	}
+	
+	@PostMapping(value = "/type", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getThemeByType(@Param(value = "type") String type) {
+		return service.getThemeByType(type);
+	}
+	
+	@PostMapping(value = "/modules", produces = MediaType.APPLICATION_JSON_VALUE ,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getModulesByTheme(@Param(value = "id") int id) {
+		return service.getModulesByTheme(id);
+	}
+	
+	@PostMapping(value = "/affecterMAT", produces = MediaType.APPLICATION_JSON_VALUE ,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject affecterMAT(@Param(value = "idTheme") int idTheme , @Param(value= "idModule") int idModule) {
+		return service.affecterMAT(idTheme, idModule);
+	}
+
 }

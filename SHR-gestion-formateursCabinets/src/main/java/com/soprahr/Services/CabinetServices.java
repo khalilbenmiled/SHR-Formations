@@ -4,6 +4,8 @@ package com.soprahr.Services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.soprahr.RabbitMQ.RabbitMQSender;
 import com.soprahr.Repository.CabinetRepository;
 import com.soprahr.Repository.DomaineRepository;
 import com.soprahr.Repository.FormateurRepository;
@@ -22,6 +24,8 @@ public class CabinetServices {
 	public FormateurRepository repositoryF;
 	@Autowired
 	public DomaineRepository repositoryD;
+	@Autowired
+	public RabbitMQSender rabbitMQSender;
 	
 	/*********************************** AJOUTER UN CABINET ***************************************/
 	public JSONObject addCabinet(Cabinet cabinet) {
@@ -46,6 +50,13 @@ public class CabinetServices {
 	public JSONObject deleteCabinet(int id) {
 		JSONObject jo = new JSONObject();
 		if(repositoryC.findById(id).isPresent()) {
+			
+			/*------------------ DECLENCHER UN EVENEMENT AUX AUTRES SERICES --------------------------------*/
+			JSONObject object = new JSONObject();
+			object.put("Cabinet-supprime", repositoryC.findById(id).get());
+			rabbitMQSender.send(object);
+			/*----------------------------------------------------------------------------------------------*/
+			
 			repositoryC.delete(repositoryC.findById(id).get());
 			jo.put("Success", "Cabinet supprimé");
 			return jo;
