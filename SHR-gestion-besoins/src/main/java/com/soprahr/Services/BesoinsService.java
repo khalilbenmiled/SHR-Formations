@@ -254,6 +254,8 @@ public class BesoinsService {
 		}
 	}
 	
+	/*********************************** AJOUTER UN BESOIN POUR LE PUBLIER ***************************************/
+	
 
 	
 	
