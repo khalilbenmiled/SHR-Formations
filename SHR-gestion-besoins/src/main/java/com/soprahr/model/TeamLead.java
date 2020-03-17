@@ -1,13 +1,10 @@
 package com.soprahr.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
 
 @Entity
 public class TeamLead implements Serializable{
@@ -21,10 +18,8 @@ public class TeamLead implements Serializable{
 	@GeneratedValue
 	private int id;
 	private int idTeamLead;
-	@OneToMany
-	private List<Projet> listProjets = new ArrayList<>();
-	@OneToMany
-	private List<Besoins> listBesoins = new ArrayList<>();
+	private int idManager;
+	
 	public int getId() {
 		return id;
 	}
@@ -37,25 +32,21 @@ public class TeamLead implements Serializable{
 	public void setIdTeamLead(int idTeamLead) {
 		this.idTeamLead = idTeamLead;
 	}
-	public List<Projet> getListProjets() {
-		return listProjets;
+	public int getIdManager() {
+		return idManager;
 	}
-	public void setListProjets(List<Projet> listProjets) {
-		this.listProjets = listProjets;
+	public void setIdManager(int idManager) {
+		this.idManager = idManager;
 	}
-	public List<Besoins> getListBesoins() {
-		return listBesoins;
-	}
-	public void setListBesoins(List<Besoins> listBesoins) {
-		this.listBesoins = listBesoins;
-	}
-	public TeamLead(int id, int idTeamLead, List<Projet> listProjets, List<Besoins> listBesoins) {
+	public TeamLead(int id, int idTeamLead, int idManager) {
 		super();
 		this.id = id;
 		this.idTeamLead = idTeamLead;
-		this.listProjets = listProjets;
-		this.listBesoins = listBesoins;
-	} 
+		this.idManager = idManager;
+	}
+	public TeamLead() {
+		super();
+	}
 	
 	
 	

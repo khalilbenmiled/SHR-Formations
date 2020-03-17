@@ -46,6 +46,11 @@ public class BesoinsAPI {
 	public JSONObject getBesoinsByTL(@Param(value = "id") int id) {
 		return service.getBesoinsByTL(id);
 	}
+	
+	@PostMapping(value = "/byMG", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getBesoinsByMG(@Param(value = "id") int id) {
+		return service.getBesoinsByManager(id);
+	}
 
 	@PostMapping(value = "/byUser", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject getBesoinsByUser(@Param(value = "id") int id) {
@@ -53,13 +58,23 @@ public class BesoinsAPI {
 	}
 	
 	@PostMapping(value = "/valider", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject validerBesoinTL(@Param(value = "idBesoin") int idBesoin , @Param(value = "priorite")int priorite , @Param(value ="idProjet") int idProjet ,@Param(value ="idTL") int idTL ) {
-		return service.validerBesoinTL(idBesoin, priorite, idProjet , idTL);
+	public JSONObject validerBesoinTL(@Param(value = "idBesoin") int idBesoin , @Param(value = "trimestre")int trimestre , @Param(value ="idProjet") int idProjet ,@Param(value ="idTL") int idTL ) {
+		return service.validerBesoinTL(idBesoin, trimestre, idProjet , idTL);
+	}
+	
+	@PostMapping(value = "/validerMG", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject validerBesoinMG(@Param(value = "idBesoin") int idBesoin ) {
+		return service.validerBesoinMG(idBesoin);
 	}
 	
 	@PostMapping(value = "/annulerValidationTL", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject annulerValidationBesoin(@Param(value = "idBesoin") int idBesoin ) {
 		return service.annulerValidationBesoin(idBesoin);
+	}
+	
+	@PostMapping(value = "/annulerValidationMG", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject annulerValidationBesoinMG(@Param(value = "idBesoin") int idBesoin ) {
+		return service.annulerBesoinMG(idBesoin);
 	}
 
 	

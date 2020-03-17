@@ -1,6 +1,7 @@
 package com.soprahr.Services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +22,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.soprahr.Repository.BesoinsRepository;
 import com.soprahr.Repository.ProjetRepository;
+import com.soprahr.Repository.TeamLeadRepository;
 import com.soprahr.model.Besoins;
 import com.soprahr.model.Module;
 import com.soprahr.model.Projet;
+import com.soprahr.model.TeamLead;
 
 import net.minidev.json.JSONObject;
 
@@ -34,6 +37,8 @@ public class BesoinsService {
 	public BesoinsRepository repository;
 	@Autowired
 	public ProjetRepository repositoryP;
+	@Autowired
+	public TeamLeadRepository repositoryTL;
 	
 	/*********************************** AJOUTER UN BESOIN ***************************************/
 	public JSONObject addBesoin(Besoins besoin) {
@@ -105,13 +110,13 @@ public class BesoinsService {
 	}
 	
 	/*********************************** VALIDER UN BESOIN PAR LE TEAMLEAD ***************************************/
-	public JSONObject validerBesoinTL(int idBesoin , int priorite , int idProjet , int idTL) {
+	public JSONObject validerBesoinTL(int idBesoin , int trimestre , int idProjet , int idTL) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(idBesoin).isPresent()) {
 			Besoins besoin = repository.findById(idBesoin).get();
 			if(repositoryP.findById(idProjet).isPresent()) {
 				Projet projet = repositoryP.findById(idProjet).get();
-				besoin.setPriorite(priorite);
+				besoin.setQuarter(trimestre);
 				besoin.setValiderTL(true);
 				besoin.setProjet(projet);				
 
@@ -134,7 +139,7 @@ public class BesoinsService {
 		if(repository.findById(id).isPresent()) {
 			Besoins besoin = repository.findById(id).get();
 			besoin.setValiderTL(false);
-			besoin.setPriorite(0);
+			besoin.setQuarter(0);
 			besoin.setProjet(null);
 			jo.put("Besoin", repository.save(besoin));
 			return jo;
@@ -187,6 +192,55 @@ public class BesoinsService {
 
 	}
 	
+	/*********************************** LIST BESOINS PAR MANAGER ***************************************/
+	@SuppressWarnings("unchecked")
+	public JSONObject getBesoinsByManager(int idManager) {
+		JSONObject jo = new JSONObject();
+		List<Besoins> listAllBesoins = new ArrayList<Besoins>();
+		List<TeamLead> listTL = repositoryTL.getTeamLeadByManager(idManager);
+		for (TeamLead tl : listTL) {
+			if( getBesoinsByTL(tl.getIdTeamLead()).containsKey("BesoinsTL") ) {
+				listAllBesoins.addAll((Collection<? extends Besoins>) getBesoinsByTL(tl.getIdTeamLead()).get("BesoinsTL"));
+			}
+		}
+		List<Besoins> finalList = new ArrayList<Besoins>();
+		for (Besoins b : listAllBesoins) {
+			if(b.isValiderTL()) {
+				finalList.add(b);
+			}
+		}
+		jo.put("BesoinsMG", finalList);
+		return jo;
+	}
+	
+	/*********************************** VALIDER UN BESOIN PAR LE MANAGER ***************************************/
+	public JSONObject validerBesoinMG (int idBesoin) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(idBesoin).isPresent()) {
+			Besoins besoin = repository.findById(idBesoin).get();
+			besoin.setValiderMG(true);
+			jo.put("Besoin",repository.save(besoin));
+			return jo;
+		}else {
+			jo.put("Error", "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** ANNULER UN BESOIN PAR LE MANAGER ***************************************/
+	public JSONObject annulerBesoinMG (int idBesoin) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(idBesoin).isPresent()) {
+			Besoins besoin = repository.findById(idBesoin).get();
+			besoin.setValiderMG(false);
+			jo.put("Besoin" , repository.save(besoin));
+			return jo;
+		}else {
+			jo.put("Error", "Besoin n'existe pas ! ");
+			return jo; 
+		}
+	}
+	
 	/*********************************** BESOINS PAR USER ***************************************/
 	public JSONObject getBesoinsByUser(int id) {
 		JSONObject jo = new JSONObject();
@@ -200,9 +254,7 @@ public class BesoinsService {
 		}
 	}
 	
-	
-	
-	
+
 	
 	
 	
