@@ -1,7 +1,7 @@
 package com.soprahr.API;
 
-
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.soprahr.Services.BesoinsService;
 import com.soprahr.model.Besoins;
+
 import net.minidev.json.JSONObject;
 
 @RestController
@@ -22,11 +24,28 @@ public class BesoinsAPI {
 
 	@Autowired
 	public BesoinsService service;
+	@PersistenceContext
+	public EntityManager em;
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE )
 	public JSONObject addBesoin(@RequestBody Besoins besoin) {
 		return service.addBesoin(besoin);
 	}
+
+	@PostMapping(value = "/rapports" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject rapportsBesoins(
+			@Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="projet") String projet 
+			) {
+		return service.rapportsBesoins(nomTheme, typeTheme, quarter, projet);
+	}
+	
+	@PostMapping(value = "/rapportsTL" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject rapportsBesoinsByTL(
+			@Param(value ="idTL") int idTL , @Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="projet") String projet , @Param(value ="validerTL") String validerTL , @Param(value ="validerMG") String validerMG
+			) {
+		return service.rapportsBesoinsByTL(idTL, nomTheme, typeTheme, quarter, projet, validerTL, validerMG);
+	}
+
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getAllBesoins() {

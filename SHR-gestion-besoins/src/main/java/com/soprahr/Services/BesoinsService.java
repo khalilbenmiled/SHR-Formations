@@ -10,6 +10,13 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +34,7 @@ import com.soprahr.model.Besoins;
 import com.soprahr.model.Module;
 import com.soprahr.model.Projet;
 import com.soprahr.model.TeamLead;
+import com.soprahr.model.TypeTheme;
 
 import net.minidev.json.JSONObject;
 
@@ -39,6 +47,9 @@ public class BesoinsService {
 	public ProjetRepository repositoryP;
 	@Autowired
 	public TeamLeadRepository repositoryTL;
+	@PersistenceContext
+	public EntityManager em;
+	
 	
 	/*********************************** AJOUTER UN BESOIN ***************************************/
 	public JSONObject addBesoin(Besoins besoin) {
@@ -141,6 +152,7 @@ public class BesoinsService {
 			besoin.setValiderTL(false);
 			besoin.setQuarter(0);
 			besoin.setProjet(null);
+			besoin.setValiderMG(false);
 			jo.put("Besoin", repository.save(besoin));
 			return jo;
 		}else {
@@ -254,8 +266,84 @@ public class BesoinsService {
 		}
 	}
 	
-	/*********************************** AJOUTER UN BESOIN POUR LE PUBLIER ***************************************/
+	/*********************************** RAPPORT BESOINS ***************************************/
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public JSONObject rapportsBesoins(String nomTheme , String typeTheme , int quarter , String projet) {
+		JSONObject jo = new JSONObject();
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Besoins> criteriaQuery = builder.createQuery(Besoins.class);
+		Root<Besoins> root = criteriaQuery.from(Besoins.class);
+		List<javax.persistence.criteria.Predicate> predicates = new ArrayList<javax.persistence.criteria.Predicate>();
+		
+		if (nomTheme != "" ) {
+	        predicates.add(
+	        		builder.equal(root.get("theme").get("nom"), nomTheme));
+	    }    
+	    if (typeTheme != "" ) {
+	    	Enum type = Enum.valueOf(TypeTheme.class, typeTheme);
+	        predicates.add(
+	        		builder.equal(root.get("theme").get("type"), type));
+	    }
+	    
+	    if (projet != "") { 	
+	        predicates.add(
+	        		builder.equal(root.get("projet").get("nom"), projet));
+	    }	  
+	    if (quarter != 0) {		        
+	    	predicates.add(
+	        		builder.equal(root.get("quarter"), quarter));
+	    }
+	    
+	    criteriaQuery.select(root)
+        	.where(predicates.toArray(new javax.persistence.criteria.Predicate[]{}));
+        	
+	    Query query = em.createQuery(criteriaQuery);
+		List<Besoins> resultList = query.getResultList();
+		
+		jo.put("RapportsBesoins" , resultList);
+		return jo;
+		
+	}
 	
+	/*********************************** RAPPORT BESOINS PAR TEAM LEAD ***************************************/
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public JSONObject rapportsBesoinsByTL (int idTL,String nomTheme , String typeTheme, int quarter, String projet , String validerTL , String validerMG) {
+		JSONObject jo = new JSONObject();
+		List<Besoins> listBesoins = new ArrayList<Besoins>();
+		if( getBesoinsByTL(idTL).containsKey("BesoinsTL") ) {
+			listBesoins.addAll((Collection<? extends Besoins>) getBesoinsByTL(idTL).get("BesoinsTL"));
+		}
+		List<Predicate<Besoins>> allPredicates = new ArrayList<Predicate<Besoins>>();
+		if(nomTheme != "") {
+			allPredicates.add(b -> b.getTheme().getNom().equals(nomTheme));
+		}
+		if(quarter != 0) {
+			allPredicates.add(b -> b.getQuarter() == quarter);
+		}
+		if(typeTheme != "") {
+			Enum type = Enum.valueOf(TypeTheme.class, typeTheme);
+			allPredicates.add(b -> b.getTheme().getType().equals(type));
+		}
+		if(projet != "") {
+			allPredicates.add(b -> b.getProjet().getNom().equals(projet));
+		}
+		if(validerMG != "") {
+			boolean bool = Boolean.parseBoolean(validerMG);
+			allPredicates.add(b -> b.isValiderMG() == bool);
+		}
+		if(validerTL != "") {
+			boolean bool = Boolean.parseBoolean(validerTL);
+			allPredicates.add(b -> b.isValiderTL() == bool);
+		}
+	
+		
+		List<Besoins> result = listBesoins.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
+		jo.put("RapportsBesoinsTL", result);
+		return jo;
+	
+		
+	}
 
 	
 	
