@@ -3,6 +3,8 @@ package com.soprahr.model;
 import java.io.Serializable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -20,6 +22,7 @@ public class Besoins implements Serializable{
 	@Id
 	@GeneratedValue
 	private int id;
+	@Enumerated(EnumType.STRING)
 	private BU bu;
 	private int quarter;
 	private int nbrPrevu;

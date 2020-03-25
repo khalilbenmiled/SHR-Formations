@@ -34,18 +34,24 @@ public class BesoinsAPI {
 
 	@PostMapping(value = "/rapports" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject rapportsBesoins(
-			@Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="projet") String projet 
+			@Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="idProjet") int idProjet , @Param(value ="validerTL") String validerTL , @Param(value ="validerMG") String validerMG , @Param(value ="bu") String bu
 			) {
-		return service.rapportsBesoins(nomTheme, typeTheme, quarter, projet);
+		return service.rapportsBesoins(nomTheme, typeTheme, quarter, idProjet, validerTL, validerMG,bu);
 	}
 	
 	@PostMapping(value = "/rapportsTL" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject rapportsBesoinsByTL(
-			@Param(value ="idTL") int idTL , @Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="projet") String projet , @Param(value ="validerTL") String validerTL , @Param(value ="validerMG") String validerMG
+			@Param(value ="idTL") int idTL , @Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="idProjet") int idProjet , @Param(value ="validerTL") String validerTL , @Param(value ="validerMG") String validerMG
 			) {
-		return service.rapportsBesoinsByTL(idTL, nomTheme, typeTheme, quarter, projet, validerTL, validerMG);
+		return service.rapportsBesoinsByTL(idTL, nomTheme, typeTheme, quarter, idProjet, validerTL, validerMG);
 	}
 
+	@PostMapping(value = "/rapportsMG" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject rapportsBesoinsByMG(
+			@Param(value ="idManager") int idManager , @Param(value ="nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme , @Param(value = "quarter") int quarter , @Param(value ="idProjet") int idProjet , @Param(value ="validerMG") String validerMG
+			) {
+		return service.rapportsBesoinsByMG(idManager, nomTheme, typeTheme, quarter, idProjet, validerMG);
+	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getAllBesoins() {

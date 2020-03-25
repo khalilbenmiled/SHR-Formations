@@ -1,6 +1,8 @@
 package com.soprahr.Services;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import com.soprahr.Repository.BesoinsRepository;
 import com.soprahr.Repository.ProjetRepository;
 import com.soprahr.Repository.TeamLeadRepository;
+import com.soprahr.model.BU;
 import com.soprahr.model.Besoins;
 import com.soprahr.model.Module;
 import com.soprahr.model.Projet;
@@ -130,7 +134,7 @@ public class BesoinsService {
 				besoin.setQuarter(trimestre);
 				besoin.setValiderTL(true);
 				besoin.setProjet(projet);				
-
+				besoin.setNbrPrevu(1);
 				jo.put("Besoin", repository.save(besoin));
 				return jo;
 				
@@ -267,48 +271,59 @@ public class BesoinsService {
 	}
 	
 	/*********************************** RAPPORT BESOINS ***************************************/
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public JSONObject rapportsBesoins(String nomTheme , String typeTheme , int quarter , String projet) {
+	@SuppressWarnings({ "rawtypes" })
+	public JSONObject rapportsBesoins(String nomTheme , String typeTheme , int quarter , int idProjet ,String validerTL , String validerMG , String bu) {
 		JSONObject jo = new JSONObject();
-		CriteriaBuilder builder = em.getCriteriaBuilder();
+		List<Besoins> listBesoins = repository.findAll();
 		
-		CriteriaQuery<Besoins> criteriaQuery = builder.createQuery(Besoins.class);
-		Root<Besoins> root = criteriaQuery.from(Besoins.class);
-		List<javax.persistence.criteria.Predicate> predicates = new ArrayList<javax.persistence.criteria.Predicate>();
+		List<Predicate<Besoins>> allPredicates = new ArrayList<Predicate<Besoins>>();
+		if(nomTheme != "") {
+			allPredicates.add(b -> b.getTheme().getNom().equals(nomTheme));
+		}
+		if(quarter != 0) {
+			allPredicates.add(b -> b.getQuarter() == quarter);
+		}
+		if(typeTheme != "") {
+			Enum type = Enum.valueOf(TypeTheme.class, typeTheme);
+			allPredicates.add(b -> b.getTheme().getType().equals(type));
+		}
+		if(idProjet != 0) {
+			Projet p = repositoryP.findById(idProjet).get();
+			allPredicates.add(b -> b.getProjet() == p);
+		}
+		if(validerMG != "") {
+			boolean bool = Boolean.parseBoolean(validerMG);
+			allPredicates.add(b -> b.isValiderMG() == bool);
+		}
+		if(validerTL != "") {
+			boolean bool = Boolean.parseBoolean(validerTL);
+			allPredicates.add(b -> b.isValiderTL() == bool);
+		}
+		if(bu != "") {	
+			Enum bUnit = Enum.valueOf(BU.class, bu);
+			allPredicates.add(b -> b.getBu().equals(bUnit));
+		}
 		
-		if (nomTheme != "" ) {
-	        predicates.add(
-	        		builder.equal(root.get("theme").get("nom"), nomTheme));
-	    }    
-	    if (typeTheme != "" ) {
-	    	Enum type = Enum.valueOf(TypeTheme.class, typeTheme);
-	        predicates.add(
-	        		builder.equal(root.get("theme").get("type"), type));
-	    }
-	    
-	    if (projet != "") { 	
-	        predicates.add(
-	        		builder.equal(root.get("projet").get("nom"), projet));
-	    }	  
-	    if (quarter != 0) {		        
-	    	predicates.add(
-	        		builder.equal(root.get("quarter"), quarter));
-	    }
-	    
-	    criteriaQuery.select(root)
-        	.where(predicates.toArray(new javax.persistence.criteria.Predicate[]{}));
-        	
-	    Query query = em.createQuery(criteriaQuery);
-		List<Besoins> resultList = query.getResultList();
+	
 		
-		jo.put("RapportsBesoins" , resultList);
+		List<Besoins> result = listBesoins.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
+
+				Map<Object, Map<Object, List<Besoins>>> result2 = result.stream().collect(
+				Collectors.groupingBy(b -> b.getTheme().getNom(), 
+				Collectors.groupingBy(be -> be.getQuarter() 
+				
+				)
+				));
+				
+		jo.put("RapportsBesoins", result2);
 		return jo;
-		
+	
+
 	}
 	
 	/*********************************** RAPPORT BESOINS PAR TEAM LEAD ***************************************/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public JSONObject rapportsBesoinsByTL (int idTL,String nomTheme , String typeTheme, int quarter, String projet , String validerTL , String validerMG) {
+	public JSONObject rapportsBesoinsByTL (int idTL,String nomTheme , String typeTheme, int quarter, int idProjet , String validerTL , String validerMG) {
 		JSONObject jo = new JSONObject();
 		List<Besoins> listBesoins = new ArrayList<Besoins>();
 		if( getBesoinsByTL(idTL).containsKey("BesoinsTL") ) {
@@ -325,8 +340,9 @@ public class BesoinsService {
 			Enum type = Enum.valueOf(TypeTheme.class, typeTheme);
 			allPredicates.add(b -> b.getTheme().getType().equals(type));
 		}
-		if(projet != "") {
-			allPredicates.add(b -> b.getProjet().getNom().equals(projet));
+		if(idProjet != 0) {
+			Projet p = repositoryP.findById(idProjet).get();
+			allPredicates.add(b -> b.getProjet() == p);
 		}
 		if(validerMG != "") {
 			boolean bool = Boolean.parseBoolean(validerMG);
@@ -339,13 +355,71 @@ public class BesoinsService {
 	
 		
 		List<Besoins> result = listBesoins.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
-		jo.put("RapportsBesoinsTL", result);
+
+		
+		
+			
+				Map<Object, Map<Object, List<Besoins>>> result2 = result.stream().collect(
+				Collectors.groupingBy(b -> b.getTheme().getNom(), 
+				Collectors.groupingBy(be -> be.getQuarter() 
+				
+				)
+				));
+				
+		jo.put("RapportsBesoinsTL", result2);
 		return jo;
 	
 		
 	}
 
 	
+	/*********************************** RAPPORT BESOINS PAR MANAGER ***************************************/
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public JSONObject rapportsBesoinsByMG (int idManager,String nomTheme , String typeTheme, int quarter, int idProjet , String validerMG) {
+		JSONObject jo = new JSONObject();
+		List<Besoins> listBesoins = new ArrayList<Besoins>();
+		if( getBesoinsByManager(idManager).containsKey("BesoinsMG") ) {
+			listBesoins.addAll((Collection<? extends Besoins>) getBesoinsByManager(idManager).get("BesoinsMG"));
+		}
+		List<Predicate<Besoins>> allPredicates = new ArrayList<Predicate<Besoins>>();
+		if(nomTheme != "") {
+			allPredicates.add(b -> b.getTheme().getNom().equals(nomTheme));
+		}
+		if(quarter != 0) {
+			allPredicates.add(b -> b.getQuarter() == quarter);
+		}
+		if(typeTheme != "") {
+			Enum type = Enum.valueOf(TypeTheme.class, typeTheme);
+			allPredicates.add(b -> b.getTheme().getType().equals(type));
+		}
+		if(idProjet != 0) {
+			Projet p = repositoryP.findById(idProjet).get();
+			allPredicates.add(b -> b.getProjet() == p);
+		}
+		if(validerMG != "") {
+			boolean bool = Boolean.parseBoolean(validerMG);
+			allPredicates.add(b -> b.isValiderMG() == bool);
+		}
+		
+	
+		
+		List<Besoins> result = listBesoins.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
+
+		
+		
+			
+				Map<Object, Map<Object, List<Besoins>>> result2 = result.stream().collect(
+				Collectors.groupingBy(b -> b.getTheme().getNom(), 
+				Collectors.groupingBy(be -> be.getQuarter() 
+				
+				)
+				));
+				
+		jo.put("RapportsBesoinsMG", result2);
+		return jo;
+	
+		
+	}
 	
 	
 	
