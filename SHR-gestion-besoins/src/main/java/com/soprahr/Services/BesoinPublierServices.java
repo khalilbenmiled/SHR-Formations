@@ -94,6 +94,10 @@ public class BesoinPublierServices {
 		JSONObject jo = new JSONObject();
 		if( repository.findById(id).isPresent() ) {
 			BesoinsPublier besoinPublier = repository.findById(id).get();
+			for(Besoins b : besoinPublier.getListBesoins()) {
+				b.setPublier(true);
+				repositoryB.save(b);
+			}
 			besoinPublier.setPublier(true);
 			jo.put("BesoinPublier", repository.save(besoinPublier));
 			return jo;

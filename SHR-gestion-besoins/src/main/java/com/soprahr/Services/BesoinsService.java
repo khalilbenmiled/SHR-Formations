@@ -1,8 +1,8 @@
 package com.soprahr.Services;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,14 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -65,16 +59,28 @@ public class BesoinsService {
 		}else {
 			
 			if(repository.getBesoinsByThemeNom(besoin.getTheme().getNom(), besoin.getIdUser()) != null) { 
-				List<Module> modulesFromBesoin = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser()).getTheme().getListModules();
-				List<Module> arrayToAdd = new ArrayList<Module>();
-				arrayToAdd.addAll(modulesFromBesoin);
-				arrayToAdd.addAll(besoin.getTheme().getListModules());
-				List<Module> disticnList = arrayToAdd.stream().filter(distinctByKey(m -> m.getNom())).collect(Collectors.toList());
-				
-				Besoins besoinToUpdate = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser());
-				besoinToUpdate.getTheme().setListModules(disticnList);
-				jo.put("Besoin", repository.save(besoinToUpdate));
-				return jo;
+			
+				if(repository.getBesoinsByThemeNom(besoin.getTheme().getNom(), besoin.getIdUser()).isPublier()) {
+					jo.put("Besoin",repository.save(besoin));
+					return jo;
+				}else {
+					List<Module> modulesFromBesoin = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser()).getTheme().getListModules();
+					List<Module> arrayToAdd = new ArrayList<Module>();
+					arrayToAdd.addAll(modulesFromBesoin);
+					arrayToAdd.addAll(besoin.getTheme().getListModules());
+					List<Module> disticnList = arrayToAdd.stream().filter(distinctByKey(m -> m.getNom())).collect(Collectors.toList());
+					
+					Besoins besoinToUpdate = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser());
+					besoinToUpdate.getTheme().setListModules(disticnList);
+					besoinToUpdate.setValiderTL(besoin.isValiderTL());
+					besoinToUpdate.setQuarter(besoin.getQuarter());
+					besoinToUpdate.setNbrPrevu(besoinToUpdate.getNbrPrevu() + besoin.getNbrPrevu());
+					besoinToUpdate.setProjet(besoin.getProjet());
+					
+					jo.put("Besoin", repository.save(besoinToUpdate));
+					return jo;
+				}
+			
 				
 			}else {
 				jo.put("Besoin",repository.save(besoin));
@@ -375,7 +381,7 @@ public class BesoinsService {
 	
 	/*********************************** RAPPORT BESOINS PAR MANAGER ***************************************/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public JSONObject rapportsBesoinsByMG (int idManager,String nomTheme , String typeTheme, int quarter, int idProjet , String validerMG) {
+	public JSONObject rapportsBesoinsByMG (int idManager,String nomTheme , String typeTheme, int quarter, int idProjet , String validerMG ) {
 		JSONObject jo = new JSONObject();
 		List<Besoins> listBesoins = new ArrayList<Besoins>();
 		if( getBesoinsByManager(idManager).containsKey("BesoinsMG") ) {
@@ -400,6 +406,7 @@ public class BesoinsService {
 			boolean bool = Boolean.parseBoolean(validerMG);
 			allPredicates.add(b -> b.isValiderMG() == bool);
 		}
+	
 		
 	
 		

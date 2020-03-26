@@ -11,7 +11,7 @@ import com.soprahr.model.Besoins;
 
 public interface BesoinsRepository extends JpaRepository<Besoins, Integer>{
 	
-	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id ", nativeQuery = true)		
+	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id AND publier = 0", nativeQuery = true)		
 	public List<Besoins> getBesoinsByUser(@Param("id") int id);
 	
 	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id AND b.nom = :nom ", nativeQuery = true)		
