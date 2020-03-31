@@ -3,6 +3,7 @@ package com.soprahr.Services;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import com.soprahr.Repository.BesoinsPublierRepository;
 import com.soprahr.Repository.BesoinsRepository;
 import com.soprahr.model.Besoins;
 import com.soprahr.model.BesoinsPublier;
+
 
 import net.minidev.json.JSONObject;
 
@@ -89,6 +91,18 @@ public class BesoinPublierServices {
 		}
 	}
 	
+	/*********************************** LIST BESOINS ***************************************/
+	public JSONObject listBesoins() {
+		JSONObject jo = new JSONObject();
+		if (repository.findAll().size() != 0 ) {
+			jo.put("Besoins", repository.findAll());
+			return jo;
+		}else {
+			jo.put("Error", "La listes des besoins à publier");
+			return jo;
+		}
+	}
+	
 	/*********************************** PUBLIER UN BESOIN  ***************************************/
 	public JSONObject publierBesoin(int id) {
 		JSONObject jo = new JSONObject();
@@ -107,8 +121,7 @@ public class BesoinPublierServices {
 		}
 	}
 	
-	
-	
+
 	
 	
 	

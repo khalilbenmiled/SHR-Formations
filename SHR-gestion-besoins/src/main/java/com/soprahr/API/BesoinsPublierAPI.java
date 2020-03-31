@@ -39,5 +39,9 @@ public class BesoinsPublierAPI {
 		return service.listBesoinsPublier();
 	}
 	
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject listBesoins() {
+		return service.listBesoins();
+	}
 	
 }
