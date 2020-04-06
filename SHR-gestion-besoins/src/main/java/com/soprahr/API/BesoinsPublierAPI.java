@@ -44,4 +44,9 @@ public class BesoinsPublierAPI {
 		return service.listBesoins();
 	}
 	
+	@PostMapping(value = "/userInfos", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject userInfos(@Param(value = "id") int id ) {
+		return service.getUserInfos(id);
+	}
+	
 }

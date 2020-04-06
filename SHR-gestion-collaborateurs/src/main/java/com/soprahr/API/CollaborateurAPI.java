@@ -26,6 +26,11 @@ public class CollaborateurAPI {
 	public JSONObject getCollaborateurs() {
 		return service.getAllCollaborateurs();
 	}
+	
+	@PostMapping(value = "/byID", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getCollaborateurById(@Param(value = "id") int id) {
+		return service.getCollaborateurById(id);
+	}
 
 	@PostMapping(value = "/ByTL", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject collaborateurByTL(@Param(value = "id") int id) {

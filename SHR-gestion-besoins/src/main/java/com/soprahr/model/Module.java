@@ -1,7 +1,6 @@
 package com.soprahr.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -11,7 +10,7 @@ public class Module implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String nom;
 	private String description;
 	public String getNom() {
@@ -31,6 +30,7 @@ public class Module implements Serializable{
 		this.nom = nom;
 		this.description = description;
 	}
+	
 	public Module() {
 		super();
 	}

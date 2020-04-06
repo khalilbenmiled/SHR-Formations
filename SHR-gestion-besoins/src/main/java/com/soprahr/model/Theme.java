@@ -2,7 +2,6 @@ package com.soprahr.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -16,7 +15,6 @@ public class Theme implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 
 	private String nom;
 	@Enumerated(EnumType.STRING)

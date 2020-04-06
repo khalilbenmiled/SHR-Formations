@@ -11,4 +11,7 @@ public interface TeamLeadRepository extends JpaRepository<TeamLead, Integer> {
 
 	@Query(value = "SELECT * FROM team_lead t WHERE t.id_manager = :idm ", nativeQuery = true)		
 	public List<TeamLead> getTeamLeadByManager(@Param("idm") int idm);
+	
+	@Query(value = "SELECT * FROM team_lead t WHERE t.id_team_lead = :id ", nativeQuery = true)		
+	public TeamLead getTeamLeadById(@Param("id") int id);
 }

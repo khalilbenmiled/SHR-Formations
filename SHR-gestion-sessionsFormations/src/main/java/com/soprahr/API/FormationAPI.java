@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soprahr.Services.FormationServices;
-import com.soprahr.models.Formation;
 
 import net.minidev.json.JSONObject;
 
@@ -24,10 +23,10 @@ public class FormationAPI {
 	@Autowired
 	public FormationServices service;
 	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject addFormation(@RequestBody Formation formation) {
-		return service.addFormation(formation);
-	}
+//	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//	public JSONObject addFormation(@RequestBody Formation formation) {
+//		return service.addFormation(formation);
+//	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getAllFormations() {
@@ -43,4 +42,20 @@ public class FormationAPI {
 	public JSONObject getFormationById(@PathParam(value = "id") int id) {
 		return service.getFormationById(id);
 	}
+	
+	@PostMapping(value = "/" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject ajouterFormation(
+			@Param(value = "nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme,
+			@Param(value="dateDebut") String dateDebut , @Param(value="dateFin") String dateFin, @Param(value = "maxParticipants") int maxParticipants , @Param(value = "duree") float duree,
+			@Param(value = "idSession") int idSession
+			) {
+		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, maxParticipants, duree , idSession);
+	}
+	
+	@PostMapping(value = "/test" , produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject test (@RequestBody JSONObject listModules) {
+		System.out.println(listModules);
+		return null;
+	}
+	
 }

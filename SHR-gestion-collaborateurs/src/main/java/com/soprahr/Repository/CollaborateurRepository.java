@@ -11,4 +11,7 @@ import com.soprahr.models.Collaborateur;
 public interface CollaborateurRepository extends JpaRepository<Collaborateur, Integer>{
 	@Query(value = "SELECT * FROM Collaborateur c WHERE c.id_team_leader = :id", nativeQuery = true)		
 	public List<Collaborateur> getCollaborateurByTL(@Param(value ="id") int id);
+	
+	@Query(value = "SELECT * FROM Collaborateur c WHERE c.id_collaborateur = :id", nativeQuery = true)		
+	public Collaborateur getCollaborateurByIdCollaborateur(@Param(value ="id") int id);
 }

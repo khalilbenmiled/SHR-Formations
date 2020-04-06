@@ -1,11 +1,18 @@
 package com.soprahr.Services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.soprahr.RabbitMQ.RabbitMQSender;
 import com.soprahr.Repository.FormationRepository;
+import com.soprahr.Repository.SessionRepository;
 import com.soprahr.models.Formation;
+import com.soprahr.models.Session;
+import com.soprahr.models.TypeTheme;
 
 import net.minidev.json.JSONObject;
 
@@ -15,6 +22,8 @@ public class FormationServices {
 
 	@Autowired
 	public FormationRepository repository;
+	@Autowired
+	public SessionRepository repositoryS;
 	@Autowired
 	public RabbitMQSender rabbitMQSender;
 	
@@ -68,4 +77,50 @@ public class FormationServices {
 			return jo;
 		}
 	}
+	
+	/*********************************** AJOUTER UNE FORMATION PAR PARAM ***************************************/
+	public JSONObject ajouterFormation(String nomTheme , String typeTheme ,String dateDebutStr, String dateFinStr , int maxParticipants, float duree,int idSession) {
+		JSONObject jo = new JSONObject();
+		Formation f = new Formation();
+		try {
+			
+			
+			if (repositoryS.findById(idSession).isPresent()) {
+				Date dateDebut=new SimpleDateFormat("dd/MM/yyyy").parse(dateDebutStr);
+				Date dateFin=new SimpleDateFormat("dd/MM/yyyy").parse(dateFinStr);
+				
+				f.setNomTheme(nomTheme);	
+				f.setTypeTheme(TypeTheme.valueOf(typeTheme));
+				f.setDateDebut(dateDebut);
+				f.setDateFin(dateFin);
+				f.setMaxParticipants(maxParticipants);
+				f.setDuree(duree);
+				Session session = repositoryS.findById(idSession).get();
+				List<Formation> listFormation = session.getListFormations();
+				Formation newFormation = repository.save(f);
+				listFormation.add(newFormation);
+				session.setListFormations(listFormation);
+				
+				jo.put("SessionFormation", repositoryS.save(session));
+				return jo;
+			}else {
+				jo.put("Error", "Session n'existe pas !");
+				return jo;
+			}
+			
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+			jo.put("Error", e);
+			return jo;
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }

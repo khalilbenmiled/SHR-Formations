@@ -1,11 +1,16 @@
 package com.soprahr.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Formation implements Serializable {
@@ -18,27 +23,23 @@ public class Formation implements Serializable {
 	@Id
 	@GeneratedValue
 	private int id;
-	private BU bu;
 	private Date dateDebut;
 	private Date dateFin;
-	@OneToOne
-	private Theme theme;
+	private String nomTheme;
+	@Enumerated(EnumType.STRING)
+	private TypeTheme typeTheme;
+	@OneToMany
+	private List<Module> listModules = new ArrayList<Module>();
 	private int maxParticipants; // nombre de participants MAX
 	private float duree; // duree ce cette formation
 	private float prix;
-	private EtatFormation etat;
+	private EtatFormation etat; 
 	private int idCF; // cabinet ou formateur de cette formation
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public Theme getTheme() {
-		return theme;
-	}
-	public void setTheme(Theme theme) {
-		this.theme = theme;
 	}
 	public int getMaxParticipants() {
 		return maxParticipants;
@@ -64,12 +65,6 @@ public class Formation implements Serializable {
 	public void setEtat(EtatFormation etat) {
 		this.etat = etat;
 	}
-	public BU getBu() {
-		return bu;
-	}
-	public void setBu(BU bu) {
-		this.bu = bu;
-	}
 	public int getIdCF() {
 		return idCF;
 	}
@@ -88,14 +83,35 @@ public class Formation implements Serializable {
 	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
-	public Formation(int id, BU bu, Date dateDebut, Date dateFin, Theme theme, int maxParticipants,
-			 float duree, float prix, EtatFormation etat, int idCF) {
+	public String getNomTheme() {
+		return nomTheme;
+	}
+	public void setNomTheme(String nomTheme) {
+		this.nomTheme = nomTheme;
+	}
+
+	public List<Module> getListModules() {
+		return listModules;
+	}
+	public void setListModules(List<Module> listModules) {
+		this.listModules = listModules;
+	}
+	public TypeTheme getTypeTheme() {
+		return typeTheme;
+	}
+	public void setTypeTheme(TypeTheme typeTheme) {
+		this.typeTheme = typeTheme;
+	}
+	
+	public Formation(int id, Date dateDebut, Date dateFin, String nomTheme, TypeTheme typeTheme,
+			List<Module> listModules, int maxParticipants, float duree, float prix, EtatFormation etat, int idCF) {
 		super();
 		this.id = id;
-		this.bu = bu;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.theme = theme;
+		this.nomTheme = nomTheme;
+		this.typeTheme = typeTheme;
+		this.listModules = listModules;
 		this.maxParticipants = maxParticipants;
 		this.duree = duree;
 		this.prix = prix;
@@ -104,12 +120,6 @@ public class Formation implements Serializable {
 	}
 	public Formation() {
 		super();
-	}
-	@Override
-	public String toString() {
-		return "Formation [id=" + id + ", bu=" + bu + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", theme="
-				+ theme + ", maxParticipants=" + maxParticipants  + ", duree=" + duree
-				+ ", prix=" + prix + ", etat=" + etat + ", idCF=" + idCF + "]";
 	}
 	
 	

@@ -2,7 +2,6 @@ package com.soprahr.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -24,8 +23,6 @@ public class Session implements Serializable {
 	private String nom;
 	private String description;
 	private int trimestre;
-	private Date dateDebut;
-	private Date dateFin;
 	@OneToMany
 	private List<Formation> listFormations = new ArrayList<>();
 
@@ -53,18 +50,6 @@ public class Session implements Serializable {
 	public void setTrimestre(int trimestre) {
 		this.trimestre = trimestre;
 	}
-	public Date getDateDebut() {
-		return dateDebut;
-	}
-	public void setDateDebut(Date dateDebut) {
-		this.dateDebut = dateDebut;
-	}
-	public Date getDateFin() {
-		return dateFin;
-	}
-	public void setDateFin(Date dateFin) {
-		this.dateFin = dateFin;
-	}
 	public List<Formation> getListFormations() {
 		return listFormations;
 	}
@@ -74,15 +59,13 @@ public class Session implements Serializable {
 	public Session() {
 		super();
 	}
-	public Session(int id, String nom, String description, int trimestre, Date dateDebut, Date dateFin,
+	public Session(int id, String nom, String description, int trimestre,
 			List<Formation> listFormations) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.description = description;
 		this.trimestre = trimestre;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
 		this.listFormations = listFormations;
 	}
 

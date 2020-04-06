@@ -32,6 +32,19 @@ public class CollaborateurServices {
 		jo.put("Collaborateur", repository.save(collaborateur));
 		return jo;
 	}
+	
+	/*********************************** AFFICHER UN COLLABORATEUR PAR ID_COLLABORATEUR ***************************************/
+	public JSONObject getCollaborateurById(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.getCollaborateurByIdCollaborateur(id) != null) {
+			jo.put("Collaborateur" ,repository.getCollaborateurByIdCollaborateur(id));
+			return jo;
+		}else {
+			jo.put("Error" ,"Collaborateur n'existe pas !");
+			return jo;
+		}
+
+	}
 
 	/*********************************** LISTE COLLABORATEURS ***************************************/
 	@SuppressWarnings("rawtypes")
