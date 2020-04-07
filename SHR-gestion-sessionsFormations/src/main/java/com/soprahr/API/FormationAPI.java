@@ -52,10 +52,9 @@ public class FormationAPI {
 		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, maxParticipants, duree , idSession);
 	}
 	
-	@PostMapping(value = "/test" , produces = MediaType.APPLICATION_JSON_VALUE )
-	public JSONObject test (@RequestBody JSONObject listModules) {
-		System.out.println(listModules);
-		return null;
+	@PostMapping(value = "/addMTF" , produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject setListModulesToFormation (@RequestBody JSONObject listModules) {
+		return service.setListModulesToFormation(listModules);
 	}
 	
 }

@@ -428,6 +428,20 @@ public class BesoinsService {
 		
 	}
 	
+	/*********************************** SET BESOINS PLANIFIER ***************************************/
+	public JSONObject setBesoinPlanifier(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			Besoins besoin = repository.findById(id).get();
+			besoin.setPlanifier(true);
+			jo.put("Besoin", repository.save(besoin));
+			return jo;
+		}else {
+			jo.put("Error", "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
 	
 	
 	 public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) 

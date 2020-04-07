@@ -2,17 +2,24 @@ package com.soprahr.Services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.soprahr.RabbitMQ.RabbitMQSender;
 import com.soprahr.Repository.FormationRepository;
+import com.soprahr.Repository.ModuleRepository;
 import com.soprahr.Repository.SessionRepository;
+import com.soprahr.Repository.ThemeRepository;
 import com.soprahr.models.Formation;
+import com.soprahr.models.Module;
 import com.soprahr.models.Session;
-import com.soprahr.models.TypeTheme;
+import com.soprahr.models.Theme;	
 
 import net.minidev.json.JSONObject;
 
@@ -24,6 +31,10 @@ public class FormationServices {
 	public FormationRepository repository;
 	@Autowired
 	public SessionRepository repositoryS;
+	@Autowired
+	public ModuleRepository repositoryM;
+	@Autowired
+	public ThemeRepository repositoryT;
 	@Autowired
 	public RabbitMQSender rabbitMQSender;
 	
@@ -86,11 +97,12 @@ public class FormationServices {
 			
 			
 			if (repositoryS.findById(idSession).isPresent()) {
-				Date dateDebut=new SimpleDateFormat("dd/MM/yyyy").parse(dateDebutStr);
-				Date dateFin=new SimpleDateFormat("dd/MM/yyyy").parse(dateFinStr);
+				Date dateDebut=new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(dateDebutStr);
+				Date dateFin=new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(dateFinStr);
 				
-				f.setNomTheme(nomTheme);	
-				f.setTypeTheme(TypeTheme.valueOf(typeTheme));
+				
+				Theme theme = repositoryT.getThemeByNomAndType(nomTheme, typeTheme);
+				f.setTheme(theme);
 				f.setDateDebut(dateDebut);
 				f.setDateFin(dateFin);
 				f.setMaxParticipants(maxParticipants);
@@ -101,7 +113,7 @@ public class FormationServices {
 				listFormation.add(newFormation);
 				session.setListFormations(listFormation);
 				
-				jo.put("SessionFormation", repositoryS.save(session));
+				jo.put("Formation", newFormation);
 				return jo;
 			}else {
 				jo.put("Error", "Session n'existe pas !");
@@ -114,6 +126,36 @@ public class FormationServices {
 			jo.put("Error", e);
 			return jo;
 		}
+		
+	}
+	
+	/*********************************** AJOUTER LIST MODULES A UNE FORMATION ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject setListModulesToFormation(JSONObject listModules) {
+		JSONObject jo = new JSONObject();
+		ArrayList array = (ArrayList) listModules.get("modules");
+		int idFormation = (int) listModules.get("idFormation");
+		
+		ArrayList modules = (ArrayList) array.get(0);
+		List<Module> listToSet = new ArrayList<Module>();
+		
+		for (Object object : modules) {
+			LinkedHashMap obj = (LinkedHashMap) object;
+			String nomModule = (String) obj.get("nom");
+			String descriptionModule = (String) obj.get("description");
+			Module module = repositoryM.getModuleByNomAndDescription(nomModule,descriptionModule);
+			listToSet.add(module);
+		}
+		if (repository.findById(idFormation).isPresent()) {
+			Formation formation = repository.findById(idFormation).get();
+			formation.getTheme().setListModules(listToSet);
+			jo.put("Formation" , repository.save(formation));
+			return jo;
+		}else {
+			jo.put("Error" , "Formation n'existe pas !");
+			return jo;
+		}
+		
 		
 	}
 	

@@ -1,16 +1,13 @@
 package com.soprahr.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Formation implements Serializable {
@@ -23,13 +20,12 @@ public class Formation implements Serializable {
 	@Id
 	@GeneratedValue
 	private int id;
+	@Temporal(value = TemporalType.DATE)
 	private Date dateDebut;
+	@Temporal(value = TemporalType.DATE)
 	private Date dateFin;
-	private String nomTheme;
-	@Enumerated(EnumType.STRING)
-	private TypeTheme typeTheme;
-	@OneToMany
-	private List<Module> listModules = new ArrayList<Module>();
+	@OneToOne
+	private Theme theme;
 	private int maxParticipants; // nombre de participants MAX
 	private float duree; // duree ce cette formation
 	private float prix;
@@ -83,35 +79,19 @@ public class Formation implements Serializable {
 	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
-	public String getNomTheme() {
-		return nomTheme;
+	public Theme getTheme() {
+		return theme;
 	}
-	public void setNomTheme(String nomTheme) {
-		this.nomTheme = nomTheme;
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
-
-	public List<Module> getListModules() {
-		return listModules;
-	}
-	public void setListModules(List<Module> listModules) {
-		this.listModules = listModules;
-	}
-	public TypeTheme getTypeTheme() {
-		return typeTheme;
-	}
-	public void setTypeTheme(TypeTheme typeTheme) {
-		this.typeTheme = typeTheme;
-	}
-	
-	public Formation(int id, Date dateDebut, Date dateFin, String nomTheme, TypeTheme typeTheme,
-			List<Module> listModules, int maxParticipants, float duree, float prix, EtatFormation etat, int idCF) {
+	public Formation(int id, Date dateDebut, Date dateFin, Theme theme, int maxParticipants,
+			float duree, float prix, EtatFormation etat, int idCF) {
 		super();
 		this.id = id;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.nomTheme = nomTheme;
-		this.typeTheme = typeTheme;
-		this.listModules = listModules;
+		this.theme = theme;
 		this.maxParticipants = maxParticipants;
 		this.duree = duree;
 		this.prix = prix;

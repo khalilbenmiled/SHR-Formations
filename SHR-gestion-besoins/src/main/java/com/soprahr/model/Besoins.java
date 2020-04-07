@@ -35,6 +35,7 @@ public class Besoins implements Serializable{
 	private Theme theme;
 	private int idUser;
 	private boolean publier;
+	private boolean planifier;
 	public int getId() {
 		return id;
 	}
@@ -104,8 +105,14 @@ public class Besoins implements Serializable{
 	public void setPublier(boolean publier) {
 		this.publier = publier;
 	}
+	public boolean isPlanifier() {
+		return planifier;
+	}
+	public void setPlanifier(boolean planifier) {
+		this.planifier = planifier;
+	}
 	public Besoins(int id, BU bu, int quarter, int nbrPrevu, int priorite, boolean validerTL, boolean validerMG,
-			Projet projet, Theme theme, int idUser, boolean publier) {
+			Projet projet, Theme theme, int idUser, boolean publier, boolean planifier) {
 		super();
 		this.id = id;
 		this.bu = bu;
@@ -118,6 +125,7 @@ public class Besoins implements Serializable{
 		this.theme = theme;
 		this.idUser = idUser;
 		this.publier = publier;
+		this.planifier = planifier;
 	}
 }
 

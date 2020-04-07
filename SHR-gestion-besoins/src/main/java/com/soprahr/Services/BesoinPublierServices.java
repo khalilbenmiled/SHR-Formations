@@ -102,8 +102,24 @@ public class BesoinPublierServices {
 	/*********************************** LIST BESOINS ***************************************/
 	public JSONObject listBesoins() {
 		JSONObject jo = new JSONObject();
+		List<BesoinsPublier> newList = new ArrayList<BesoinsPublier>();
 		if (repository.findAll().size() != 0 ) {
-			jo.put("Besoins", repository.findAll());
+			List<BesoinsPublier> listBesoinsPublier = repository.findAll();
+			for(BesoinsPublier besoinPublier : listBesoinsPublier) {
+				List<Besoins> listBesoins = besoinPublier.getListBesoins();
+				List<Besoins> newListBesoins = new ArrayList<Besoins>();
+				
+				for(Besoins besoin : listBesoins) {
+					if(!besoin.isPlanifier()) {
+						newListBesoins.add(besoin);
+					}
+				}
+				besoinPublier.setListBesoins(newListBesoins);
+				if(besoinPublier.getListBesoins().size() != 0) {
+					newList.add(besoinPublier);
+				}	
+			}
+			jo.put("Besoins", newList);
 			return jo;
 		}else {
 			jo.put("Error", "La listes des besoins à publier");

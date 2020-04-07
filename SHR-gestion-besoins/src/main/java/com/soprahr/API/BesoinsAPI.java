@@ -103,6 +103,11 @@ public class BesoinsAPI {
 	public JSONObject annulerValidationBesoinMG(@Param(value = "idBesoin") int idBesoin ) {
 		return service.annulerBesoinMG(idBesoin);
 	}
+	
+	@PostMapping(value = "/setPlanifier", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject setBesoinPlanifier(@Param(value = "id") int id ) {
+		return service.setBesoinPlanifier(id);
+	}
 
 	
 }
