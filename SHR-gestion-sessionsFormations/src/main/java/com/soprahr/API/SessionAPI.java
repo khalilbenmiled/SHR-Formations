@@ -43,4 +43,16 @@ public class SessionAPI {
 	public JSONObject getSessionById(@PathParam(value = "id") int id) {
 		return service.getSessionById(id);
 	}
+	
+	@PostMapping(value = "/byFormation" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getSessionByFormation(@Param(value = "idFormation") int idFormation) {
+		return service.getSessionByFormation(idFormation);
+	}
+	
+	@PostMapping(value = "/byQuarter" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getSessionByQuarter(@Param(value = "quarter") int quarter) {
+		return service.getSessionByQuarter(quarter);
+	}
+	
+	
 }

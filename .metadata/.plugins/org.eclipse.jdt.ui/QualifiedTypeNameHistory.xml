@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.io.Serializable"/>
-<fullyQualifiedTypeName name="javax.persistence.Id"/>
-<fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
-<fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
-<fullyQualifiedTypeName name="com.soprahr.Repository.BesoinsPublierRepository"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.BesoinsRepository"/>
 <fullyQualifiedTypeName name="javax.persistence.PersistenceContext"/>
 <fullyQualifiedTypeName name="javax.persistence.EntityManager"/>
@@ -39,25 +33,31 @@
 <fullyQualifiedTypeName name="javax.persistence.Enumerated"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.SessionRepository"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Session"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="com.soprahr.models.Formation"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
 <fullyQualifiedTypeName name="javax.persistence.Column"/>
-<fullyQualifiedTypeName name="org.springframework.data.repository.query.Param"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.ModuleRepository"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Module"/>
 <fullyQualifiedTypeName name="javax.persistence.OneToOne"/>
-<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.ThemeRepository"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Theme"/>
 <fullyQualifiedTypeName name="com.soprahr.model.Besoins"/>
-<fullyQualifiedTypeName name="com.soprahr.model.BesoinsPublier"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="com.soprahr.Services.BesoinPublierServices"/>
-<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
 <fullyQualifiedTypeName name="java.util.TimeZone"/>
 <fullyQualifiedTypeName name="javax.persistence.Temporal"/>
 <fullyQualifiedTypeName name="javax.persistence.TemporalType"/>
 <fullyQualifiedTypeName name="java.util.Locale"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
+<fullyQualifiedTypeName name="com.soprahr.Repository.FormationRepository"/>
+<fullyQualifiedTypeName name="com.soprahr.models.Formation"/>
+<fullyQualifiedTypeName name="com.soprahr.Repository.BesoinsPublierRepository"/>
+<fullyQualifiedTypeName name="com.soprahr.model.BesoinsPublier"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+<fullyQualifiedTypeName name="com.soprahr.Services.BesoinPublierServices"/>
+<fullyQualifiedTypeName name="org.springframework.data.repository.query.Param"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="javax.persistence.Embedded"/>
+<fullyQualifiedTypeName name="com.soprahr.model.Participants"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
 </qualifiedTypeNameHistroy>

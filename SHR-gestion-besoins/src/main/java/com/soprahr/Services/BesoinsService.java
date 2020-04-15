@@ -24,12 +24,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.soprahr.Repository.BesoinsPublierRepository;
 import com.soprahr.Repository.BesoinsRepository;
 import com.soprahr.Repository.ProjetRepository;
 import com.soprahr.Repository.TeamLeadRepository;
 import com.soprahr.model.BU;
 import com.soprahr.model.Besoins;
+import com.soprahr.model.BesoinsPublier;
 import com.soprahr.model.Module;
+import com.soprahr.model.Participants;
 import com.soprahr.model.Projet;
 import com.soprahr.model.TeamLead;
 import com.soprahr.model.TypeTheme;
@@ -45,6 +48,10 @@ public class BesoinsService {
 	public ProjetRepository repositoryP;
 	@Autowired
 	public TeamLeadRepository repositoryTL;
+	@Autowired
+	public BesoinsPublierRepository repositoryBP;
+	@Autowired
+	public BesoinPublierServices serviceBP;
 	@PersistenceContext
 	public EntityManager em;
 	
@@ -75,6 +82,7 @@ public class BesoinsService {
 					besoinToUpdate.setValiderTL(besoin.isValiderTL());
 					besoinToUpdate.setQuarter(besoin.getQuarter());
 					besoinToUpdate.setNbrPrevu(besoinToUpdate.getNbrPrevu() + besoin.getNbrPrevu());
+					besoinToUpdate.setListParticipants(besoin.getListParticipants());
 					besoinToUpdate.setProjet(besoin.getProjet());
 					
 					jo.put("Besoin", repository.save(besoinToUpdate));
@@ -442,6 +450,68 @@ public class BesoinsService {
 		}
 	}
 	
+	/*********************************** LIST PARTICIPANTS FORMATIONS ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject getListParticipantFormation(String theme , int quarter) {
+		JSONObject jo = new JSONObject();
+		List<Object> tabs = new ArrayList<Object>();
+		BesoinsPublier besoinPublier = repositoryBP.getBesoinsPublierByThemeAndQuarterTF(theme, quarter);
+		if(besoinPublier != null) {
+			List<Besoins> listBesoins = besoinPublier.getListBesoins();
+			if(listBesoins.size() != 0) {
+				for (Besoins besoin : listBesoins) {
+					ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId", besoin.getIdUser());
+					
+					if(user.getBody().containsKey("Error")) {
+						jo.put("Error" , user.getBody().get("Error"));
+						return jo;
+					}else {
+						LinkedHashMap userBody = (LinkedHashMap) user.getBody().get("User");
+						if(userBody.get("role").equals("TEAMLEAD")) {
+							
+							for (Participants participant : besoin.getListParticipants()) {
+								ResponseEntity<JSONObject> collaborateur = getUserAPI("http://localhost:8181/users/byId", participant.getIdParticipant());
+								if(collaborateur.getBody().containsKey("Error")) {
+									jo.put("Error" , collaborateur.getBody().get("Error"));
+									return jo;
+								}else {
+									LinkedHashMap collaborateurBody = (LinkedHashMap) collaborateur.getBody().get("User");
+									tabs.add(collaborateurBody);
+								}
+							}
+						}else {
+							tabs.add(userBody);
+						}
+					}
+					
+				}
+				jo.put("UsersInfos" , tabs);
+				return jo;
+			}else {
+				jo.put("Error", "La liste des besoins est vide ");
+				return jo;
+			}
+		}else {
+			jo.put("Error", "Besoin n'existe pas " );
+			return jo;
+		}
+		
+	}
+	
+	
+	/*********************************** API USER BY ID ***************************************/
+	public ResponseEntity<JSONObject> getUserAPI(String uri , int id) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+		map.add("id", id);
+		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		return response;
+	}
 	
 	
 	 public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) 

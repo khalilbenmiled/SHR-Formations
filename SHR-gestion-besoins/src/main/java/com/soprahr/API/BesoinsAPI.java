@@ -108,6 +108,12 @@ public class BesoinsAPI {
 	public JSONObject setBesoinPlanifier(@Param(value = "id") int id ) {
 		return service.setBesoinPlanifier(id);
 	}
+	
+	@PostMapping(value = "/listParticipants", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getListParticipantFormation(@Param(value = "theme") String theme , @Param(value ="quarter") int quarter) {
+		return service.getListParticipantFormation(theme, quarter);
+	}
+	
 
 	
 }

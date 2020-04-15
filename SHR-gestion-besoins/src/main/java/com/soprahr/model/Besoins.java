@@ -1,6 +1,10 @@
 package com.soprahr.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,6 +37,8 @@ public class Besoins implements Serializable{
 	private Projet projet;
 	@Embedded
 	private Theme theme;
+	@ElementCollection
+	private List<Participants> listParticipants = new ArrayList<Participants>();
 	private int idUser;
 	private boolean publier;
 	private boolean planifier;
@@ -111,8 +117,15 @@ public class Besoins implements Serializable{
 	public void setPlanifier(boolean planifier) {
 		this.planifier = planifier;
 	}
+	public List<Participants> getListParticipants() {
+		return listParticipants;
+	}
+	public void setListParticipants(List<Participants> listParticipants) {
+		this.listParticipants = listParticipants;
+	}
 	public Besoins(int id, BU bu, int quarter, int nbrPrevu, int priorite, boolean validerTL, boolean validerMG,
-			Projet projet, Theme theme, int idUser, boolean publier, boolean planifier) {
+			Projet projet, Theme theme, List<Participants> listParticipants, int idUser, boolean publier,
+			boolean planifier) {
 		super();
 		this.id = id;
 		this.bu = bu;
@@ -123,10 +136,12 @@ public class Besoins implements Serializable{
 		this.validerMG = validerMG;
 		this.projet = projet;
 		this.theme = theme;
+		this.listParticipants = listParticipants;
 		this.idUser = idUser;
 		this.publier = publier;
 		this.planifier = planifier;
 	}
+
 }
 
 

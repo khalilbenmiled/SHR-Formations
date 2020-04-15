@@ -1,9 +1,13 @@
 package com.soprahr.Services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.soprahr.Repository.FormationRepository;
 import com.soprahr.Repository.SessionRepository;
+import com.soprahr.models.Formation;
 import com.soprahr.models.Session;
 
 import net.minidev.json.JSONObject;
@@ -13,6 +17,8 @@ public class SessionServices {
 
 	@Autowired
 	public SessionRepository repository;
+	@Autowired
+	public FormationRepository repositoryF;
 	
 
 	/*********************************** AJOUTER UNE SESSION ***************************************/
@@ -58,4 +64,60 @@ public class SessionServices {
 			return jo;
 		}
 	}
+	
+	/*********************************** RECHERCHER SESSION PAR FORMATION ***************************************/
+	public JSONObject getSessionByFormation(int idFormation) {
+		JSONObject jo = new JSONObject();
+		if(repositoryF.findById(idFormation).isPresent()) {
+			if(repository.findAll().size() != 0) {
+				List<Session> listSessions = repository.findAll();
+				for(Session session : listSessions) {
+					List<Formation> listFormations = session.getListFormations();
+					
+					for (Formation formation : listFormations) {
+						System.out.println(formation);
+						if(formation.getId() == idFormation) {
+							
+							jo.put("Session" , session);
+							return jo;
+						}
+					}
+				}
+				
+				jo.put("Error", "Formation n'existe pas !");
+				return jo;
+			}else {
+				jo.put("Error" , "List session est vide");
+				return jo;
+			}
+		}else {
+			jo.put("Error", "Formation n'existe pas");
+			return jo;
+		}
+	}
+
+	/*********************************** RECHERCHER SESSION PAR QUARTER ***************************************/
+	public JSONObject getSessionByQuarter(int quarter) {
+		JSONObject jo = new JSONObject();
+		if(repository.getSessionByQuarter(quarter) != null) {
+			Session session = repository.getSessionByQuarter(quarter);
+			jo.put("Session" , session);
+			return jo;
+		}else {
+			jo.put("Error", "Session n'existe pas !");
+			return jo;
+		}
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

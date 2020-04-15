@@ -1,6 +1,5 @@
 package com.soprahr.API;
 
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -38,8 +37,8 @@ public class FormationAPI {
 		return service.deleteFormation(id);
 	}
 
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject getFormationById(@PathParam(value = "id") int id) {
+	@PostMapping(value = "/byId" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationById(@Param(value = "id") int id) {
 		return service.getFormationById(id);
 	}
 	
@@ -47,9 +46,10 @@ public class FormationAPI {
 	public JSONObject ajouterFormation(
 			@Param(value = "nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme,
 			@Param(value="dateDebut") String dateDebut , @Param(value="dateFin") String dateFin, @Param(value = "maxParticipants") int maxParticipants , @Param(value = "duree") float duree,
-			@Param(value = "idSession") int idSession
+			@Param(value = "idSession") int idSession,
+			@Param(value = "quarter") int quarter
 			) {
-		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, maxParticipants, duree , idSession);
+		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, maxParticipants, duree , idSession,quarter);
 	}
 	
 	@PostMapping(value = "/addMTF" , produces = MediaType.APPLICATION_JSON_VALUE )

@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.soprahr.RabbitMQ.RabbitMQSender;
@@ -90,7 +87,7 @@ public class FormationServices {
 	}
 	
 	/*********************************** AJOUTER UNE FORMATION PAR PARAM ***************************************/
-	public JSONObject ajouterFormation(String nomTheme , String typeTheme ,String dateDebutStr, String dateFinStr , int maxParticipants, float duree,int idSession) {
+	public JSONObject ajouterFormation(String nomTheme , String typeTheme ,String dateDebutStr, String dateFinStr , int maxParticipants, float duree,int idSession,int quarter) {
 		JSONObject jo = new JSONObject();
 		Formation f = new Formation();
 		try {
@@ -112,6 +109,8 @@ public class FormationServices {
 				Formation newFormation = repository.save(f);
 				listFormation.add(newFormation);
 				session.setListFormations(listFormation);
+				session.setTrimestre(quarter);
+				repositoryS.save(session);
 				
 				jo.put("Formation", newFormation);
 				return jo;
