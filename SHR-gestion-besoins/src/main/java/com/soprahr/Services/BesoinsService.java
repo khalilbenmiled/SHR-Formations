@@ -80,6 +80,7 @@ public class BesoinsService {
 					Besoins besoinToUpdate = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser());
 					besoinToUpdate.getTheme().setListModules(disticnList);
 					besoinToUpdate.setValiderTL(besoin.isValiderTL());
+					besoinToUpdate.setValiderMG(false);
 					besoinToUpdate.setQuarter(besoin.getQuarter());
 					besoinToUpdate.setNbrPrevu(besoinToUpdate.getNbrPrevu() + besoin.getNbrPrevu());
 					besoinToUpdate.setListParticipants(besoin.getListParticipants());

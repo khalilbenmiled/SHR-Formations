@@ -96,12 +96,12 @@ public class SessionServices {
 		}
 	}
 
-	/*********************************** RECHERCHER SESSION PAR QUARTER ***************************************/
+	/*********************************** RECHERCHER SESSIONS PAR QUARTER ***************************************/
 	public JSONObject getSessionByQuarter(int quarter) {
 		JSONObject jo = new JSONObject();
 		if(repository.getSessionByQuarter(quarter) != null) {
-			Session session = repository.getSessionByQuarter(quarter);
-			jo.put("Session" , session);
+			List<Session> sessions = repository.getSessionByQuarter(quarter);
+			jo.put("Sessions" , sessions);
 			return jo;
 		}else {
 			jo.put("Error", "Session n'existe pas !");
