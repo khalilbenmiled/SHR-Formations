@@ -19,11 +19,20 @@ public class Projet implements Serializable {
 	private int id;
 	private String nom; 
 	private int idTeamLead;
-	public Projet(int id, String nom, int idTeamLead) {
+	private int idManager;
+	
+	public Projet(int id, String nom, int idTeamLead, int idManager) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.idTeamLead = idTeamLead;
+		this.idManager = idManager;
+	}
+	public int getIdManager() {
+		return idManager;
+	}
+	public void setIdManager(int idManager) {
+		this.idManager = idManager;
 	}
 	public int getId() {
 		return id;

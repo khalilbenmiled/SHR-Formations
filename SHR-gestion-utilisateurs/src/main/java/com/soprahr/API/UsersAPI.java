@@ -75,6 +75,20 @@ public class UsersAPI {
 		}
 	}
 	
+	@PostMapping(value = "/role", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getRoleUser(@Param(value = "id") int id) {
+		JSONObject jo = new JSONObject();	
+		if(repository.findById(id).isPresent()) {
+			jo.put("Role" , repository.findById(id).get().getRole());
+			return jo;
+		}else {
+			jo.put("Error", "User n'existe pas !");
+			return jo;
+		}
+	}
+	
+
+	
 
 	
 

@@ -61,8 +61,14 @@ public class BesoinsService {
 		JSONObject jo = new JSONObject();
 		List<Besoins> listBesoins = repository.getBesoinsByUser(besoin.getIdUser());
 		if(listBesoins.size() == 0) {
-			jo.put("Besoin",repository.save(besoin));
-			return jo;
+			if(verifyBesoinExist(besoin)) {
+				jo.put("Error" , "Vous avez deja demandé ce besoin de formation");
+				return jo;
+			}else {
+				jo.put("Besoin",repository.save(besoin));
+				return jo;
+			}
+			
 		}else {
 			
 			if(repository.getBesoinsByThemeNom(besoin.getTheme().getNom(), besoin.getIdUser()) != null) { 
@@ -92,13 +98,32 @@ public class BesoinsService {
 			
 				
 			}else {
-				jo.put("Besoin",repository.save(besoin));
-				return jo;
+				if(verifyBesoinExist(besoin)) {
+					jo.put("Error" , "Vous avez deja demandé ce besoin de formation");
+					return jo;
+				}else {
+					jo.put("Besoin",repository.save(besoin));
+					return jo;
+				}
+				
 			}
 			
 		
 		}
 
+	}
+	
+	/*********************************** VERIFIER SI TEAMLEAD A SAISI UN BESOIN POUR LE COLLABORATEUR ***************************************/
+	public boolean verifyBesoinExist(Besoins besoin) {
+		List<Besoins> listBesoins = repository.findAll();
+		for (Besoins b : listBesoins) {
+			for (Participants participant : b.getListParticipants()) {
+				if(participant.getIdParticipant() == besoin.getIdUser() && besoin.getTheme().getNom().equals(b.getTheme().getNom())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	
@@ -117,8 +142,24 @@ public class BesoinsService {
 	/*********************************** SUPPRIMER UN BESOIN ***************************************/
 	public JSONObject deleteBesoin(int id) {
 		JSONObject jo = new JSONObject();
+		List<Besoins> listBesoins = new ArrayList<Besoins>();
 		if(repository.findById(id).isPresent()) {	
 			repository.delete(repository.findById(id).get());
+			List<BesoinsPublier> listBP = repositoryBP.findAll();
+			
+			for(BesoinsPublier bp : listBP) {
+				for(Besoins besoin : bp.getListBesoins()) {
+					if(besoin.getId() != id) {
+						listBesoins.add(besoin);
+					}
+				}
+				if(listBesoins.size() == 0) {
+					repositoryBP.delete(bp);
+				}else {
+					bp.setListBesoins(listBesoins);
+					repositoryBP.save(bp);
+				}
+			}
 			jo.put("Success", "Besoin supprimé");
 			return jo;
 		}else {
@@ -140,7 +181,7 @@ public class BesoinsService {
 	}
 	
 	/*********************************** VALIDER UN BESOIN PAR LE TEAMLEAD ***************************************/
-	public JSONObject validerBesoinTL(int idBesoin , int trimestre , int idProjet , int idTL) {
+	public JSONObject validerBesoinTL(int idBesoin , int trimestre , int idProjet , boolean validerMG ) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(idBesoin).isPresent()) {
 			Besoins besoin = repository.findById(idBesoin).get();
@@ -148,7 +189,8 @@ public class BesoinsService {
 				Projet projet = repositoryP.findById(idProjet).get();
 				besoin.setQuarter(trimestre);
 				besoin.setValiderTL(true);
-				besoin.setProjet(projet);				
+				besoin.setProjet(projet);	
+				besoin.setValiderMG(validerMG);
 				besoin.setNbrPrevu(1);
 				jo.put("Besoin", repository.save(besoin));
 				return jo;
@@ -234,13 +276,13 @@ public class BesoinsService {
 				listAllBesoins.addAll((Collection<? extends Besoins>) getBesoinsByTL(tl.getIdTeamLead()).get("BesoinsTL"));
 			}
 		}
-		List<Besoins> finalList = new ArrayList<Besoins>();
-		for (Besoins b : listAllBesoins) {
-			if(b.isValiderTL()) {
-				finalList.add(b);
-			}
-		}
-		jo.put("BesoinsMG", finalList);
+//		List<Besoins> finalList = new ArrayList<Besoins>();
+//		for (Besoins b : listAllBesoins) {
+//			if(b.isValiderTL()) {
+//				finalList.add(b);
+//			}
+//		}
+		jo.put("BesoinsMG", listAllBesoins);
 		return jo;
 	}
 	
@@ -275,9 +317,21 @@ public class BesoinsService {
 	/*********************************** BESOINS PAR USER ***************************************/
 	public JSONObject getBesoinsByUser(int id) {
 		JSONObject jo = new JSONObject();
-		if( repository.getBesoinsByUser(id).size() != 0) {
+		if( repository.getBesoinsByUser(id).size() != 0 || repository.findAll().size() != 0) {
+			List<Besoins> finalList = new ArrayList<Besoins>();
 			List<Besoins> listBesoins = repository.getBesoinsByUser(id);
-			jo.put("Besoins" , listBesoins);
+			finalList.addAll(listBesoins);
+			
+			List<Besoins> allBesoins = repository.findAllNotPublish();
+			for (Besoins besoin : allBesoins) {
+				for(Participants participant : besoin.getListParticipants()) {
+					if(participant.getIdParticipant() == id) {
+						finalList.add(besoin);
+					}
+				}
+			}
+			
+			jo.put("Besoins" , finalList);
 			return jo;
 		}else {
 			jo.put("Error", "Ce collaborateur n'a pas saisi des besoins ");
@@ -438,15 +492,83 @@ public class BesoinsService {
 	}
 	
 	/*********************************** SET BESOINS PLANIFIER ***************************************/
-	public JSONObject setBesoinPlanifier(int id) {
+	@SuppressWarnings("rawtypes")
+	public JSONObject setBesoinPlanifier(int id , ArrayList arrayParticipants) {
 		JSONObject jo = new JSONObject();
+		
 		if(repository.findById(id).isPresent()) {
 			Besoins besoin = repository.findById(id).get();
+			
+			List<Participants> listParticipants = new ArrayList<Participants>();
+			for(Object object : arrayParticipants) {
+				LinkedHashMap obj = (LinkedHashMap) object;
+				int idParticipant = (int) obj.get("id");
+				Participants participant = new Participants();
+				participant.setIdParticipant(idParticipant);
+				participant.setParticipe(true);
+				listParticipants.add(participant);	
+			}
+			
+			List<Participants> newList = new ArrayList<Participants>();
+			for(Participants p1 : besoin.getListParticipants()) {
+				
+				for (Participants p2 : listParticipants) {
+					if(p1.getIdParticipant() == p2.getIdParticipant()) {
+						p1.setParticipe(true);
+					}
+				}
+				newList.add(p1);
+			}						
+			
+			besoin.setListParticipants(newList);
+			
+			for(Participants p : newList) {
+				if(!p.isParticipe()) {
+					besoin.setPlanifier(false);
+					jo.put("Besoin", repository.save(besoin));
+					return jo;
+				}
+			}
 			besoin.setPlanifier(true);
 			jo.put("Besoin", repository.save(besoin));
 			return jo;
+			
 		}else {
 			jo.put("Error", "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** LIST PARTICIPANTS BESOIN ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject getListParticipantBesoin(int idBesoin) {
+		JSONObject jo = new JSONObject();
+		List<Object> tabs = new ArrayList<Object>();
+		if(repository.findById(idBesoin).isPresent()) {
+			int idUser = repository.findById(idBesoin).get().getIdUser();
+			ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId", idUser);
+			if(user.getBody().containsKey("Error")) {
+				jo.put("Error" , user.getBody().get("Error"));
+				return jo;
+			}else {
+							
+		
+					List<Participants> listParticipants = repository.findById(idBesoin).get().getListParticipants();
+					for (Participants participant : listParticipants) {
+						if(!participant.isParticipe()) {
+							ResponseEntity<JSONObject> part = getUserAPI("http://localhost:8181/users/byId", participant.getIdParticipant());
+							LinkedHashMap partBody = (LinkedHashMap) part.getBody().get("User");
+							tabs.add(partBody);
+						}
+					
+					}
+					jo.put("Participants", tabs);
+					return jo;
+			
+			}
+			
+		}else {
+			jo.put("Error" , "Besoin n'existe pas !");
 			return jo;
 		}
 	}

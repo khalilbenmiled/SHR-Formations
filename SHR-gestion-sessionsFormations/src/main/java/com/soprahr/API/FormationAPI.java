@@ -1,6 +1,9 @@
 package com.soprahr.API;
 
 
+import java.util.ArrayList;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soprahr.Services.FormationServices;
-
 import net.minidev.json.JSONObject;
 
 @RestController
@@ -42,19 +44,33 @@ public class FormationAPI {
 		return service.getFormationById(id);
 	}
 	
-	@PostMapping(value = "/" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@PostMapping(value = "/" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@SuppressWarnings("rawtypes")
 	public JSONObject ajouterFormation(
-			@Param(value = "nomTheme") String nomTheme , @Param(value = "typeTheme") String typeTheme,
-			@Param(value="dateDebut") String dateDebut , @Param(value="dateFin") String dateFin, @Param(value = "maxParticipants") int maxParticipants , @Param(value = "duree") float duree,
-			@Param(value = "idSession") int idSession,
-			@Param(value = "quarter") int quarter
+			@RequestBody JSONObject formation
 			) {
-		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, maxParticipants, duree , idSession,quarter);
+		String nomTheme = formation.getAsString("nomTheme");
+		String typeTheme = formation.getAsString("typeTheme");
+		String dateDebut = formation.getAsString("dateDebut");
+		String dateFin = formation.getAsString("dateFin");
+		String maxParticipants =  formation.getAsString("maxParticipants");
+		String duree = formation.getAsString("duree");
+		String idSession = formation.getAsString("idSession");
+		String quarter = formation.getAsString("quarter");	
+		
+		ArrayList arrayModules = (ArrayList) formation.get("listModules");
+		ArrayList modules = (ArrayList) arrayModules.get(0);
+		
+		ArrayList arrayParticipants = (ArrayList) formation.get("listParticipants");
+		
+		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, Integer.parseInt(maxParticipants), Integer.parseInt(duree) , Integer.parseInt(idSession),Integer.parseInt(quarter) , modules , arrayParticipants);
 	}
 	
-	@PostMapping(value = "/addMTF" , produces = MediaType.APPLICATION_JSON_VALUE )
-	public JSONObject setListModulesToFormation (@RequestBody JSONObject listModules) {
-		return service.setListModulesToFormation(listModules);
+	@PostMapping(value = "/participants" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getListParticipants(@Param(value = "id") int id) {
+		return service.gettListParticipants(id);
 	}
+	
+
 	
 }

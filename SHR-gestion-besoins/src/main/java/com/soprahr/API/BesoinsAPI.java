@@ -1,5 +1,6 @@
 package com.soprahr.API;
 
+import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.websocket.server.PathParam;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.soprahr.Services.BesoinsService;
 import com.soprahr.model.Besoins;
+
 
 import net.minidev.json.JSONObject;
 
@@ -85,8 +87,8 @@ public class BesoinsAPI {
 	}
 	
 	@PostMapping(value = "/valider", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject validerBesoinTL(@Param(value = "idBesoin") int idBesoin , @Param(value = "trimestre")int trimestre , @Param(value ="idProjet") int idProjet ,@Param(value ="idTL") int idTL ) {
-		return service.validerBesoinTL(idBesoin, trimestre, idProjet , idTL);
+	public JSONObject validerBesoinTL(@Param(value = "idBesoin") int idBesoin , @Param(value = "trimestre")int trimestre , @Param(value ="idProjet") int idProjet , @Param(value ="validerMG") boolean validerMG ) {
+		return service.validerBesoinTL(idBesoin, trimestre, idProjet , validerMG);
 	}
 	
 	@PostMapping(value = "/validerMG", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -104,14 +106,25 @@ public class BesoinsAPI {
 		return service.annulerBesoinMG(idBesoin);
 	}
 	
-	@PostMapping(value = "/setPlanifier", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject setBesoinPlanifier(@Param(value = "id") int id ) {
-		return service.setBesoinPlanifier(id);
+	@SuppressWarnings("rawtypes")
+	@PostMapping(value = "/setPlanifier", produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject setBesoinPlanifier(@RequestBody JSONObject input ) {
+		
+		String idBesoin = input.getAsString("id");
+		ArrayList arrayParticipants = (ArrayList) input.get("listParticipants");
+		
+	
+		return service.setBesoinPlanifier(Integer.parseInt(idBesoin) , arrayParticipants);
 	}
 	
 	@PostMapping(value = "/listParticipants", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject getListParticipantFormation(@Param(value = "theme") String theme , @Param(value ="quarter") int quarter) {
 		return service.getListParticipantFormation(theme, quarter);
+	}
+	
+	@PostMapping(value = "/listParticipantsBesoins", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getListParticipantBesoin(@Param(value = "id") int id) {
+		return service.getListParticipantBesoin(id);
 	}
 	
 

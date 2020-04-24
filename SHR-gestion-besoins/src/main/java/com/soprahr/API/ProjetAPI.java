@@ -49,4 +49,9 @@ public class ProjetAPI {
 		return service.getProjetByTL(id);
 	}
 	
+	@PostMapping(value = "/byMG", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getProjetsByMG(@Param(value = "id") int id) {
+		return service.getProjetByMG(id);
+	}
+	
 }

@@ -1,9 +1,14 @@
 package com.soprahr.Services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.soprahr.Repository.ProjetRepository;
+import com.soprahr.Repository.TeamLeadRepository;
 import com.soprahr.model.Projet;
+import com.soprahr.model.TeamLead;
 
 import net.minidev.json.JSONObject;
 
@@ -12,6 +17,8 @@ public class ProjetServices {
 
 	@Autowired
 	public ProjetRepository repository;
+	@Autowired
+	public TeamLeadRepository repositoryTL;
 	
 	/*********************************** AJOUTER UN PROJET ***************************************/
 	public JSONObject addProjet(Projet projet) {
@@ -19,6 +26,7 @@ public class ProjetServices {
 		jo.put("Projet",repository.save(projet));
 		return jo;
 	}
+	
 	
 	/*********************************** LISTE PROJETS ***************************************/
 	public JSONObject getAllProjets() {
@@ -61,11 +69,42 @@ public class ProjetServices {
 	public JSONObject getProjetByTL (int id) {
 		JSONObject jo = new JSONObject();
 		if (repository.getProjetByTL(id).size() != 0 ) {
-			jo.put("Projets" , repository.getProjetByTL(id) ) ;
+			List<Projet> listProjets = new ArrayList<Projet>();
+			listProjets.addAll(repository.getProjetByTL(id));
+			TeamLead teamlead = repositoryTL.findById(id).get();
+			listProjets.addAll(repository.getProjetByMG(teamlead.getIdManager()));
+			jo.put("Projets" , listProjets) ;
 			return jo;
 		}else {
 			jo.put("Error" , "Ce team lead n'a pas de projet");
 			return jo;
 		}
 	}
+	
+	/*********************************** PROJET PAR MANAGER ***************************************/
+	public JSONObject getProjetByMG (int id) {
+		JSONObject jo = new JSONObject();
+		List<Projet> listProjets = new ArrayList<Projet>();
+		List<TeamLead> listTL = repositoryTL.getTeamLeadByManager(id);
+		for (TeamLead tl : listTL) {
+			if (repository.getProjetByTL(tl.getIdTeamLead()).size() != 0 ) {
+				listProjets.addAll(repository.getProjetByTL(tl.getIdTeamLead()));
+			}
+		}
+		if(repository.getProjetByMG(id).size() != 0) {
+			listProjets.addAll(repository.getProjetByMG(id));
+		}
+
+		jo.put("Projets", listProjets);
+		return jo;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

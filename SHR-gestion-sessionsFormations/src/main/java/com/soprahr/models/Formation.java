@@ -1,13 +1,18 @@
 package com.soprahr.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+
 
 @Entity
 public class Formation implements Serializable {
@@ -24,10 +29,14 @@ public class Formation implements Serializable {
 	private Date dateDebut;
 	@Temporal(value = TemporalType.DATE)
 	private Date dateFin;
-	@OneToOne
-	private Theme theme;
+	private String nomTheme;
+	private String typeTheme;
+	@ElementCollection
+	private List<ModulesFormation> listModules = new ArrayList<ModulesFormation>();
 	private int maxParticipants; // nombre de participants MAX
-	private float duree; // duree ce cette formation
+	@ElementCollection
+	private List<Participants> listParticipants = new ArrayList<Participants>();
+	private int duree; // duree ce cette formation
 	private float prix;
 	private EtatFormation etat; 
 	private int idCF; // cabinet ou formateur de cette formation
@@ -43,10 +52,10 @@ public class Formation implements Serializable {
 	public void setMaxParticipants(int maxParticipants) {
 		this.maxParticipants = maxParticipants;
 	}
-	public float getDuree() {
+	public int getDuree() {
 		return duree;
 	}
-	public void setDuree(float duree) {
+	public void setDuree(int duree) {
 		this.duree = duree;
 	}
 	public float getPrix() {
@@ -79,20 +88,42 @@ public class Formation implements Serializable {
 	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
-	public Theme getTheme() {
-		return theme;
+	public String getNomTheme() {
+		return nomTheme;
 	}
-	public void setTheme(Theme theme) {
-		this.theme = theme;
+	public void setNomTheme(String nomTheme) {
+		this.nomTheme = nomTheme;
 	}
-	public Formation(int id, Date dateDebut, Date dateFin, Theme theme, int maxParticipants,
-			float duree, float prix, EtatFormation etat, int idCF) {
+	public String getTypeTheme() {
+		return typeTheme;
+	}
+	public void setTypeTheme(String typeTheme) {
+		this.typeTheme = typeTheme;
+	}
+	public List<ModulesFormation> getListModules() {
+		return listModules;
+	}
+	public void setListModules(List<ModulesFormation> listModules) {
+		this.listModules = listModules;
+	}
+	public List<Participants> getListParticipants() {
+		return listParticipants;
+	}
+	public void setListParticipants(List<Participants> listParticipants) {
+		this.listParticipants = listParticipants;
+	}
+	public Formation(int id, Date dateDebut, Date dateFin, String nomTheme, String typeTheme,
+			List<ModulesFormation> listModules, int maxParticipants, List<Participants> listParticipants, int duree,
+			float prix, EtatFormation etat, int idCF) {
 		super();
 		this.id = id;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.theme = theme;
+		this.nomTheme = nomTheme;
+		this.typeTheme = typeTheme;
+		this.listModules = listModules;
 		this.maxParticipants = maxParticipants;
+		this.listParticipants = listParticipants;
 		this.duree = duree;
 		this.prix = prix;
 		this.etat = etat;

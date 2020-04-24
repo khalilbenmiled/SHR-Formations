@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value=""/>
+		<item key="selection" value="getUserAPI"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="getUserAPI"/>
+			<item value="besoin publier"/>
+			<item value="setbe"/>
+			<item value="collection"/>
+			<item value="planifier"/>
+			<item value="listpart"/>
+			<item value="listpartici"/>
+			<item value="listpar"/>
+			<item value="duree"/>
+			<item value="participa"/>
 			<item value="sys"/>
 			<item value="Syst"/>
 			<item value="enum"/>
 			<item value="teamlead"/>
 			<item value="getBesoinsByUser"/>
-			<item value="rapport"/>
-			<item value="byma"/>
-			<item value="bymg"/>
-			<item value="besoinsbytl"/>
-			<item value="addbes"/>
-			<item value="publier"/>
-			<item value="rapportsBesoins"/>
-			<item value="getBesoinsByTL"/>
-			<item value="E"/>
-			<item value="isPresent()) {"/>
 		</list>
 		<list key="replacehistory">
 		</list>
