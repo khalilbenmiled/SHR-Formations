@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,17 +23,13 @@ public class FormationAPI {
 	@Autowired
 	public FormationServices service;
 	
-//	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//	public JSONObject addFormation(@RequestBody Formation formation) {
-//		return service.addFormation(formation);
-//	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getAllFormations() {
 		return service.getAllFormations();
 	}
-
-	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	@PostMapping(value="/delete" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject deleteFormation(@Param(value = "id") int id) {
 		return service.deleteFormation(id);
 	}
@@ -62,7 +57,7 @@ public class FormationAPI {
 		ArrayList modules = (ArrayList) arrayModules.get(0);
 		
 		ArrayList arrayParticipants = (ArrayList) formation.get("listParticipants");
-		
+
 		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, Integer.parseInt(maxParticipants), Integer.parseInt(duree) , Integer.parseInt(idSession),Integer.parseInt(quarter) , modules , arrayParticipants);
 	}
 	

@@ -58,6 +58,11 @@ public class UsersAPI {
 		return service.logIn(email, password);				
 	}
 	
+	@GetMapping(value = "/collaborateurs", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject allCollaborateurs() {
+		return service.allCollaborateurs();			
+	}
+	
 	@PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject logOut(@Param(value = "id") int id) {
 		return service.logOut(id);			

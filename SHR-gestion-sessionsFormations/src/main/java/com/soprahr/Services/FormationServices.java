@@ -74,7 +74,21 @@ public class FormationServices {
 	public JSONObject deleteFormation(int id) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
+	
+			List<Formation> newList = new ArrayList<Formation>();
+			List<Session> listSession = repositoryS.findAll();
+			for (Session session : listSession) {
+				List<Formation> listFormation = session.getListFormations();
+				for (Formation formation : listFormation) {
+					if(formation.getId() != id) {
+						newList.add(formation);
+					}
+				}
+				session.setListFormations(newList);
+				repositoryS.save(session);
+			}
 			repository.delete(repository.findById(id).get());
+			
 			jo.put("Success", "Formation supprimé");
 			return jo;
 		}else {

@@ -2,6 +2,7 @@ package com.soprahr.services;
 
 import java.security.NoSuchAlgorithmException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -169,6 +170,21 @@ public class UsersService {
 		
 		return jo;
 	}
+	
+	/*********************************** GET ALL COLLABORATEURS ***************************************/
+	public JSONObject allCollaborateurs() {
+		JSONObject jo = new JSONObject();
+		
+		if (repository.getAllCollaborateur().size() != 0) {
+			jo.put("Collaborateurs", repository.getAllCollaborateur());
+			return jo;
+		}else {
+			jo.put("Error", "La liste est vide");
+			return jo;
+		}
+	}
+	
+	
 	
 
 	

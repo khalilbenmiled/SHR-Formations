@@ -40,6 +40,7 @@ public class Formation implements Serializable {
 	private float prix;
 	private EtatFormation etat; 
 	private int idCF; // cabinet ou formateur de cette formation
+
 	public int getId() {
 		return id;
 	}
@@ -112,6 +113,7 @@ public class Formation implements Serializable {
 	public void setListParticipants(List<Participants> listParticipants) {
 		this.listParticipants = listParticipants;
 	}
+
 	public Formation(int id, Date dateDebut, Date dateFin, String nomTheme, String typeTheme,
 			List<ModulesFormation> listModules, int maxParticipants, List<Participants> listParticipants, int duree,
 			float prix, EtatFormation etat, int idCF) {
@@ -128,6 +130,7 @@ public class Formation implements Serializable {
 		this.prix = prix;
 		this.etat = etat;
 		this.idCF = idCF;
+	
 	}
 	public Formation() {
 		super();
