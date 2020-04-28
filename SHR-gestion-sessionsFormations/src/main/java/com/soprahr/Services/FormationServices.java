@@ -111,7 +111,18 @@ public class FormationServices {
 	
 	/*********************************** AJOUTER UNE FORMATION PAR PARAM ***************************************/
 	@SuppressWarnings("rawtypes")
-	public JSONObject ajouterFormation(String nomTheme , String typeTheme ,String dateDebutStr, String dateFinStr , int maxParticipants, int duree,int idSession,int quarter, ArrayList modules , ArrayList arrayParticipants) {
+	public JSONObject ajouterFormation(
+			String nomTheme , 
+			String typeTheme ,
+			String dateDebutStr, 
+			String dateFinStr , 
+			int maxParticipants, 
+			int duree,
+			int idSession,
+			int quarter, 
+			ArrayList modules , 
+			ArrayList arrayParticipants,
+			int idCF) {
 		JSONObject jo = new JSONObject();
 		Formation f = new Formation();
 		try {
@@ -149,6 +160,7 @@ public class FormationServices {
 				f.setDateFin(dateFin);
 				f.setMaxParticipants(maxParticipants);
 				f.setDuree(duree);
+				f.setIdCF(idCF);
 				Session session = repositoryS.findById(idSession).get();
 				List<Formation> listFormation = session.getListFormations();
 				Formation newFormation = repository.save(f);
@@ -212,6 +224,15 @@ public class FormationServices {
 		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
 		return response;
 	}
+	
+	/*********************************** API USER BY ID ***************************************/
+	public ResponseEntity<JSONObject> getAllCollaborateur() {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<JSONObject> response = restTemplate.getForEntity("http://localhost:8181/users/collaborateurs", JSONObject.class );
+		return response;
+	}
+	
 	
 	
 	

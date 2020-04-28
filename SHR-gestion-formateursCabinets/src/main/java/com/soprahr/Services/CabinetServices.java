@@ -51,11 +51,11 @@ public class CabinetServices {
 		JSONObject jo = new JSONObject();
 		if(repositoryC.findById(id).isPresent()) {
 			
-			/*------------------ DECLENCHER UN EVENEMENT AUX AUTRES SERICES --------------------------------*/
-			JSONObject object = new JSONObject();
-			object.put("Cabinet-supprime", repositoryC.findById(id).get());
-			rabbitMQSender.send(object);
-			/*----------------------------------------------------------------------------------------------*/
+//			/*------------------ DECLENCHER UN EVENEMENT AUX AUTRES SERICES --------------------------------*/
+//			JSONObject object = new JSONObject();
+//			object.put("Cabinet-supprime", repositoryC.findById(id).get());
+//			rabbitMQSender.send(object);
+//			/*----------------------------------------------------------------------------------------------*/
 			
 			repositoryC.delete(repositoryC.findById(id).get());
 			jo.put("Success", "Cabinet supprimé");
@@ -71,6 +71,21 @@ public class CabinetServices {
 		JSONObject jo = new JSONObject();
 		if(repositoryC.findById(id).isPresent()) {
 			jo.put("Cabinet", repositoryC.findById(id).get());
+			return jo;
+		}else {
+			jo.put("Error" , "Cabinet n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** RECHERCHER UN CABINET OU FORMATEUR PAR ID ***************************************/
+	public JSONObject getCabinetOrFormateur(int id) {
+		JSONObject jo = new JSONObject();
+		if(repositoryC.findById(id).isPresent()) {
+			jo.put("Cabinet", repositoryC.findById(id).get());
+			return jo;
+		}else if (repositoryF.findById(id).isPresent()) {
+			jo.put("Formateur", repositoryF.findById(id).get());
 			return jo;
 		}else {
 			jo.put("Error" , "Cabinet n'existe pas !");

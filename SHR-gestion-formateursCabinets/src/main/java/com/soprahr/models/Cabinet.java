@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -24,6 +26,7 @@ public class Cabinet implements Serializable{
 	private String email;
 	private String tel;
 	private String contact;
+	@Enumerated(EnumType.STRING)
 	private TypeFormation typeFormation;
 	@ManyToMany
 	private List<Domaine> listDomaines = new ArrayList<>();

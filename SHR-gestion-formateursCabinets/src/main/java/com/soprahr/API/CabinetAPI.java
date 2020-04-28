@@ -5,7 +5,6 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,9 +31,14 @@ public class CabinetAPI {
 		return service.getAllCabinets();
 	}
 	
-	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="delete" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject deleteCabinet(@Param(value = "id") int id) {
 		return service.deleteCabinet(id);
+	}
+	
+	@PostMapping(value="/cabinetOrFormateur" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getCabinetOrFormateur(@Param(value = "id") int id) {
+		return service.getCabinetOrFormateur(id);
 	}
 	
 	@GetMapping(value ="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)

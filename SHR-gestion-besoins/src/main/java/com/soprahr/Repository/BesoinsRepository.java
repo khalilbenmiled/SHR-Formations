@@ -11,17 +11,17 @@ import com.soprahr.model.Besoins;
 
 public interface BesoinsRepository extends JpaRepository<Besoins, Integer>{
 	
-	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id AND b.publier = 0", nativeQuery = true)		
+	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id AND b.planifier = 0", nativeQuery = true)		
 	public List<Besoins> getBesoinsByUser(@Param("id") int id);
 	
-	@Query(value = "SELECT * FROM Besoins b WHERE b.publier = 0", nativeQuery = true)		
+	@Query(value = "SELECT * FROM Besoins b WHERE b.planifier = 0", nativeQuery = true)		
 	public List<Besoins> findAllNotPublish();
 	
 	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id AND b.nom = :nom ", nativeQuery = true)		
 	public Besoins getBesoinsTLbyTheme(@Param("id") int id , @Param("nom") String nom);
 	
 	
-	@Query(value = "SELECT * FROM Besoins b WHERE b.nom = :nom  AND b.id_user = :id AND b.planifier = 0", nativeQuery = true)		
+	@Query(value = "SELECT * FROM Besoins b WHERE b.nom = :nom  AND b.id_user = :id ", nativeQuery = true)		
 	public Besoins getBesoinsByThemeNom(@Param("nom") String nom , @Param("id") int id );
 
 		

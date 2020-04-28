@@ -52,19 +52,21 @@ public class FormationAPI {
 		String duree = formation.getAsString("duree");
 		String idSession = formation.getAsString("idSession");
 		String quarter = formation.getAsString("quarter");	
+		String idCF = formation.getAsString("idCF");
 		
 		ArrayList arrayModules = (ArrayList) formation.get("listModules");
 		ArrayList modules = (ArrayList) arrayModules.get(0);
 		
 		ArrayList arrayParticipants = (ArrayList) formation.get("listParticipants");
 
-		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, Integer.parseInt(maxParticipants), Integer.parseInt(duree) , Integer.parseInt(idSession),Integer.parseInt(quarter) , modules , arrayParticipants);
+		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, Integer.parseInt(maxParticipants), Integer.parseInt(duree) , Integer.parseInt(idSession),Integer.parseInt(quarter) , modules , arrayParticipants,Integer.parseInt(idCF));
 	}
 	
 	@PostMapping(value = "/participants" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject getListParticipants(@Param(value = "id") int id) {
 		return service.gettListParticipants(id);
 	}
+	
 	
 
 	

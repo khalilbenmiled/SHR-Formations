@@ -1,7 +1,7 @@
 package com.soprahr.models;
 
 public enum TypeFormation {
-	Technique,
-	Software,
-	SoftSkills
+	TECHNIQUE,
+	SOFTWARE,
+	SOFTSKILLS
 }

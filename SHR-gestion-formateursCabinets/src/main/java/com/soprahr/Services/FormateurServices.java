@@ -45,6 +45,25 @@ public class FormateurServices {
 		}
 	}
 	
+	/*********************************** MODIFIER UN FORMATEUR ***************************************/
+	public JSONObject updateFormateur(Formateur formateur) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(formateur.getId()).isPresent()) {
+			Formateur f = repository.findById(formateur.getId()).get();
+			f.setNom(formateur.getNom());
+			f.setPrenom(formateur.getPrenom());
+			f.setEmail(formateur.getEmail());
+			f.setAdresse(formateur.getAdresse());
+			f.setTel(formateur.getTel());
+			
+			jo.put("Formateur", repository.save(f));
+			return jo;
+		}else {
+			jo.put("Error" , "Formateur n'existe pas !");
+			return jo;
+		}
+	}
+	
 	/*********************************** RECHERCHER UN FORMATEUR PAR ID ***************************************/
 	public JSONObject getFormateurById(int id) {
 		JSONObject jo = new JSONObject();

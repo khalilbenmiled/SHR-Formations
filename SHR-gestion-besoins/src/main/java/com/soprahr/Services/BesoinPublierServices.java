@@ -36,6 +36,8 @@ public class BesoinPublierServices {
 		JSONObject jo = new JSONObject();
 		if(repositoryB.findById(idBesoin).isPresent()) {
 			Besoins besoin = repositoryB.findById(idBesoin).get();
+			besoin.setPublier(true);
+			repositoryB.save(besoin);
 			String nomTheme = besoin.getTheme().getNom();
 			int quarter = besoin.getQuarter();
 			
@@ -68,6 +70,8 @@ public class BesoinPublierServices {
 		JSONObject jo = new JSONObject();
 		if(repositoryB.findById(idBesoin).isPresent()) {
 			Besoins besoin = repositoryB.findById(idBesoin).get();
+			besoin.setPublier(false);
+			repositoryB.save(besoin);
 			BesoinsPublier besoinPublier = repository.getBesoinsPublierByThemeAndQuarter(besoin.getTheme().getNom(), besoin.getQuarter());
 			List<Besoins> listBesoins = besoinPublier.getListBesoins();
 			listBesoins.remove(listBesoins.indexOf(besoin));

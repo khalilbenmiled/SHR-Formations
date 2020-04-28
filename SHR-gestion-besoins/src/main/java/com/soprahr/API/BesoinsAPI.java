@@ -127,6 +127,13 @@ public class BesoinsAPI {
 		return service.getListParticipantBesoin(id);
 	}
 	
+	@PostMapping(value = "/deleteBP", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject deleteBesoinFromBesoinPublier(@Param(value = "idB") int idB,@Param(value="idBP") int idBP) {
+		return service.deleteBesoinFromBesoinPublier(idB,idBP);
+	}
+	
+	
+	
 
 	
 }

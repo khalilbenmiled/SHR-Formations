@@ -118,7 +118,7 @@ public class BesoinsService {
 		List<Besoins> listBesoins = repository.findAll();
 		for (Besoins b : listBesoins) {
 			for (Participants participant : b.getListParticipants()) {
-				if(participant.getIdParticipant() == besoin.getIdUser() && besoin.getTheme().getNom().equals(b.getTheme().getNom())) {
+				if(participant.getIdParticipant() == besoin.getIdUser() && besoin.getTheme().getNom().equals(b.getTheme().getNom()) && b.getIdUser() != besoin.getIdUser()) {
 					return true;
 				}
 			}
@@ -144,6 +144,7 @@ public class BesoinsService {
 		JSONObject jo = new JSONObject();
 		List<Besoins> listBesoins = new ArrayList<Besoins>();
 		if(repository.findById(id).isPresent()) {	
+			
 			repository.delete(repository.findById(id).get());
 			List<BesoinsPublier> listBP = repositoryBP.findAll();
 			
@@ -276,12 +277,7 @@ public class BesoinsService {
 				listAllBesoins.addAll((Collection<? extends Besoins>) getBesoinsByTL(tl.getIdTeamLead()).get("BesoinsTL"));
 			}
 		}
-//		List<Besoins> finalList = new ArrayList<Besoins>();
-//		for (Besoins b : listAllBesoins) {
-//			if(b.isValiderTL()) {
-//				finalList.add(b);
-//			}
-//		}
+
 		jo.put("BesoinsMG", listAllBesoins);
 		return jo;
 	}
@@ -322,10 +318,11 @@ public class BesoinsService {
 			List<Besoins> listBesoins = repository.getBesoinsByUser(id);
 			finalList.addAll(listBesoins);
 			
+			
 			List<Besoins> allBesoins = repository.findAllNotPublish();
 			for (Besoins besoin : allBesoins) {
 				for(Participants participant : besoin.getListParticipants()) {
-					if(participant.getIdParticipant() == id) {
+					if(participant.getIdParticipant() == id && besoin.getIdUser() != id) {
 						finalList.add(besoin);
 					}
 				}
@@ -619,6 +616,41 @@ public class BesoinsService {
 			return jo;
 		}
 		
+	}
+	
+	/*********************************** DELETE BESOIN FROM BESOIN PUBLIER ***************************************/
+	public JSONObject deleteBesoinFromBesoinPublier (int idB , int idBP) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(idB).isPresent()) {
+			Besoins besoin = repository.findById(idB).get();
+			repository.delete(besoin);
+			if(repositoryBP.findById(idBP).isPresent()) {
+				List<Besoins> list = new ArrayList<Besoins>();
+				for(Besoins besoins : repositoryBP.findById(idBP).get().getListBesoins()) {
+					if(besoins.getId() != idB) {
+						list.add(besoins);
+					}
+				}
+				BesoinsPublier besoinPublier = repositoryBP.findById(idBP).get();
+				if(list.size() != 0) {
+					besoinPublier.setListBesoins(list);
+					
+					jo.put("BesoinPublier", repositoryBP.save(besoinPublier));
+					return jo;
+				}else {
+					
+					repositoryBP.delete(besoinPublier);
+					jo.put("Delete","Delete success");
+					return jo;
+				}
+			}else {
+				jo.put("Error", "Besoin Publier n'existe pas " );
+				return jo;
+			}
+		}else {
+			jo.put("Error", "Besoin n'existe pas " );
+			return jo;
+		}
 	}
 	
 	

@@ -5,7 +5,6 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +31,16 @@ public class FormateurAPI {
 		return service.getAllFormateurs();
 	}
 	
-	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/delete" , produces = MediaType.APPLICATION_JSON_VALUE ,   consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject deleteFormateur(@Param(value = "id") int id) {
 		return service.deleteFormateurs(id);
 	}
+	
+	@PostMapping(value="/update" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject updateFormateur(@RequestBody Formateur formateur) {
+		return service.updateFormateur(formateur);
+	}
+	
 	
 	@GetMapping(value ="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getFormateurById(@PathParam(value = "id") int id) {

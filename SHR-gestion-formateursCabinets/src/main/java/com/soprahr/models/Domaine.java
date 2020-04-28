@@ -22,6 +22,7 @@ public class Domaine implements Serializable{
 	@Id
 	@GeneratedValue
 	private int id;
+	private String nom;
 	private String description;
 	@ManyToMany(mappedBy = "listDomaines")
 	@JsonIgnore
@@ -44,15 +45,24 @@ public class Domaine implements Serializable{
 	public void setListCabinets(List<Cabinet> listCabinets) {
 		this.listCabinets = listCabinets;
 	}
+	
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 	public Domaine() {
 		super();
 	}
-	public Domaine(int id, String description, List<Cabinet> listCabinets) {
+	public Domaine(int id, String nom, String description, List<Cabinet> listCabinets) {
 		super();
 		this.id = id;
+		this.nom = nom;
 		this.description = description;
 		this.listCabinets = listCabinets;
 	}
+
 	
 	
 	
