@@ -67,6 +67,21 @@ public class FormationAPI {
 		return service.gettListParticipants(id);
 	}
 	
+	@PostMapping(value = "/collaborateurWithoutParticipant" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getCollaborateurWithoutParticipants(@Param(value = "id") int id) {
+		return service.getCollaborateurWithoutParticipants(id);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping(value = "/setListParticipantFormation" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject setListParticipantFormation(@RequestBody JSONObject objet) {
+		String idFormation = objet.getAsString("id");
+		ArrayList arrayParticipants = (ArrayList) objet.get("participants");
+
+		return service.setListParticipantFormation(Integer.parseInt(idFormation), arrayParticipants);
+	}
+	
+	
 	
 
 	

@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.persistence.TypedQuery"/>
-<fullyQualifiedTypeName name="javax.persistence.Query"/>
-<fullyQualifiedTypeName name="javax.persistence.criteria.ParameterExpression"/>
-<fullyQualifiedTypeName name="java.util.Set"/>
-<fullyQualifiedTypeName name="java.util.HashSet"/>
-<fullyQualifiedTypeName name="org.springframework.web.servlet.tags.ThemeTag"/>
-<fullyQualifiedTypeName name="javax.persistence.criteria.Predicate"/>
-<fullyQualifiedTypeName name="javax.persistence.metamodel.EntityType"/>
 <fullyQualifiedTypeName name="com.soprahr.model.TypeTheme"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
-<fullyQualifiedTypeName name="java.util.stream.Collectors"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
 <fullyQualifiedTypeName name="com.soprahr.model.BU"/>
 <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
@@ -48,16 +39,25 @@
 <fullyQualifiedTypeName name="com.soprahr.model.Projet"/>
 <fullyQualifiedTypeName name="java.io.Serializable"/>
 <fullyQualifiedTypeName name="com.soprahr.models.ModulesFormation"/>
-<fullyQualifiedTypeName name="com.soprahr.models.Participants"/>
 <fullyQualifiedTypeName name="org.hibernate.mapping.Array"/>
 <fullyQualifiedTypeName name="com.soprahr.model.Participants"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
 <fullyQualifiedTypeName name="java.util.LinkedHashMap"/>
-<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="com.soprahr.model.BesoinsPublier"/>
-<fullyQualifiedTypeName name="org.springframework.data.repository.query.Param"/>
-<fullyQualifiedTypeName name="com.soprahr.Services.BesoinPublierServices"/>
 <fullyQualifiedTypeName name="javax.persistence.CascadeType"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
+<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
+<fullyQualifiedTypeName name="com.soprahr.models.Participants"/>
+<fullyQualifiedTypeName name="com.soprahr.Services.BesoinPublierServices"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+<fullyQualifiedTypeName name="javax.persistence.PersistenceContext"/>
+<fullyQualifiedTypeName name="javax.persistence.EntityManager"/>
+<fullyQualifiedTypeName name="javax.persistence.criteria.CriteriaBuilder"/>
+<fullyQualifiedTypeName name="javax.persistence.criteria.CriteriaQuery"/>
+<fullyQualifiedTypeName name="com.soprahr.model.BesoinsPublier"/>
+<fullyQualifiedTypeName name="javax.persistence.criteria.Root"/>
+<fullyQualifiedTypeName name="javax.persistence.criteria.Predicate"/>
+<fullyQualifiedTypeName name="javax.persistence.TypedQuery"/>
+<fullyQualifiedTypeName name="javax.persistence.criteria.Selection"/>
+<fullyQualifiedTypeName name="org.springframework.data.repository.query.Param"/>
 </qualifiedTypeNameHistroy>

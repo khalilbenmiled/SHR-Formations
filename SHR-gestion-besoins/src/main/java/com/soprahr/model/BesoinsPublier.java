@@ -3,8 +3,6 @@ package com.soprahr.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,7 +21,7 @@ public class BesoinsPublier implements Serializable{
 	private String theme;
 	private int quarter;
 	private boolean publier;
-	@OneToMany(cascade = CascadeType.REMOVE)
+	@OneToMany
 	private List<Besoins> listBesoins = new ArrayList<>();
 	public int getId() {
 		return id;

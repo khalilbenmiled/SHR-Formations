@@ -65,6 +65,16 @@ public class BesoinsAPI {
 	public JSONObject deleteBesoin(@Param(value = "id") int id) {
 		return service.deleteBesoin(id);
 	}
+	
+	@PostMapping( value = "/removeByCollaborateur" ,produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject deleteBesoinByCollaborateur(@Param(value = "id") int id) {
+		return service.deleteBesoinByCollaborateur(id);
+	}
+	
+	@PostMapping( value = "/removeByManagerOrSf" ,produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject deleteBesoinByManagerOrSF(@Param(value = "id") int id) {
+		return service.deleteBesoinByManagerOrSF(id);
+	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getBesoinById(@PathParam(value = "id") int id) {

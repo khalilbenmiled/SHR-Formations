@@ -19,6 +19,11 @@ public interface BesoinsPublierRepository extends JpaRepository<BesoinsPublier, 
 	@Query(value = "SELECT * FROM besoins_publier b WHERE b.publier = 0 ", nativeQuery = true)		
 	public List<BesoinsPublier> getAllNotPublish();
 	
+	@Query(value = "SELECT * FROM besoins_publier b WHERE b.publier = 1 ", nativeQuery = true)		
+	public List<BesoinsPublier> getAllPublish();
+
+	@Query(value = "SELECT * FROM besoins_publier b WHERE b.theme = :theme AND b.quarter = :quarter AND b.publier = 1 AND b.id != :id", nativeQuery = true)		
+	public BesoinsPublier checkIfExist(@Param("theme") String theme , @Param("quarter") int quarter , @Param("id") int id);
 	
 	
 }

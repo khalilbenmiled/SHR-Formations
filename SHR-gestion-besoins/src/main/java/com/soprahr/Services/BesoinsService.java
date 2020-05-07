@@ -118,7 +118,7 @@ public class BesoinsService {
 		List<Besoins> listBesoins = repository.findAll();
 		for (Besoins b : listBesoins) {
 			for (Participants participant : b.getListParticipants()) {
-				if(participant.getIdParticipant() == besoin.getIdUser() && besoin.getTheme().getNom().equals(b.getTheme().getNom()) && b.getIdUser() != besoin.getIdUser()) {
+				if(participant.getIdParticipant() == besoin.getIdUser() && besoin.getTheme().getNom().equals(b.getTheme().getNom()) && b.getIdUser() != besoin.getIdUser() && b.isPlanifier()) {
 					return true;
 				}
 			}
@@ -139,28 +139,70 @@ public class BesoinsService {
 		}
 	}
 	
+	/*********************************** SUPPRIMER UN BESOIN PAR COLLABORATEUR ***************************************/
+	public JSONObject deleteBesoinByCollaborateur(int id) {
+		JSONObject jo = new JSONObject();
+		
+		if(repository.findById(id).isPresent()) {	
+			repository.delete(repository.findById(id).get());
+			jo.put("Success", "Besoin supprimé");
+			return jo;
+		}else {
+			jo.put("Error" , "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** SUPPRIMER UN BESOIN PAR MANAGER OU SERVICEFORMATION ***************************************/
+	public JSONObject deleteBesoinByManagerOrSF(int id) {
+		JSONObject jo = new JSONObject();
+		
+		if(repository.findById(id).isPresent()) {	
+			Besoins besoin = repository.findById(id).get();
+			BesoinsPublier besoinPublier = repositoryBP.getBesoinsPublierByThemeAndQuarter(besoin.getTheme().getNom(), besoin.getQuarter());
+
+			
+			if(besoinPublier != null) {	
+				List<Besoins> listBesoins = besoinPublier.getListBesoins();
+				listBesoins.remove(listBesoins.indexOf(besoin));
+				
+				if(listBesoins.size() == 0) {
+					repositoryBP.delete(besoinPublier);
+				}else {
+					besoinPublier.setListBesoins(listBesoins);
+					repositoryBP.save(besoinPublier);
+				}
+			}
+			
+			repository.delete(repository.findById(id).get());
+			jo.put("Success", "Besoin supprimé");
+			return jo;
+		}else {
+			jo.put("Error" , "Besoin n'existe pas !");
+			return jo;
+		}
+	}
+	
 	/*********************************** SUPPRIMER UN BESOIN ***************************************/
 	public JSONObject deleteBesoin(int id) {
 		JSONObject jo = new JSONObject();
-		List<Besoins> listBesoins = new ArrayList<Besoins>();
+		
 		if(repository.findById(id).isPresent()) {	
+			Besoins besoin = repository.findById(id).get();
 			
-			repository.delete(repository.findById(id).get());
-			List<BesoinsPublier> listBP = repositoryBP.findAll();
+		
+			BesoinsPublier besoinPublier = repositoryBP.getBesoinsPublierByThemeAndQuarter(besoin.getTheme().getNom(), besoin.getQuarter());
+			List<Besoins> listBesoins = besoinPublier.getListBesoins();
+			listBesoins.remove(listBesoins.indexOf(besoin));
 			
-			for(BesoinsPublier bp : listBP) {
-				for(Besoins besoin : bp.getListBesoins()) {
-					if(besoin.getId() != id) {
-						listBesoins.add(besoin);
-					}
-				}
-				if(listBesoins.size() == 0) {
-					repositoryBP.delete(bp);
-				}else {
-					bp.setListBesoins(listBesoins);
-					repositoryBP.save(bp);
-				}
+			if(listBesoins.size() == 0) {
+				repositoryBP.delete(besoinPublier);
+			}else {
+				besoinPublier.setListBesoins(listBesoins);
+				repositoryBP.save(besoinPublier);
 			}
+
+			repository.delete(repository.findById(id).get());
 			jo.put("Success", "Besoin supprimé");
 			return jo;
 		}else {
@@ -223,6 +265,49 @@ public class BesoinsService {
 		}
 	}
 	
+	/*********************************** LIST BESOINS DES COLLABORATEURS PAR TEAM LEADER FOR MANAGER***************************************/
+	@SuppressWarnings( "rawtypes")
+	public JSONObject getBesoinsByTLForManager(int idTL) {
+		
+		JSONObject jo = new JSONObject();
+		final String uri = "http://localhost:8383/collaborateurs/ByTL";
+				
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+		map.add("id", idTL);
+		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		
+		if(response.getBody().containsKey("Error")) {
+			jo.put("Error" , response.getBody().get("Error"));
+			return jo;
+		}else {
+			ArrayList listUsers = (ArrayList) response.getBody().get("Users");
+			ArrayList<Besoins> listBesoinsTL = new ArrayList<Besoins>();			
+			
+			for (Object object : listUsers) {
+				LinkedHashMap obj = (LinkedHashMap) object;
+				LinkedHashMap user = (LinkedHashMap) obj.get("User");
+				LinkedHashMap collaborateur = (LinkedHashMap) user.get("Collaborateur");
+				int idCollaborateur = (int) collaborateur.get("idCollaborateur");
+				
+				List<Besoins> listBesoin = repository.getBesoinsByUserForManager(idCollaborateur);
+				for(Besoins besoin : listBesoin) {
+					listBesoinsTL.add(besoin);
+				}
+			}
+			List<Besoins> listTL = repository.getBesoinsByUserForManager(idTL);
+			listBesoinsTL.addAll(listTL);
+			jo.put("BesoinsTL" , listBesoinsTL);
+			
+			return jo;
+		}
+
+	}
+	
 	/*********************************** LIST BESOINS DES COLLABORATEURS PAR TEAM LEADER ***************************************/
 	@SuppressWarnings( "rawtypes")
 	public JSONObject getBesoinsByTL(int idTL) {
@@ -273,8 +358,8 @@ public class BesoinsService {
 		List<Besoins> listAllBesoins = new ArrayList<Besoins>();
 		List<TeamLead> listTL = repositoryTL.getTeamLeadByManager(idManager);
 		for (TeamLead tl : listTL) {
-			if( getBesoinsByTL(tl.getIdTeamLead()).containsKey("BesoinsTL") ) {
-				listAllBesoins.addAll((Collection<? extends Besoins>) getBesoinsByTL(tl.getIdTeamLead()).get("BesoinsTL"));
+			if( getBesoinsByTLForManager(tl.getIdTeamLead()).containsKey("BesoinsTL") ) {
+				listAllBesoins.addAll((Collection<? extends Besoins>) getBesoinsByTLForManager(tl.getIdTeamLead()).get("BesoinsTL"));
 			}
 		}
 
@@ -320,6 +405,32 @@ public class BesoinsService {
 			
 			
 			List<Besoins> allBesoins = repository.findAllNotPublish();
+			for (Besoins besoin : allBesoins) {
+				for(Participants participant : besoin.getListParticipants()) {
+					if(participant.getIdParticipant() == id && besoin.getIdUser() != id) {
+						finalList.add(besoin);
+					}
+				}
+			}
+			
+			jo.put("Besoins" , finalList);
+			return jo;
+		}else {
+			jo.put("Error", "Ce collaborateur n'a pas saisi des besoins ");
+			return jo;
+		}
+	}
+	
+	/*********************************** BESOINS PAR USER FOR MANAGER ***************************************/
+	public JSONObject getBesoinsByUserForManager(int id) {
+		JSONObject jo = new JSONObject();
+		if( repository.getBesoinsByUser(id).size() != 0 || repository.findAll().size() != 0) {
+			List<Besoins> finalList = new ArrayList<Besoins>();
+			List<Besoins> listBesoins = repository.getBesoinsByUserForManager(id);
+			finalList.addAll(listBesoins);
+			
+			
+			List<Besoins> allBesoins = repository.findAll();
 			for (Besoins besoin : allBesoins) {
 				for(Participants participant : besoin.getListParticipants()) {
 					if(participant.getIdParticipant() == id && besoin.getIdUser() != id) {
@@ -505,30 +616,62 @@ public class BesoinsService {
 				participant.setParticipe(true);
 				listParticipants.add(participant);	
 			}
-			
 			List<Participants> newList = new ArrayList<Participants>();
-			for(Participants p1 : besoin.getListParticipants()) {
-				
-				for (Participants p2 : listParticipants) {
-					if(p1.getIdParticipant() == p2.getIdParticipant()) {
-						p1.setParticipe(true);
+			for(Participants partFromBesoin : besoin.getListParticipants()) {
+				for(Participants partFromSaisie : listParticipants) {
+					if(partFromBesoin.getIdParticipant() == partFromSaisie.getIdParticipant()) {
+						partFromBesoin.setParticipe(true);
 					}
 				}
-				newList.add(p1);
-			}						
-			
+				newList.add(partFromBesoin);
+			}
 			besoin.setListParticipants(newList);
-			
 			for(Participants p : newList) {
 				if(!p.isParticipe()) {
 					besoin.setPlanifier(false);
 					jo.put("Besoin", repository.save(besoin));
-					return jo;
+					return jo;	
 				}
 			}
 			besoin.setPlanifier(true);
+			
+			BesoinsPublier besoinPublier = repositoryBP.getBesoinsPublierByThemeAndQuarter(besoin.getTheme().getNom(), besoin.getQuarter());
+			List<Besoins> listBesoins = besoinPublier.getListBesoins();
+			listBesoins.remove(listBesoins.indexOf(besoin));
+			if(listBesoins.size() == 0) {
+				repositoryBP.delete(besoinPublier);
+			}else {
+				besoinPublier.setListBesoins(listBesoins);
+				repositoryBP.save(besoinPublier);
+			}
+			
+			
 			jo.put("Besoin", repository.save(besoin));
 			return jo;
+			
+//			List<Participants> newList = new ArrayList<Participants>();
+//			for(Participants p1 : besoin.getListParticipants()) {
+//				
+//				for (Participants p2 : listParticipants) {
+//					if(p1.getIdParticipant() == p2.getIdParticipant()) {
+//						p1.setParticipe(true);
+//					}
+//				}
+//				newList.add(p1);
+//			}						
+//			
+//			besoin.setListParticipants(newList);
+//			
+//			for(Participants p : newList) {
+//				if(!p.isParticipe()) {
+//					besoin.setPlanifier(false);
+//					jo.put("Besoin", repository.save(besoin));
+//					return jo;
+//				}
+//			}
+//			besoin.setPlanifier(true);
+//			jo.put("Besoin", repository.save(besoin));
+//			return jo;
 			
 		}else {
 			jo.put("Error", "Besoin n'existe pas !");

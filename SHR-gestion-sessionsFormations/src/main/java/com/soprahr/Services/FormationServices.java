@@ -24,7 +24,7 @@ import com.soprahr.Repository.ThemeRepository;
 import com.soprahr.models.Formation;
 import com.soprahr.models.ModulesFormation;
 import com.soprahr.models.Participants;
-import com.soprahr.models.Session;
+
 	
 
 import net.minidev.json.JSONObject;
@@ -74,19 +74,7 @@ public class FormationServices {
 	public JSONObject deleteFormation(int id) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
-	
-			List<Formation> newList = new ArrayList<Formation>();
-			List<Session> listSession = repositoryS.findAll();
-			for (Session session : listSession) {
-				List<Formation> listFormation = session.getListFormations();
-				for (Formation formation : listFormation) {
-					if(formation.getId() != id) {
-						newList.add(formation);
-					}
-				}
-				session.setListFormations(newList);
-				repositoryS.save(session);
-			}
+			
 			repository.delete(repository.findById(id).get());
 			
 			jo.put("Success", "Formation supprimé");
@@ -103,6 +91,34 @@ public class FormationServices {
 		if(repository.findById(id).isPresent()) {
 			jo.put("Formation", repository.findById(id).get());
 			return jo;
+		}else {
+			jo.put("Error" , "Formation n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** SET LIST PARTICIPANT FORMATION ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject setListParticipantFormation(int id ,ArrayList arrayParticipants) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			Formation formation = repository.findById(id).get();
+			List<Participants> listParticipants = new ArrayList<Participants>();
+			
+			for(Object object : arrayParticipants) {
+				LinkedHashMap obj = (LinkedHashMap) object;
+				int idParticipant = (int) obj.get("id");
+				Participants participant = new Participants();
+				participant.setIdParticipant(idParticipant);
+				listParticipants.add(participant);	
+			}
+			List<Participants> allParticipants = formation.getListParticipants();
+			allParticipants.addAll(listParticipants);
+			formation.setListParticipants(allParticipants);
+			repository.save(formation);
+			jo.put("Formation" , repository.save(formation) );
+			return jo;
+			
 		}else {
 			jo.put("Error" , "Formation n'existe pas !");
 			return jo;
@@ -128,7 +144,7 @@ public class FormationServices {
 		try {
 			
 			
-			if (repositoryS.findById(idSession).isPresent()) {
+			
 				Date dateDebut=new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(dateDebutStr);
 				Date dateFin=new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(dateFinStr);
 				
@@ -161,21 +177,16 @@ public class FormationServices {
 				f.setMaxParticipants(maxParticipants);
 				f.setDuree(duree);
 				f.setIdCF(idCF);
-				Session session = repositoryS.findById(idSession).get();
-				List<Formation> listFormation = session.getListFormations();
+//				Session session = repositoryS.findById(idSession).get();
+//				List<Formation> listFormation = session.getListFormations();
 				Formation newFormation = repository.save(f);
-				listFormation.add(newFormation);
-				session.setListFormations(listFormation);
-				session.setTrimestre(quarter);
-				repositoryS.save(session);
+//				listFormation.add(newFormation);
+//				session.setListFormations(listFormation);
+//				session.setTrimestre(quarter);
+//				repositoryS.save(session);
 				
 				jo.put("Formation", newFormation);
-				return jo;
-			}else {
-				jo.put("Error", "Session n'existe pas !");
-				return jo;
-			}
-			
+				return jo;			
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -183,6 +194,45 @@ public class FormationServices {
 			return jo;
 		}
 		
+	}
+	
+	/*********************************** AFFICHER LA LISTE DES COLLABORATEUR NON PARTICIPANT ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject getCollaborateurWithoutParticipants(int id) {
+		JSONObject jo = new JSONObject();
+		List<Object> list = new ArrayList<Object>();
+		if(repository.findById(id).isPresent()) {
+			ArrayList participants = (ArrayList) gettListParticipants(id).get("Participants");
+			ResponseEntity<JSONObject> collaborateurResponse = getAllCollaborateur();
+			ArrayList collaborateurs = (ArrayList) collaborateurResponse.getBody().get("Collaborateurs");
+			for(Object objCol : collaborateurs) {
+				LinkedHashMap collaborateur = (LinkedHashMap) objCol;
+				int exist = 0;
+				for (Object objPart : participants) {
+					LinkedHashMap participant = (LinkedHashMap) objPart;
+					if(collaborateur.get("id").equals(participant.get("id"))) {
+						exist = 1;
+					}
+				}
+				if(exist == 0) {
+					JSONObject json = new JSONObject();
+					json.put("data" , collaborateur);
+					json.put("participe", "NON");
+					list.add(json);
+				}else {
+					JSONObject json = new JSONObject();
+					json.put("data" , collaborateur);
+					json.put("participe", "OUI");
+					list.add(json);
+				}
+			}
+			
+			jo.put("Collaborateurs" , list);
+			return jo;
+		}else {
+			jo.put("Error", "Formation n'existe pas !");
+			return jo;
+		}
 	}
 	
 	/*********************************** AFFICHER LA LISTE DES PARTICIPANTS D'UNE FORMATION ***************************************/
@@ -210,6 +260,7 @@ public class FormationServices {
 		}
 	}
 	
+
 	
 	/*********************************** API USER BY ID ***************************************/
 	public ResponseEntity<JSONObject> getUserAPI(String uri , int id) {
@@ -225,7 +276,7 @@ public class FormationServices {
 		return response;
 	}
 	
-	/*********************************** API USER BY ID ***************************************/
+	/*********************************** API ALL COLLABORATEUR ***************************************/
 	public ResponseEntity<JSONObject> getAllCollaborateur() {
 		
 		RestTemplate restTemplate = new RestTemplate();

@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +32,8 @@ public class BesoinPublierServices {
 	public BesoinsPublierRepository repository;
 	@Autowired
 	public BesoinsRepository repositoryB;
+	@PersistenceContext
+	EntityManager em;
 	
 	/*********************************** AJOUTER UN BESOIN POUR LE PUBLIER ***************************************/
 	public JSONObject addBesoinsPublier(int idBesoin) {
@@ -42,7 +46,18 @@ public class BesoinPublierServices {
 			int quarter = besoin.getQuarter();
 			
 			BesoinsPublier besoinPublier = repository.getBesoinsPublierByThemeAndQuarter(nomTheme, quarter);
+			
 			if(besoinPublier == null) {
+				BesoinsPublier newBesoins = new BesoinsPublier();
+				newBesoins.setTheme(nomTheme);
+				newBesoins.setPublier(false);
+				newBesoins.setQuarter(quarter);
+				List<Besoins> listBesoins = new ArrayList<Besoins>();
+				listBesoins.add(besoin);
+				newBesoins.setListBesoins(listBesoins);
+				jo.put("BesoinPublier",repository.save(newBesoins));
+				return jo;
+			}else if(besoinPublier != null && besoinPublier.isPublier()) {
 				BesoinsPublier newBesoins = new BesoinsPublier();
 				newBesoins.setTheme(nomTheme);
 				newBesoins.setPublier(false);
@@ -108,7 +123,8 @@ public class BesoinPublierServices {
 		JSONObject jo = new JSONObject();
 		List<BesoinsPublier> newList = new ArrayList<BesoinsPublier>();
 		if (repository.findAll().size() != 0 ) {
-			List<BesoinsPublier> listBesoinsPublier = repository.findAll();
+			List<BesoinsPublier> listBesoinsPublier = repository.getAllPublish();
+
 			for(BesoinsPublier besoinPublier : listBesoinsPublier) {
 				List<Besoins> listBesoins = besoinPublier.getListBesoins();
 				List<Besoins> newListBesoins = new ArrayList<Besoins>();
@@ -135,14 +151,33 @@ public class BesoinPublierServices {
 	public JSONObject publierBesoin(int id) {
 		JSONObject jo = new JSONObject();
 		if( repository.findById(id).isPresent() ) {
-			BesoinsPublier besoinPublier = repository.findById(id).get();
-			for(Besoins b : besoinPublier.getListBesoins()) {
-				b.setPublier(true);
-				repositoryB.save(b);
+			BesoinsPublier besoinPublier = repository.findById(id).get();	
+			BesoinsPublier besoinExist = repository.checkIfExist(besoinPublier.getTheme(), besoinPublier.getQuarter() , id);
+			
+			if(besoinExist != null) {
+				for(Besoins b : besoinPublier.getListBesoins()) {
+					b.setPublier(true);
+					b.setSendToSF(true);
+					repositoryB.save(b);
+				}
+				List<Besoins> list = besoinExist.getListBesoins();
+				list.addAll(besoinPublier.getListBesoins());
+				besoinExist.setListBesoins(list);
+				
+				repository.delete(besoinPublier);
+				jo.put("BesoinPublier", repository.save(besoinExist));
+				return jo;
+			}else {
+				for(Besoins b : besoinPublier.getListBesoins()) {
+					b.setPublier(true);
+					b.setSendToSF(true);
+					repositoryB.save(b);
+				}
+				besoinPublier.setPublier(true);
+				jo.put("BesoinPublier", repository.save(besoinPublier));
+				return jo;
 			}
-			besoinPublier.setPublier(true);
-			jo.put("BesoinPublier", repository.save(besoinPublier));
-			return jo;
+
 		}else {
 			jo.put("Error", "BesoinPublier n'existe pas !");
 			return jo;
