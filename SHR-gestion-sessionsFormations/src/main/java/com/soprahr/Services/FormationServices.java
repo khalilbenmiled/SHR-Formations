@@ -196,6 +196,18 @@ public class FormationServices {
 		
 	}
 	
+	/*********************************** AFFICHER LES FORMATION SAUF CETTE ID ***************************************/
+	public JSONObject getFormationsWithouThistId(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			jo.put("Formations" , repository.getFormationsWithouThistId(id));
+			return jo;
+		}else {
+			jo.put("Error", "Formation n'existe pas !");
+			return jo;
+		}
+	}
+	
 	/*********************************** AFFICHER LA LISTE DES COLLABORATEUR NON PARTICIPANT ***************************************/
 	@SuppressWarnings("rawtypes")
 	public JSONObject getCollaborateurWithoutParticipants(int id) {

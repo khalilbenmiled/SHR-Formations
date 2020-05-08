@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ public class Question implements Serializable{
 	@GeneratedValue
 	private int id;
 	private String question;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REMOVE)
 	private List<Reponse> listReponses = new ArrayList<Reponse>();
 	public int getId() {
 		return id;

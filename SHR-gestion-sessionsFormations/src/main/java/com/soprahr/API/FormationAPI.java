@@ -82,6 +82,11 @@ public class FormationAPI {
 	}
 	
 	
+	@PostMapping(value = "/getFormationsWithouThistId" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationsWithouThistId(@Param(value = "id") int id) {
+		return service.getFormationsWithouThistId(id);
+	}
+	
 	
 
 	
