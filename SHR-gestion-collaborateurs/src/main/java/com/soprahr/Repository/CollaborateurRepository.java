@@ -14,4 +14,5 @@ public interface CollaborateurRepository extends JpaRepository<Collaborateur, In
 	
 	@Query(value = "SELECT * FROM Collaborateur c WHERE c.id_collaborateur = :id", nativeQuery = true)		
 	public Collaborateur getCollaborateurByIdCollaborateur(@Param(value ="id") int id);
+	
 }

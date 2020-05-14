@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,9 +43,21 @@ public class UsersAPI {
 	public JSONObject getAllUsers() {
 		return service.getAllUsers();
 	}
+	
+	@GetMapping(value="/tl" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject getAllTeamLead() {
+		return service.getAllTeamLead();
+	}
+	
+	@GetMapping(value="/mg" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject findAllManager() {
+		return service.findAllManager();
+	}
+	
+	
 
-	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject deleteUser(@Param(value = "id") int id) {
+	@DeleteMapping(value="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject deleteUser(@PathVariable(value = "id") int id) {
 		return service.deleteUser(id);
 	}
 
@@ -91,6 +104,23 @@ public class UsersAPI {
 			return jo;
 		}
 	}
+	
+	@PostMapping(value = "/getInfosCollaborateur", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getInfosCollaborateur(@Param(value = "id") int id) {
+		return service.getInfosCollaborateur(id);
+	}
+	
+	@PostMapping(value = "/getInfosTL", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getInfosTL(@Param(value = "id") int id) {
+		return service.getInfosTL(id);
+	}
+	
+	@GetMapping(value = "/getFreeTL", produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject getFreeTL() {
+		return service.getFreeTL();
+	}
+	
+	
 	
 
 	

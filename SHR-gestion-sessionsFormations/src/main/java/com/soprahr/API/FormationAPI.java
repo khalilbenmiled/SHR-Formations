@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soprahr.Services.FormationServices;
+import com.soprahr.Services.ReportingFormationsService;
+
 import net.minidev.json.JSONObject;
 
 @RestController
@@ -22,6 +24,9 @@ public class FormationAPI {
 
 	@Autowired
 	public FormationServices service;
+	
+	@Autowired
+	public ReportingFormationsService reporting;
 	
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -86,6 +91,24 @@ public class FormationAPI {
 	public JSONObject getFormationsWithouThistId(@Param(value = "id") int id) {
 		return service.getFormationsWithouThistId(id);
 	}
+	
+	@PostMapping(value = "/byCollaborateur" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationByParticipant(@Param(value = "id") int id) {
+		return service.getFormationByParticipant(id);
+	}
+	
+	@PostMapping(value = "/rate" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject rateFormation(@Param(value = "idFormation") int idFormation , @Param(value = "star") int star) {
+		return service.rateFormation(idFormation , star);
+	}
+	
+	@PostMapping(value = "/reporting/rating" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationRating(@Param(value = "id") int id) {
+		return reporting.getFormationRating(id);
+	}
+	
+	
+	
 	
 	
 

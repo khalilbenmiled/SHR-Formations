@@ -27,8 +27,11 @@ public class CollaborateurServices {
 	public CollaborateurRepository repository;
 
 	/*********************************** AJOUTER UN COLLABORATEUR ***************************************/
-	public JSONObject addCollaborateur(Collaborateur collaborateur) {
+	public JSONObject addCollaborateur(int idC,int idTL) {
 		JSONObject jo = new JSONObject();
+		Collaborateur collaborateur = new Collaborateur();
+		collaborateur.setIdCollaborateur(idC);
+		collaborateur.setIdTeamLeader(idTL);
 		jo.put("Collaborateur", repository.save(collaborateur));
 		return jo;
 	}
@@ -58,6 +61,20 @@ public class CollaborateurServices {
 		LinkedHashMap o = (LinkedHashMap) array.get(0);
 		System.out.println(o);
 		return jo;
+	}
+	
+	/*********************************** SUPPRIMER UN COLLABORATEUR ***************************************/
+	public JSONObject deleteCollaborateur(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.getCollaborateurByIdCollaborateur(id) != null) {
+			Collaborateur collaborateur = repository.getCollaborateurByIdCollaborateur(id);
+			repository.delete(collaborateur);
+			jo.put("Success" , "Collaborateur supprimé !");
+			return jo;
+		}else {
+			jo.put("Error", "Collaborateur n'existe pas !");
+			return jo;
+		}
 	}
 	
 	/*********************************** COLLABORATEUR PAR TEAM LEAD ***************************************/
@@ -96,5 +113,56 @@ public class CollaborateurServices {
 			return jo;
 		}
 	}
+	
+	/*********************************** GET COLLABORATEUR PAR TEAM LEAD AND SET TEAM LEAD NULL***************************************/
+	public JSONObject deleteTeamLead(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.getCollaborateurByTL(id).size() != 0) {
+			List<Collaborateur> listCollaborateurs = repository.getCollaborateurByTL(id);
+			for(Collaborateur collaborateur : listCollaborateurs) {
+				collaborateur.setIdTeamLeader(0);
+				repository.save(collaborateur);
+			}
+			jo.put("Collaborateur" , "Collaborateurs a jour");
+			return jo;
+		}else {
+			jo.put("Error", "Collaborateur n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** GET TEAMLEAD COLLABORATEUR ***************************************/
+	public JSONObject getTLCollaborateur(int idCollaborateur) {
+		JSONObject jo = new JSONObject();
+		if(repository.getCollaborateurByIdCollaborateur(idCollaborateur) != null) {
+			Collaborateur collaborateur = repository.getCollaborateurByIdCollaborateur(idCollaborateur);
+			jo.put("idTL", collaborateur.getIdTeamLeader());
+			return jo;
+		}else {
+			jo.put("Collaborateur" , "Collaborateurs n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** SET TEAMLEAD COLLABORATEUR ***************************************/
+	public JSONObject setCollaborateur(int idC , int idTL) {
+		JSONObject jo = new JSONObject();
+		if(repository.getCollaborateurByIdCollaborateur(idC) != null) {
+			Collaborateur collaborateur = repository.getCollaborateurByIdCollaborateur(idC);
+			collaborateur.setIdTeamLeader(idTL);
+			jo.put("Collaborateur", repository.save(collaborateur));
+			return jo;
+		}else {
+			jo.put("Collaborateur" , "Collaborateurs n'existe pas !");
+			return jo;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }

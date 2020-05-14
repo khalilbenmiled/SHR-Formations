@@ -68,5 +68,31 @@ public class QuizAPI {
 		return service.ajouterQuizToFormation(idQ,idF);
 	}
 	
+	@PostMapping( value = "/byCollaborateur" ,produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getListQuizCollaborateur(@Param(value = "id") int id) {
+		return service.getListQuizCollaborateur(id);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping( value = "/calculScore" ,produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject calculScore(@RequestBody JSONObject input) {
+		ArrayList mesReponses = (ArrayList) input.get("mesReponses");
+		String idQuiz =  input.getAsString("idQuiz");
+		String idCollaborateur =  input.getAsString("idCollaborateur");
+		return service.calculScore(mesReponses , Integer.parseInt(idQuiz) , Integer.parseInt(idCollaborateur));
+	}
+	
+	@GetMapping( value = "/getListScore" ,produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject getListScore() {
+		return service.getListScore();
+	}
+	
+	@PostMapping( value = "/getListScoreByCollaborateur" ,produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
+	public JSONObject getListScoreByCollaborateur(@Param(value = "id" ) int id) {
+		return service.getListScoreByCollaborateur(id);
+	}
+	
+
+	
 	
 }

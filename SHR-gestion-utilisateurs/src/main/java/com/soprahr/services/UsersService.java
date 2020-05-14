@@ -1,10 +1,21 @@
 package com.soprahr.services;
 
 import java.security.NoSuchAlgorithmException;
-
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.soprahr.RabbitMQ.RabbitMQSender;
 import com.soprahr.models.Role;
@@ -21,6 +32,8 @@ public class UsersService {
 	public UsersRepository repository;
 	@Autowired
 	public RabbitMQSender rabbitMQSender;
+	@Autowired
+	public JavaMailSender emailSender;
 	
 	
 	/*********************************** AJOUTER UN USER ***************************************/
@@ -53,6 +66,31 @@ public class UsersService {
 		JSONObject jo = new JSONObject();
 		if ( repository.findAll().size() != 0 ) {
 			jo.put("Users" , repository.findAll());
+			return jo;
+		}else {
+			jo.put("Error" , "La liste des users est vide");
+			return jo;
+		}
+	}
+	
+	/*********************************** LISTE TEAMLEAD ***************************************/
+	public JSONObject getAllTeamLead() {
+		JSONObject jo = new JSONObject();
+		if ( repository.findAllTeamlLead().size() != 0 ) {
+			jo.put("Users" , repository.findAllTeamlLead());
+			return jo;
+		}else {
+			jo.put("Error" , "La liste des users est vide");
+			return jo;
+		}
+	}
+	
+	
+	/*********************************** LISTE MANAGER ***************************************/
+	public JSONObject findAllManager() {
+		JSONObject jo = new JSONObject();
+		if ( repository.findAllManager().size() != 0 ) {
+			jo.put("Users" , repository.findAllManager());
 			return jo;
 		}else {
 			jo.put("Error" , "La liste des users est vide");
@@ -93,8 +131,14 @@ public class UsersService {
 			String password = utils.generatePassword();
 			user.setPassword(password);
 			user.setPasswordChanged(false);
-			repository.save(user);
-			jo.put("Collaborateur", user);
+			
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo("khalilbenmiled93@gmail.com");
+		    message.setSubject("Test Simple Email");
+		    message.setText("Hello, Im testing Simple Email");
+		    this.emailSender.send(message);
+		    
+			jo.put("Collaborateur", repository.save(user));
 			return jo;
 		}else {
 			jo.put("Error", "Collaborateur existe deja !");
@@ -184,7 +228,119 @@ public class UsersService {
 		}
 	}
 	
+	/*********************************** GET INFOS COLLABORATEURS ***************************************/
+	public JSONObject getInfosCollaborateur(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			if(repository.findById(id).get().getRole() == Role.COLLABORATEUR) {
+				ResponseEntity<JSONObject> response  = getUserAPI("http://localhost:8383/collaborateurs/getTLCollaborateur" , id);
+				
+				if(response.getBody().containsKey("Error")) {
+					jo.put("Error" , response.getBody().get("Error"));
+					return jo;
+				}else {
+					int idTeamLead = (int) response.getBody().get("idTL");
+					if(repository.findById(idTeamLead).isPresent()) {
+						
+						User teamlead = repository.findById(idTeamLead).get();
+						ResponseEntity<JSONObject> response2  = getUserAPI("http://localhost:8686/teamlead/getManagerTL" , teamlead.getId());
+						
+						if(response2.getBody().containsKey("Error")) {
+							jo.put("Error" , response2.getBody().get("Error"));
+							return jo;
+						}else {
+							int idManager = (int) response2.getBody().get("idMG");
+							if(repository.findById(idManager).isPresent()) {
+								User manager = repository.findById(idManager).get();
+								jo.put("TeamLead",teamlead);
+								jo.put("Manager", manager);
+								return jo;
+							}else {
+								jo.put("TeamLead",teamlead);
+								jo.put("Manager", null);
+								return jo;
+							}
+						}
+						
+						
+					}else {
+						jo.put("Error", "Team Lead n'existe pas !");
+						return jo;
+					}
+				}
+			}
+			return null;
+		}else {
+			jo.put("Error", "Collaborateur n'existe pas !");
+			return jo;
+		}
+
+	}
 	
+	/*********************************** GET INFOS COLLABORATEURS ***************************************/
+	public JSONObject getInfosTL (int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			User teamlead = repository.findById(id).get();
+			ResponseEntity<JSONObject> response  = getUserAPI("http://localhost:8686/teamlead/getManagerTL" , teamlead.getId());
+			
+			if(response.getBody().containsKey("Error")) {
+				jo.put("Error" , response.getBody().get("Error"));
+				return jo;
+			}else {
+				int idManager = (int) response.getBody().get("idMG");
+				if(repository.findById(idManager).isPresent()) {
+					User manager = repository.findById(idManager).get();
+					jo.put("Manager", manager);
+					return jo;
+				}else {
+					jo.put("Error", "TeamLead n'existe pas !");
+					return jo;
+				}
+			}
+		}else {
+			jo.put("Error", "TeamLead n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** GET FREE TEAMLEAD ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject getFreeTL () {
+		JSONObject jo = new JSONObject();
+		List<User> listFreeTL = new ArrayList<User>();
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<JSONObject> response = restTemplate.getForEntity("http://localhost:8686/teamlead/getFreeTL", JSONObject.class );
+		if(response.getBody().containsKey("Error")) {
+			jo.put("Error" , response.getBody().get("Error"));
+			return jo;
+		}else {
+			ArrayList listTeamLead = (ArrayList) response.getBody().get("TeamLeads");
+			for (Object obj : listTeamLead) {
+				LinkedHashMap teamlead = (LinkedHashMap) obj;
+				int id = (int) teamlead.get("idTeamLead");
+				listFreeTL.add(repository.findById(id).get());
+			}
+			jo.put("TeamLeads" , listFreeTL);
+			return jo;
+		}
+	}
+	
+	
+	
+	/*********************************** API USER BY ID ***************************************/
+	public ResponseEntity<JSONObject> getUserAPI(String uri , int id) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+		map.add("id", id);
+		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		return response;
+	}
 	
 
 	

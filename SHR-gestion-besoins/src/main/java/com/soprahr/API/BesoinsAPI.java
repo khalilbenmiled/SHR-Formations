@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soprahr.Services.BesoinsService;
+import com.soprahr.Services.ReportingBesoinsService;
 import com.soprahr.model.Besoins;
 
 
@@ -26,6 +27,8 @@ public class BesoinsAPI {
 
 	@Autowired
 	public BesoinsService service;
+	@Autowired
+	public ReportingBesoinsService reporting;
 	@PersistenceContext
 	public EntityManager em;
 	
@@ -141,6 +144,12 @@ public class BesoinsAPI {
 	public JSONObject deleteBesoinFromBesoinPublier(@Param(value = "idB") int idB,@Param(value="idBP") int idBP) {
 		return service.deleteBesoinFromBesoinPublier(idB,idBP);
 	}
+	
+	@PostMapping(value = "/reporting/byBu", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationDemanderParBU(@Param(value = "bu") String bu) {
+		return reporting.getFormationDemanderParBU(bu);
+	}
+	
 	
 	
 	

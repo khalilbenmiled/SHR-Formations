@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -40,6 +41,8 @@ public class Formation implements Serializable {
 	private float prix;
 	private EtatFormation etat; 
 	private int idCF; // cabinet ou formateur de cette formation
+	@OneToOne
+	private Rating rating;
 
 	public int getId() {
 		return id;
@@ -114,9 +117,16 @@ public class Formation implements Serializable {
 		this.listParticipants = listParticipants;
 	}
 
+	public Rating getRating() {
+		return rating;
+	}
+	public void setRating(Rating rating) {
+		this.rating = rating;
+	}
+
 	public Formation(int id, Date dateDebut, Date dateFin, String nomTheme, String typeTheme,
 			List<ModulesFormation> listModules, int maxParticipants, List<Participants> listParticipants, int duree,
-			float prix, EtatFormation etat, int idCF) {
+			float prix, EtatFormation etat, int idCF, Rating rating) {
 		super();
 		this.id = id;
 		this.dateDebut = dateDebut;
@@ -130,7 +140,7 @@ public class Formation implements Serializable {
 		this.prix = prix;
 		this.etat = etat;
 		this.idCF = idCF;
-	
+		this.rating = rating;
 	}
 	public Formation() {
 		super();

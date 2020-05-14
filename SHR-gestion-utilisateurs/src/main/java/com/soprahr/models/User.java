@@ -27,6 +27,7 @@ public class User implements Serializable {
 	private String tel;
 	private boolean isConnected;
 	private boolean passwordChanged;
+	@Enumerated(EnumType.STRING)
 	private Role role;
 	@Enumerated(EnumType.STRING)
 	private BU bu;

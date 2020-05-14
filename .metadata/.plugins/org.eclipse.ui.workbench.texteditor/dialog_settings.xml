@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="SUPPRIM"/>
+		<item key="selection" value="getUserAPI"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="getUserAPI"/>
+			<item value="formationwith"/>
+			<item value="getforma"/>
+			<item value="getAllCollaborateur"/>
+			<item value="restt"/>
+			<item value="resttem"/>
+			<item value="restem"/>
+			<item value="resttemp"/>
+			<item value="delete"/>
+			<item value="dele"/>
+			<item value="supprimer"/>
+			<item value="planifier"/>
 			<item value="supprim"/>
 			<item value="filter"/>
-			<item value="supprimer"/>
 			<item value="index"/>
-			<item value="planifier"/>
-			<item value="getbyuser"/>
-			<item value="getuser"/>
-			<item value="user"/>
-			<item value="retire"/>
-			<item value="annuler"/>
-			<item value="ret"/>
-			<item value="reti"/>
-			<item value="retir"/>
-			<item value="retirer"/>
-			<item value="manager"/>
 		</list>
 		<list key="replacehistory">
 		</list>

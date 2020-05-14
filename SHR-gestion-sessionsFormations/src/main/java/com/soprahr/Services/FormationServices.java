@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,13 +21,13 @@ import org.springframework.web.client.RestTemplate;
 import com.soprahr.RabbitMQ.RabbitMQSender;
 import com.soprahr.Repository.FormationRepository;
 import com.soprahr.Repository.ModuleRepository;
+import com.soprahr.Repository.RatingRepository;
 import com.soprahr.Repository.SessionRepository;
 import com.soprahr.Repository.ThemeRepository;
 import com.soprahr.models.Formation;
 import com.soprahr.models.ModulesFormation;
 import com.soprahr.models.Participants;
-
-	
+import com.soprahr.models.Rating;
 
 import net.minidev.json.JSONObject;
 
@@ -41,6 +43,8 @@ public class FormationServices {
 	public ModuleRepository repositoryM;
 	@Autowired
 	public ThemeRepository repositoryT;
+	@Autowired
+	public RatingRepository repositoryR;
 	@Autowired
 	public RabbitMQSender rabbitMQSender;
 	
@@ -272,6 +276,73 @@ public class FormationServices {
 		}
 	}
 	
+	/*********************************** AFFICHER LES FORMATIONS PAR PARTICIPANT ***************************************/
+	public JSONObject getFormationByParticipant(int idCollaborateur) {
+		JSONObject jo = new JSONObject();
+		List<Formation> listFormation = new ArrayList<Formation>();
+		if(repository.findAll().size() != 0) {
+			for(Formation formation : repository.findAll()) {
+				Optional<Participants> part = formation.getListParticipants().stream().filter(p -> p.getIdParticipant() == idCollaborateur).findFirst();
+				if(part.isPresent()) {
+					listFormation.add(formation);
+				}
+			}
+			jo.put("Formations", listFormation);
+			return jo;
+		}else {
+			jo.put("Error" , "Formation n'existe pas !");
+			return jo;
+		}
+	}
+	
+	
+	/*********************************** RATE FORMATION ***************************************/
+	public JSONObject rateFormation(int idFormation , int star) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(idFormation).isPresent()) {
+			Formation formation = repository.findById(idFormation).get();
+			Rating rating = formation.getRating();
+			
+			if(rating == null) {
+				Rating newRating = new Rating();
+				if(star == 1) {
+					newRating.setStar1(1);
+				}else if (star == 2) {
+					newRating.setStar2(1);
+				}else if (star == 3) {
+					newRating.setStar3(1);
+				}else if(star == 4) {
+					newRating.setStar4(1);
+				}else if (star == 5 ) {
+					newRating.setStar5(1);
+				}
+				formation.setRating(repositoryR.save(newRating));
+				jo.put("Formation", repository.save(formation));
+				return jo;
+			}else {
+				if(star == 1) {
+					rating.setStar1(rating.getStar1()+1);
+				}else if (star == 2) {
+					rating.setStar2(rating.getStar2()+1);
+				}else if (star == 3) {
+					rating.setStar3(rating.getStar3()+1);
+				}else if(star == 4) {
+					rating.setStar4(rating.getStar4()+1);
+				}else if (star == 5 ) {
+					rating.setStar5(rating.getStar5()+1);
+				}
+				
+				formation.setRating(repositoryR.save(rating));
+				jo.put("Formation", repository.save(formation));
+				return jo;
+			}
+	
+			
+		}else {
+			jo.put("Error", "Formation n'existe pas !");
+			return jo;
+		}
+	}
 
 	
 	/*********************************** API USER BY ID ***************************************/

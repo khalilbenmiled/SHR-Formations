@@ -26,6 +26,9 @@ public interface BesoinsRepository extends JpaRepository<Besoins, Integer>{
 	
 	@Query(value = "SELECT * FROM Besoins b WHERE b.nom = :nom  AND b.id_user = :id ", nativeQuery = true)		
 	public Besoins getBesoinsByThemeNom(@Param("nom") String nom , @Param("id") int id );
+	
+	@Query(value = "SELECT * FROM Besoins b WHERE b.bu = :bu", nativeQuery = true)		
+	public List<Besoins> getFormationDemanderParBU(@Param("bu") String bu );
 
 		
 }

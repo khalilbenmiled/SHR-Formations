@@ -24,7 +24,7 @@ public class RabbitMQListener {
 			int id = (int) obj.getAsNumber("Collaborateur");
 			Collaborateur collaborateur = new Collaborateur();
 			collaborateur.setIdCollaborateur(id);
-			service.addCollaborateur(collaborateur);
+//			service.addCollaborateur(collaborateur);
 		}	
 	}
 }
