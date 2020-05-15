@@ -145,10 +145,21 @@ public class BesoinsAPI {
 		return service.deleteBesoinFromBesoinPublier(idB,idBP);
 	}
 	
-	@PostMapping(value = "/reporting/byBu", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject getFormationDemanderParBU(@Param(value = "bu") String bu) {
-		return reporting.getFormationDemanderParBU(bu);
+	@PostMapping(value = "/reporting/byFilter", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject filterFormationDemander(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme) {
+		return reporting.filterFormationDemander(bu,quarter,theme);
 	}
+	
+	@PostMapping(value = "/reporting/byTypeTheme", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getBesoinsByThemeType(@Param(value = "type") String type) {
+		return reporting.getBesoinsByThemeType(type);
+	}
+	
+	@PostMapping(value = "/reporting/byProjet", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getBesoinsByProjet(@Param(value = "projet") String projet) {
+		return reporting.getBesoinsByProjet(projet);
+	}
+	
 	
 	
 	

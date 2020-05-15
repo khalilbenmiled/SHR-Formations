@@ -27,8 +27,15 @@ public interface BesoinsRepository extends JpaRepository<Besoins, Integer>{
 	@Query(value = "SELECT * FROM Besoins b WHERE b.nom = :nom  AND b.id_user = :id ", nativeQuery = true)		
 	public Besoins getBesoinsByThemeNom(@Param("nom") String nom , @Param("id") int id );
 	
-	@Query(value = "SELECT * FROM Besoins b WHERE b.bu = :bu", nativeQuery = true)		
-	public List<Besoins> getFormationDemanderParBU(@Param("bu") String bu );
+	@Query(value = "SELECT * FROM Besoins b WHERE b.type = :type ", nativeQuery = true)		
+	public List<Besoins> getBesoinsByThemeType(@Param("type") String type);
+	
+	@Query(value = "SELECT * FROM Besoins b WHERE b.planifier = 0", nativeQuery = true)		
+	public List<Besoins> getBesoinNonPlanifier();
+	
+	@Query(value = "SELECT * FROM Besoins b WHERE b.planifier = 1", nativeQuery = true)		
+	public List<Besoins> getBesoinPlanifier();
 
+	
 		
 }
