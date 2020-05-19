@@ -13,4 +13,5 @@ public interface FormationRepository extends JpaRepository<Formation, Integer> {
 
 	@Query(value = "SELECT * FROM Formation f WHERE f.id != :id", nativeQuery = true)		
 	public List<Formation> getFormationsWithouThistId(@Param("id") int id);
+	
 }

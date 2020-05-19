@@ -18,7 +18,7 @@ import com.soprahr.Services.BesoinsService;
 import com.soprahr.Services.ReportingBesoinsService;
 import com.soprahr.model.Besoins;
 
-
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 @RestController
@@ -149,6 +149,18 @@ public class BesoinsAPI {
 	public JSONObject filterFormationDemander(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme) {
 		return reporting.filterFormationDemander(bu,quarter,theme);
 	}
+	
+	@PostMapping(value = "/reporting/byFilterCollaborateur", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject filterFormationDemanderParCollaborateur(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id) {
+		return reporting.filterFormationDemanderParCollaborateur(bu,quarter,theme,id);
+	}
+	
+	@PostMapping(value = "/reporting/byFilterTeamLead", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject filterFormationDemanderParTeamLead(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id) {
+		return reporting.filterFormationDemanderParTeamLead(bu,quarter,theme,id);
+	}
+	
+	
 	
 	@PostMapping(value = "/reporting/byTypeTheme", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject getBesoinsByThemeType(@Param(value = "type") String type) {

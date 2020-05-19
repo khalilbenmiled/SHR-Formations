@@ -212,19 +212,31 @@ public class QuizServices {
 		JSONObject jo = new JSONObject();
 		List<Quiz> listQuizCollaborateur = new ArrayList<Quiz>();
 		ResponseEntity<JSONObject> formationsResponse = getFormationsByCollaborateur("http://localhost:8585/formations/byCollaborateur" , idCollaborateur);
-		ArrayList formations = (ArrayList) formationsResponse.getBody().get("Formations");
-		List<Quiz> listQuiz = repository.findAll();
-		List<Score> listScores = repositoryS.findAll();
-		for(Object object : formations) {
-			LinkedHashMap formation = (LinkedHashMap) object;
-			Optional<Quiz> quizCollaborateur = listQuiz.stream().filter(q->q.getIdFormation() == (int) formation.get("id")).findFirst();
-			Optional<Score> scoreCollaborateur = listScores.stream().filter(s->s.getQuiz().getId() == quizCollaborateur.get().getId() && s.getIdCollaborateur() == idCollaborateur).findFirst();
-			if(quizCollaborateur.isPresent() && !scoreCollaborateur.isPresent()) {
-				listQuizCollaborateur.add(quizCollaborateur.get());
+		
+		
+		if(formationsResponse.getBody().containsKey("Error")) {
+			jo.put("Error" , formationsResponse.getBody().get("Error"));
+			return jo;
+		}else {
+			ArrayList formations = (ArrayList) formationsResponse.getBody().get("Formations");
+			List<Quiz> listQuiz = repository.findAll();
+			List<Score> listScores = repositoryS.findAll();
+			for(Object object : formations) {
+				LinkedHashMap formation = (LinkedHashMap) object;
+				
+				Optional<Quiz> quizCollaborateur = listQuiz.stream().filter(q->q.getIdFormation() == (int) formation.get("id")).findFirst();
+				if(quizCollaborateur.isPresent()) {
+					Optional<Score> scoreCollaborateur = listScores.stream().filter(s->s.getQuiz().getId() == quizCollaborateur.get().getId() && s.getIdCollaborateur() == idCollaborateur).findFirst();
+					if(quizCollaborateur.isPresent() && !scoreCollaborateur.isPresent()) {
+						listQuizCollaborateur.add(quizCollaborateur.get());
+					}
+				}
+				
 			}
-		}
-		jo.put("Quiz", listQuizCollaborateur);
-		return jo;
+			jo.put("Quiz", listQuizCollaborateur);
+			return jo;
+		}	
+
 	}
 	
 	/*********************************** LIST SCORE ALL COLLABORATEUR  ***************************************/

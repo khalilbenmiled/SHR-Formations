@@ -108,8 +108,13 @@ public class FormationAPI {
 	}
 	
 	@PostMapping(value = "/reporting/etat" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject getFormationByEtat(@Param(value="theme")String theme) {
-		return reporting.getFormationByEtat(theme);
+	public JSONObject getFormationByEtat(
+			@Param(value="theme")String theme ,
+			@Param(value="dateDebut")String dateDebut ,
+			@Param(value="dateFin")String dateFin , 
+			@Param(value="type")String type
+			) {
+		return reporting.getFormationByEtat(theme,dateDebut, dateFin,type);
 	}
 	
 	

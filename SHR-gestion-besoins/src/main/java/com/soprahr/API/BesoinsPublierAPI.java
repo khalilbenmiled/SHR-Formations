@@ -20,8 +20,8 @@ public class BesoinsPublierAPI {
 	public BesoinPublierServices service;
 	
 	@PostMapping(value = "/publier", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject addBesoinsPublier(@Param(value = "idBesoin") int idBesoin ) {
-		return service.addBesoinsPublier(idBesoin);
+	public JSONObject addBesoinsPublier(@Param(value = "idBesoin") int idBesoin , @Param(value = "idManager") int idManager  ) {
+		return service.addBesoinsPublier(idBesoin,idManager);
 	}
 	
 	@PostMapping(value = "/publierBesoin", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -30,13 +30,13 @@ public class BesoinsPublierAPI {
 	}
 	
 	@PostMapping(value = "/retirer", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject retirerBesoinPublier(@Param(value = "idBesoin") int idBesoin ) {
-		return service.retirerBesoinPublier(idBesoin);
+	public JSONObject retirerBesoinPublier(@Param(value = "idBesoin") int idBesoin , @Param(value = "idManager") int idManager) {
+		return service.retirerBesoinPublier(idBesoin , idManager);
 	}
 	
-	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject listBesoinsPublier() {
-		return service.listBesoinsPublier();
+	@PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject listBesoinsPublier(@Param(value = "id") int id) {
+		return service.listBesoinsPublier(id);
 	}
 	
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

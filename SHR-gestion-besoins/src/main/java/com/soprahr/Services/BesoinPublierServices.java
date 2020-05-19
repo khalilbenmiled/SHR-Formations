@@ -36,7 +36,7 @@ public class BesoinPublierServices {
 	EntityManager em;
 	
 	/*********************************** AJOUTER UN BESOIN POUR LE PUBLIER ***************************************/
-	public JSONObject addBesoinsPublier(int idBesoin) {
+	public JSONObject addBesoinsPublier(int idBesoin , int idManager) {
 		JSONObject jo = new JSONObject();
 		if(repositoryB.findById(idBesoin).isPresent()) {
 			Besoins besoin = repositoryB.findById(idBesoin).get();
@@ -45,10 +45,11 @@ public class BesoinPublierServices {
 			String nomTheme = besoin.getTheme().getNom();
 			int quarter = besoin.getQuarter();
 			
-			BesoinsPublier besoinPublier = repository.getBesoinsPublierByThemeAndQuarter(nomTheme, quarter);
+			BesoinsPublier besoinPublier = repository.getBesoinsPublierByThemeAndQuarterAndManager(nomTheme, quarter , idManager);
 			
 			if(besoinPublier == null) {
 				BesoinsPublier newBesoins = new BesoinsPublier();
+				newBesoins.setIdManager(idManager);
 				newBesoins.setTheme(nomTheme);
 				newBesoins.setPublier(false);
 				newBesoins.setQuarter(quarter);
@@ -59,6 +60,7 @@ public class BesoinPublierServices {
 				return jo;
 			}else if(besoinPublier != null && besoinPublier.isPublier()) {
 				BesoinsPublier newBesoins = new BesoinsPublier();
+				newBesoins.setIdManager(idManager);
 				newBesoins.setTheme(nomTheme);
 				newBesoins.setPublier(false);
 				newBesoins.setQuarter(quarter);
@@ -81,13 +83,13 @@ public class BesoinPublierServices {
 	}
 	
 	/*********************************** RETIRER UN BESOIN AVANT LE PUBLIER ***************************************/
-	public JSONObject retirerBesoinPublier(int idBesoin) {
+	public JSONObject retirerBesoinPublier(int idBesoin , int idManager) {
 		JSONObject jo = new JSONObject();
 		if(repositoryB.findById(idBesoin).isPresent()) {
 			Besoins besoin = repositoryB.findById(idBesoin).get();
 			besoin.setPublier(false);
 			repositoryB.save(besoin);
-			BesoinsPublier besoinPublier = repository.getBesoinsPublierByThemeAndQuarter(besoin.getTheme().getNom(), besoin.getQuarter());
+			BesoinsPublier besoinPublier = repository.getBesoinsPublierByThemeAndQuarterAndManager(besoin.getTheme().getNom(), besoin.getQuarter() , idManager);
 			List<Besoins> listBesoins = besoinPublier.getListBesoins();
 			listBesoins.remove(listBesoins.indexOf(besoin));
 			if(listBesoins.size() == 0) {
@@ -107,10 +109,10 @@ public class BesoinPublierServices {
 	}
 	
 	/*********************************** LIST BESOINS A PUBLIER ***************************************/
-	public JSONObject listBesoinsPublier() {
+	public JSONObject listBesoinsPublier(int id) {
 		JSONObject jo = new JSONObject();
-		if (repository.getAllNotPublish().size() != 0 ) {			
-			jo.put("BesoinsPublier", repository.getAllNotPublish());
+		if (repository.getAllNotPublish(id).size() != 0 ) {			
+			jo.put("BesoinsPublier", repository.getAllNotPublish(id));
 			return jo;
 		}else {
 			jo.put("Error", "La listes des besoins à publier");

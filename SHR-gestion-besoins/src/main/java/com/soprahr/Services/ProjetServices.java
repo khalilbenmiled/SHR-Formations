@@ -71,9 +71,10 @@ public class ProjetServices {
 		if (repository.getProjetByTL(id).size() != 0 ) {
 			List<Projet> listProjets = new ArrayList<Projet>();
 			listProjets.addAll(repository.getProjetByTL(id));
-			TeamLead teamlead = repositoryTL.findById(id).get();
+			
+			TeamLead teamlead = repositoryTL.getTeamLeadById(id);
 			listProjets.addAll(repository.getProjetByMG(teamlead.getIdManager()));
-			jo.put("Projets" , listProjets) ;
+			jo.put("Projets" ,listProjets) ;
 			return jo;
 		}else {
 			jo.put("Error" , "Ce team lead n'a pas de projet");

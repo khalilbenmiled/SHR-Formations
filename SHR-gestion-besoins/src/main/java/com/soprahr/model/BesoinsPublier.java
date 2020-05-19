@@ -18,6 +18,7 @@ public class BesoinsPublier implements Serializable{
 	@Id
 	@GeneratedValue
 	private int id;
+	private int idManager;
 	private String theme;
 	private int quarter;
 	private boolean publier;
@@ -55,13 +56,20 @@ public class BesoinsPublier implements Serializable{
 	public void setPublier(boolean publier) {
 		this.publier = publier;
 	}
-	public BesoinsPublier(int id, String theme, int quarter, boolean publier, List<Besoins> listBesoins) {
+	
+	public BesoinsPublier(int idManager, String theme, int quarter, boolean publier, List<Besoins> listBesoins) {
 		super();
-		this.id = id;
+		this.idManager = idManager;
 		this.theme = theme;
 		this.quarter = quarter;
 		this.publier = publier;
 		this.listBesoins = listBesoins;
+	}
+	public int getIdManager() {
+		return idManager;
+	}
+	public void setIdManager(int idManager) {
+		this.idManager = idManager;
 	}
 	public BesoinsPublier() {
 		super();

@@ -35,6 +35,15 @@ public interface BesoinsRepository extends JpaRepository<Besoins, Integer>{
 	
 	@Query(value = "SELECT * FROM Besoins b WHERE b.planifier = 1", nativeQuery = true)		
 	public List<Besoins> getBesoinPlanifier();
+	
+	@Query(value = "SELECT * FROM Besoins b WHERE b.planifier = 1 AND b.id_user = :id", nativeQuery = true)		
+	public List<Besoins> getBesoinPlanifierByCollaborateur(@Param("id") int id);
+	
+	@Query(value = "SELECT * FROM Besoins b WHERE b.planifier = 0 AND b.id_user = :id ", nativeQuery = true)		
+	public List<Besoins> getBesoinNonPlanifierByCollaborateur(@Param("id") int id);
+	
+	@Query(value = "SELECT * FROM Besoins b WHERE b.id_user = :id", nativeQuery = true)		
+	public List<Besoins> getAllBesoinsByCollaborateur(@Param("id") int id);
 
 	
 		

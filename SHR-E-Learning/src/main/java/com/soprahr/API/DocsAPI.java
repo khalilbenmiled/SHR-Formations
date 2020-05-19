@@ -1,0 +1,65 @@
+package com.soprahr.API;
+
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.soprahr.Services.UploadService;
+import com.soprahr.models.Docs;
+
+import net.minidev.json.JSONObject;
+
+@RestController
+@RequestMapping(value = "/docs")
+@CrossOrigin(value = {"*"}, exposedHeaders = {"Content-Disposition"})
+public class DocsAPI {
+
+	@Autowired
+	public UploadService service;
+	
+	private static final Logger logger = LoggerFactory.getLogger(UploadService.class);
+	
+	@GetMapping("/")
+	public JSONObject getFiles() {
+		JSONObject jo = new JSONObject();
+		if(service.getFiles().size() != 0 ) {
+			jo.put("Docs", service.getFiles());
+			return jo;
+		}else {
+			jo.put("Error", "La list est vide");
+			return jo;
+		}
+	}
+	
+	@PostMapping(value="/uploadFile")
+	public String uploadMultipleFiles(@RequestParam("file") MultipartFile file) {	
+		service.saveDocs(file);
+		return "success";
+	}
+	
+	@GetMapping("/downloadFile/{fileId:.+}")
+	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable int fileId) {
+		Docs doc = service.getFile(fileId);
+		
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(doc.getDocType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + doc.getDocName() + "\"")
+                .body(new ByteArrayResource(doc.getData()));
+	}
+}
