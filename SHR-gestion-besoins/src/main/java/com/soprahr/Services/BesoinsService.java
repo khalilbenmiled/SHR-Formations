@@ -31,7 +31,6 @@ import com.soprahr.Repository.TeamLeadRepository;
 import com.soprahr.model.BU;
 import com.soprahr.model.Besoins;
 import com.soprahr.model.BesoinsPublier;
-import com.soprahr.model.Module;
 import com.soprahr.model.Participants;
 import com.soprahr.model.Projet;
 import com.soprahr.model.TeamLead;
@@ -57,70 +56,69 @@ public class BesoinsService {
 	
 	
 	/*********************************** AJOUTER UN BESOIN ***************************************/
-	public JSONObject addBesoin(Besoins besoin) {
+	public JSONObject addBesoinByCollaborateur(Besoins besoin) {
 		JSONObject jo = new JSONObject();
-		List<Besoins> listBesoins = repository.getBesoinsByUser(besoin.getIdUser());
-		if(listBesoins.size() == 0) {
-			if(verifyBesoinExist(besoin)) {
+		
+		if(verifyBesoinExist(besoin)) {
+			jo.put("Error" , "Vous avez deja demandé ce besoin de formation");
+			return jo;
+		}else if (!verifyBesoinExist(besoin) && repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom(), besoin.getIdUser()) != null ) {
+			
+			if(repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom(), besoin.getIdUser()).isValiderTL() && !repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom(), besoin.getIdUser()).isSendToSF()) {
 				jo.put("Error" , "Vous avez deja demandé ce besoin de formation");
 				return jo;
 			}else {
-				jo.put("Besoin",repository.save(besoin));
+				
+				Besoins besoinToUpdate = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser());
+				besoinToUpdate.getTheme().setListModules(besoin.getTheme().getListModules());
+				besoinToUpdate.setValiderTL(false);
+				besoinToUpdate.setValiderMG(false);
+				besoinToUpdate.setListParticipants(besoin.getListParticipants());
+				
+				jo.put("Besoin", repository.save(besoinToUpdate));
 				return jo;
 			}
-			
-		}else {
-			
-			if(repository.getBesoinsByThemeNom(besoin.getTheme().getNom(), besoin.getIdUser()) != null) { 
-			
-				if(repository.getBesoinsByThemeNom(besoin.getTheme().getNom(), besoin.getIdUser()).isPublier()) {
-					jo.put("Besoin",repository.save(besoin));
-					return jo;
-				}else {
-					List<Module> modulesFromBesoin = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser()).getTheme().getListModules();
-					List<Module> arrayToAdd = new ArrayList<Module>();
-					arrayToAdd.addAll(modulesFromBesoin);
-					arrayToAdd.addAll(besoin.getTheme().getListModules());
-					List<Module> disticnList = arrayToAdd.stream().filter(distinctByKey(m -> m.getNom())).collect(Collectors.toList());
-					
-					Besoins besoinToUpdate = repository.getBesoinsByThemeNom(besoin.getTheme().getNom() , besoin.getIdUser());
-					besoinToUpdate.getTheme().setListModules(disticnList);
-					besoinToUpdate.setValiderTL(besoin.isValiderTL());
-					besoinToUpdate.setValiderMG(false);
-					besoinToUpdate.setQuarter(besoin.getQuarter());
-					besoinToUpdate.setNbrPrevu(besoinToUpdate.getNbrPrevu() + besoin.getNbrPrevu());
-					besoinToUpdate.setListParticipants(besoin.getListParticipants());
-					besoinToUpdate.setProjet(besoin.getProjet());
-					
-					jo.put("Besoin", repository.save(besoinToUpdate));
-					return jo;
-				}
-			
-				
-			}else {
-				if(verifyBesoinExist(besoin)) {
-					jo.put("Error" , "Vous avez deja demandé ce besoin de formation");
-					return jo;
-				}else {
-					jo.put("Besoin",repository.save(besoin));
-					return jo;
-				}
-				
-			}
-			
 		
+		}else {
+			jo.put("Besoin", repository.save(besoin));
+			return jo;
 		}
 
+	}
+	
+	/*********************************** AJOUTER UN BESOIN ***************************************/
+	public JSONObject addBesoinByTeamLead(Besoins besoin) {
+		JSONObject jo = new JSONObject();
+		if(repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom(), besoin.getIdUser()) != null) {
+			
+			if(repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom(), besoin.getIdUser()).isValiderMG() && !repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom(), besoin.getIdUser()).isSendToSF()) {
+				jo.put("Error" , "Vous avez deja demandé ce besoin de formation");
+				return jo;
+			}else {
+				Besoins besoinToUpdate = repository.getBesoinsByThemeNomAndNotPublish(besoin.getTheme().getNom() , besoin.getIdUser());
+				besoinToUpdate.getTheme().setListModules(besoin.getTheme().getListModules());
+				besoinToUpdate.setValiderTL(true);
+				besoinToUpdate.setValiderMG(false);
+				besoinToUpdate.setQuarter(besoin.getQuarter());
+				besoinToUpdate.setListParticipants(besoin.getListParticipants());
+				besoinToUpdate.setProjet(besoin.getProjet());
+				
+				jo.put("Besoin", repository.save(besoinToUpdate));
+				return jo;
+			}
+
+		}else {
+			jo.put("Besoin", repository.save(besoin));
+			return jo;
+		}
 	}
 	
 	/*********************************** VERIFIER SI TEAMLEAD A SAISI UN BESOIN POUR LE COLLABORATEUR ***************************************/
 	public boolean verifyBesoinExist(Besoins besoin) {
 		List<Besoins> listBesoins = repository.findAll();
 		for (Besoins b : listBesoins) {
-			for (Participants participant : b.getListParticipants()) {
-				if(participant.getIdParticipant() == besoin.getIdUser() && besoin.getTheme().getNom().equals(b.getTheme().getNom()) && b.getIdUser() != besoin.getIdUser() && b.isPlanifier()) {
-					return true;
-				}
+			if(b.getTheme().getNom().equals(besoin.getTheme().getNom()) && !b.isSendToSF() && b.getListParticipants().stream().filter(p->p.getIdParticipant() == besoin.getIdUser()).findFirst().isPresent() && besoin.getIdUser() != b.getIdUser()) {
+				return true ;
 			}
 		}
 		return false;
@@ -577,13 +575,9 @@ public class BesoinsService {
 			boolean bool = Boolean.parseBoolean(validerMG);
 			allPredicates.add(b -> b.isValiderMG() == bool);
 		}
-	
-		
-	
 		
 		List<Besoins> result = listBesoins.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
 
-		
 		
 			
 				Map<Object, Map<Object, List<Besoins>>> result2 = result.stream().collect(

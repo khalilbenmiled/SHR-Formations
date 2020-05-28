@@ -140,6 +140,21 @@ public class TeamLeadService {
 		}
 	}
 	
+	/*********************************** GET FREE TEAMLEAD ***************************************/
+	public JSONObject getListTeamLeadByManager(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.getTeamLeadByManager(id).size() != 0) {
+			jo.put("TeamLeads", repository.getTeamLeadByManager(id));
+			return jo;
+		}else {
+			jo.put("Error", "La liste est vide ! ");
+			return jo;
+		}
+	}
+	
+	
+	
+	
 	
 	
 }

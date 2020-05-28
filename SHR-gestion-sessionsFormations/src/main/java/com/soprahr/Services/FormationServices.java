@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -344,6 +345,89 @@ public class FormationServices {
 		}
 	}
 
+	/*********************************** AFFICHER LES FORMATIONS PAR USER ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject getFormationsByUser(int id) {
+		JSONObject jo = new JSONObject();
+		List<Formation> allFormations = repository.findAll();
+		
+		if(allFormations.size() != 0) {
+			ResponseEntity<JSONObject> response = getUserAPI("http://localhost:8181/users/byId", id);
+			LinkedHashMap user = (LinkedHashMap) response.getBody().get("User");
+			List<Formation> listFormationByUser = new ArrayList<Formation>();
+
+			if (user.get("role").equals("COLLABORATEUR")) {
+				
+				for(Formation formation : allFormations) {
+					if(formation.getListParticipants().stream().filter(p->p.getIdParticipant() == id).findFirst().isPresent()) {
+						listFormationByUser.add(formation);
+					}
+				}
+			} else if(user.get("role").equals("TEAMLEAD")) {
+				final String uri = "http://localhost:8383/collaborateurs/parTL";
+				RestTemplate restTemplate = new RestTemplate();
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+				MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+				map.add("id", id);
+				HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+				ResponseEntity<JSONObject> res = restTemplate.postForEntity( uri, request , JSONObject.class );
+				
+				ArrayList listUsers = (ArrayList) res.getBody().get("Collaborateurs");
+				
+				for(Object obj : listUsers) {
+					LinkedHashMap object = (LinkedHashMap) obj;
+					int idCollaborateur = (int) object.get("idCollaborateur");
+					
+					for(Formation formation : allFormations) {
+						 if(formation.getListParticipants().stream().filter(p->p.getIdParticipant() == idCollaborateur).findFirst().isPresent()) {
+							 listFormationByUser.add(formation);
+						 }			
+					}
+				}
+				listFormationByUser = listFormationByUser.stream().distinct().collect(Collectors.toList());
+			}else {
+				final String uri = "http://localhost:8686/teamlead/byManager";
+				RestTemplate restTemplate = new RestTemplate();
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+				MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+				map.add("id", id);
+				HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+				ResponseEntity<JSONObject> res2 = restTemplate.postForEntity( uri, request , JSONObject.class );
+				
+				ArrayList listTeamLead = (ArrayList) res2.getBody().get("TeamLeads");
+				for(Object obj : listTeamLead) {
+					LinkedHashMap object = (LinkedHashMap) obj;
+					int idTeamLead = (int) object.get("idTeamLead");
+					final String uri2 = "http://localhost:8383/collaborateurs/parTL";
+					MultiValueMap<String, Integer> map2= new LinkedMultiValueMap<String, Integer>();
+					map2.add("id", idTeamLead);
+					HttpEntity<MultiValueMap<String, Integer>> request2 = new HttpEntity<MultiValueMap<String, Integer>>(map2, headers);
+					ResponseEntity<JSONObject> response2 = restTemplate.postForEntity( uri2, request2 , JSONObject.class );
+					ArrayList listUsers = (ArrayList) response2.getBody().get("Collaborateurs");
+					
+					for(Object u : listUsers) {
+						LinkedHashMap collaborateur = (LinkedHashMap) u;
+						int idCollaborateur = (int) collaborateur.get("idCollaborateur");
+						
+						for(Formation formation : allFormations) {
+							 if(formation.getListParticipants().stream().filter(p->p.getIdParticipant() == idCollaborateur).findFirst().isPresent()) {
+								 listFormationByUser.add(formation);
+							 }			
+						}
+					}
+
+				}
+				listFormationByUser = listFormationByUser.stream().distinct().collect(Collectors.toList());
+			}
+			jo.put("Formations", listFormationByUser);
+			return jo;
+		}else {
+			jo.put("Error", "Liste formations est vide !");
+			return jo;
+		}
+	}
 	
 	/*********************************** API USER BY ID ***************************************/
 	public ResponseEntity<JSONObject> getUserAPI(String uri , int id) {

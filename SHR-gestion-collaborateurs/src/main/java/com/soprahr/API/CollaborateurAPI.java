@@ -65,6 +65,12 @@ public class CollaborateurAPI {
 		return service.setCollaborateur(idC , idTL);
 	}
 	
+	@PostMapping(value = "/parTL", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getListCollaborateurByTL(@Param(value = "id") int id ) {
+		return service.getListCollaborateurByTL(id);
+	}
+	
+	
 	
 	
 	

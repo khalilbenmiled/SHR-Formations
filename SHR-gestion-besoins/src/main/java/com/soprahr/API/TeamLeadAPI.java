@@ -68,6 +68,12 @@ public class TeamLeadAPI {
 		return service.getFreeTL();
 	}
 	
+	@PostMapping(value = "/byManager", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getListTeamLeadByManager(@Param(value = "id") int id) {
+		return service.getListTeamLeadByManager(id);
+	}
+	
+	
 	
 	
 }

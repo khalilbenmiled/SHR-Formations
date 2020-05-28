@@ -158,6 +158,18 @@ public class CollaborateurServices {
 		}
 	}
 	
+	/*********************************** LIST COLLABORATEUR PAR ID TL ***************************************/
+	public JSONObject getListCollaborateurByTL(int id) {
+		JSONObject jo = new JSONObject();
+		if (repository.getCollaborateurByTL(id).size() != 0 ) {
+			jo.put("Collaborateurs", repository.getCollaborateurByTL(id));
+			return jo;
+		}else {
+			jo.put("Error", "La liste est vide ! ");
+			return jo;
+		}
+	}
+	
 	
 	
 	

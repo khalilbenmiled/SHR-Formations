@@ -117,6 +117,45 @@ public class FormationAPI {
 		return reporting.getFormationByEtat(theme,dateDebut, dateFin,type);
 	}
 	
+	@PostMapping(value = "/reporting/etatByCollaborateur" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationByEtatAndCollaborateur(
+			@Param(value="theme")String theme ,
+			@Param(value="dateDebut")String dateDebut ,
+			@Param(value="dateFin")String dateFin , 
+			@Param(value="type")String type,
+			@Param(value="id")int id
+			) {
+		return reporting.getFormationByEtatAndCollaborateur(theme,dateDebut, dateFin,type,id);
+	}
+	
+	@PostMapping(value = "/reporting/etatByTL" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationByEtatByTeamLead(
+			@Param(value="theme")String theme ,
+			@Param(value="dateDebut")String dateDebut ,
+			@Param(value="dateFin")String dateFin , 
+			@Param(value="type")String type,
+			@Param(value="id")int id
+			) {
+		return reporting.getFormationByEtatByTeamLead(theme,dateDebut, dateFin,type,id);
+	}
+	
+	@PostMapping(value = "/reporting/etatByManager" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationByEtatByManager(
+			@Param(value="theme")String theme ,
+			@Param(value="dateDebut")String dateDebut ,
+			@Param(value="dateFin")String dateFin , 
+			@Param(value="type")String type,
+			@Param(value="id")int id
+			) {
+		return reporting.getFormationByEtatByManager(theme,dateDebut, dateFin,type,id);
+	}
+	
+	@PostMapping(value = "/byUser" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject getFormationsByUser(@Param(value = "id") int id) {
+		return service.getFormationsByUser(id);
+	}
+	
+	
 	
 	
 	

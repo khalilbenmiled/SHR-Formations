@@ -1,10 +1,5 @@
 package com.soprahr.API;
 
-
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -33,7 +28,6 @@ public class DocsAPI {
 	@Autowired
 	public UploadService service;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UploadService.class);
 	
 	@GetMapping("/")
 	public JSONObject getFiles() {
@@ -48,9 +42,8 @@ public class DocsAPI {
 	}
 	
 	@PostMapping(value="/uploadFile")
-	public String uploadMultipleFiles(@RequestParam("file") MultipartFile file) {	
-		service.saveDocs(file);
-		return "success";
+	public JSONObject uploadMultipleFiles(@RequestParam("file") MultipartFile file , @RequestParam("nom") String nom , @RequestParam("description") String description) {	
+		return service.saveDocs(file ,nom , description);
 	}
 	
 	@GetMapping("/downloadFile/{fileId:.+}")

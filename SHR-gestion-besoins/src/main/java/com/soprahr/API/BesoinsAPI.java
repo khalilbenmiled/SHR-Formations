@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.soprahr.Services.BesoinsService;
 import com.soprahr.Services.ReportingBesoinsService;
 import com.soprahr.model.Besoins;
-
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 @RestController
@@ -32,9 +30,14 @@ public class BesoinsAPI {
 	@PersistenceContext
 	public EntityManager em;
 	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE )
-	public JSONObject addBesoin(@RequestBody Besoins besoin) {
-		return service.addBesoin(besoin);
+	@PostMapping(value = "/addByCollaborateur" , produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject addBesoinByCollaborateur(@RequestBody Besoins besoin) {
+		return service.addBesoinByCollaborateur(besoin);
+	}
+	
+	@PostMapping(value = "/addByTL" , produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject addBesoinByTeamLead(@RequestBody Besoins besoin) {
+		return service.addBesoinByTeamLead(besoin);
 	}
 
 	@PostMapping(value = "/rapports" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -160,6 +163,10 @@ public class BesoinsAPI {
 		return reporting.filterFormationDemanderParTeamLead(bu,quarter,theme,id);
 	}
 	
+	@PostMapping(value = "/reporting/byFilterManager", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject filterFormationDemanderParManager(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id) {
+		return reporting.filterFormationDemanderParManager(bu,quarter,theme,id);
+	}
 	
 	
 	@PostMapping(value = "/reporting/byTypeTheme", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

@@ -18,6 +18,9 @@ public class Docs implements Serializable {
 	private int id;
 	private String docName;
 	private String docType;
+	private String nom;
+	private String description;
+
 	@Lob
 	private byte[] data;
 	
@@ -57,12 +60,32 @@ public class Docs implements Serializable {
 		this.data = data;
 	}
 
-	public Docs(String docName, String docType, byte[] data) {
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Docs(String docName, String docType, String nom, String description, byte[] data) {
 		super();
 		this.docName = docName;
 		this.docType = docType;
+		this.nom = nom;
+		this.description = description;
 		this.data = data;
 	}
+
+
 	
 	
 }

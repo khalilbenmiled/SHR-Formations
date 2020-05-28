@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.soprahr.Repository.DocsRepository;
 import com.soprahr.models.Docs;
 
+import net.minidev.json.JSONObject;
+
 
 
 @Service
@@ -22,11 +24,13 @@ public class UploadService {
 	
 
     
-	public Docs saveDocs(MultipartFile file) {
+	public JSONObject saveDocs(MultipartFile file , String nom , String description) {
+		JSONObject jo = new JSONObject();
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		try {
-			Docs doc = new Docs(fileName,file.getContentType(),file.getBytes());
-			return repository.save(doc);
+			Docs doc = new Docs(fileName,file.getContentType(), nom , description ,file.getBytes());
+			jo.put("Docs",repository.save(doc));
+			return jo;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,6 +43,10 @@ public class UploadService {
 	
 	
 	public List<Docs> getFiles() {
-		return repository.findAll();
+		return  repository.findAll();
 	}
+	
+	
+	
+	
 }
