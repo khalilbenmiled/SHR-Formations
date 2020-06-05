@@ -111,6 +111,8 @@ public class UsersService {
 		}
 	}
 	
+
+	
 	/*********************************** RECHERCHER UN USER PAR ID ***************************************/
 	public JSONObject getUserById(int id) {
 		JSONObject jo = new JSONObject();
@@ -151,11 +153,13 @@ public class UsersService {
 		JSONObject jo = new JSONObject();
 		if (repository.findById(id).isPresent()) {
 			User user = repository.findById(id).get();
-			if(!user.getPassword().equals(oldPassword)) {
-				jo.put("Error" , "Password incorrecte ! ");
-				return jo;
-			}
 			try {
+				String hashOldPassword = Utils.toMD5(oldPassword);
+				if(!user.getPassword().equals(hashOldPassword)) {
+					jo.put("Error" , "Password incorrecte ! ");
+					return jo;
+				}
+			
 				String passswordHashed = Utils.toMD5(newPassword);
 				user.setPassword(passswordHashed);
 				user.setPasswordChanged(true);

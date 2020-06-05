@@ -28,6 +28,7 @@ public class Formation implements Serializable {
 	public void setIdFormation(int idFormation) {
 		this.idFormation = idFormation;
 	}
+	
 	public Formation(int id, int idFormation) {
 		super();
 		this.id = id;
