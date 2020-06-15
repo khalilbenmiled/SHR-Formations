@@ -6,7 +6,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ import net.minidev.json.JSONObject;
 
 @RestController
 @RequestMapping(value = "/docs")
-@CrossOrigin(value = {"*"}, exposedHeaders = {"Content-Disposition"})
+
 public class DocsAPI {
 
 	@Autowired
@@ -39,6 +39,11 @@ public class DocsAPI {
 			jo.put("Error", "La list est vide");
 			return jo;
 		}
+	}
+	
+	@DeleteMapping(value = "/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject deleteDocs(@PathVariable(value="id") int id) {
+		return service.deleteDocs(id);
 	}
 	
 	@PostMapping(value="/uploadFile")

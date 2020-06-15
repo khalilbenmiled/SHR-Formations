@@ -47,6 +47,18 @@ public class UploadService {
 	}
 	
 	
+	public JSONObject deleteDocs(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			repository.delete(repository.findById(id).get());
+			jo.put("Success", "Document supprimé");
+			return jo;
+		}else {
+			jo.put("Error" , "Document n'existe pas !");
+			return jo;
+		}
+	}
+	
 	
 	
 }

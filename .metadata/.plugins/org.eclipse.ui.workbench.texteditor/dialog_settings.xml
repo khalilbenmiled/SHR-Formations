@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="getUserAPI"/>
+		<item key="selection" value="socket"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="socket"/>
+			<item value="delete"/>
 			<item value="getUserAPI"/>
 			<item value="update"/>
 			<item value="updatePassword"/>
@@ -21,8 +23,6 @@
 			<item value="getforma"/>
 			<item value="getAllCollaborateur"/>
 			<item value="restt"/>
-			<item value="resttem"/>
-			<item value="restem"/>
 		</list>
 		<list key="replacehistory">
 		</list>

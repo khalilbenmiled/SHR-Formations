@@ -82,11 +82,33 @@ public class QuizServices {
 	}
 	
 	/*********************************** AFFICHER TOUS LES QUIZ ***************************************/
+	@SuppressWarnings("rawtypes")
 	public JSONObject getAllQuiz() {
 		JSONObject jo = new JSONObject();
+		List<JSONObject> allQuiz = new ArrayList<JSONObject>();
+		
 		if(repository.findAll().size() != 0) {
-			jo.put("Quiz", repository.findAll());
+			List<Quiz> listQuiz = repository.findAll();
+			for(Quiz quiz : listQuiz) {
+				JSONObject joo = new JSONObject();
+				ResponseEntity<JSONObject> response = getFormationByID("http://localhost:8585/formations/byId", quiz.getIdFormation());
+
+				if(response.getBody().containsKey("Error")) {
+					jo.put("Error" , response.getBody().get("Error"));
+					return jo;
+				}else {
+					LinkedHashMap formation = (LinkedHashMap) response.getBody().get("Formation");
+					joo.put("Quiz", quiz);
+					joo.put("Formation", formation);
+					allQuiz.add(joo);
+				}
+			}
+			
+			
+			
+			jo.put("Resultats", allQuiz);
 			return jo;
+			
 		}else {
 			jo.put("Error", "La liste des quiz est vide !");
 			return jo;
@@ -348,6 +370,20 @@ public class QuizServices {
 	
 	/*********************************** API FORMATIONS BY COLLABORATEUR  ***************************************/
 	public ResponseEntity<JSONObject> getFormationsByCollaborateur(String uri , int id) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+		map.add("id", id);
+		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		return response;
+	}
+	
+	/*********************************** API FORMATIONS BY ID  ***************************************/
+	public ResponseEntity<JSONObject> getFormationByID(String uri , int id) {
 		
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();

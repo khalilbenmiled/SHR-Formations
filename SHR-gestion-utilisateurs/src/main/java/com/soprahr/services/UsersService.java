@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -147,6 +149,8 @@ public class UsersService {
 			return jo;
 		}
 	}
+	
+
 	
 	/*********************************** UPDATE PASSWORD ***************************************/
 	public JSONObject updatePassword(int id , String oldPassword,String newPassword) {
@@ -349,7 +353,21 @@ public class UsersService {
 
 	
 	
-	
+//	/*********************************** ENVOYER DOCUMENT AU COLLABORATEUR ***************************************/
+//	public JSONObject sendConvocation() {
+//		
+//		try {
+//			MimeMessage message = emailSender.createMimeMessage();
+//			boolean multipart = true;
+//			MimeMessageHelper helper = new MimeMessageHelper(message, multipart);
+//			helper.setTo("khalilbenmiled93@gmail.com");
+//			helper.setSubject("Test email with attachments");
+//			helper.setText("Hello, Im testing email with attachments!");
+//		} catch (MessagingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	

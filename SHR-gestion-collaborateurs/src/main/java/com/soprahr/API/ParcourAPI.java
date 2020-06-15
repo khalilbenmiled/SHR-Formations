@@ -3,6 +3,7 @@ package com.soprahr.API;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +28,10 @@ public class ParcourAPI {
 	@PostMapping(value = "/byCollaborateur" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject getParcour(@Param(value = "idCollaborateur") int idCollaborateur ) {
 		return service.getParcour(idCollaborateur);
+	}
+	
+	@GetMapping(value = "/allParcours" ,produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject getAllParcours( ) {
+		return service.getAllParcours();
 	}
 }

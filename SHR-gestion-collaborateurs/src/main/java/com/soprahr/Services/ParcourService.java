@@ -103,6 +103,42 @@ public class ParcourService {
 	}
 	
 	
+	/*********************************** GET ALL PARCOUR ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject getAllParcours() {
+		JSONObject jo = new JSONObject();
+		JSONObject joo = new JSONObject();
+		if(repository.findAll().size() != 0) {
+			List<JSONObject> listJSON = new ArrayList<JSONObject>();
+			List<Parcour> listParcours = repository.findAll();
+			
+			for(Parcour parcour : listParcours) {
+				
+				List<Object> listFormations = new ArrayList<Object>();
+				
+				for(Formation formation : parcour.getListFormations()) {
+					int idFormation = formation.getIdFormation();
+					ResponseEntity<JSONObject> formationsResponse = getFormationByID("http://localhost:8585/formations/byId",idFormation);
+					if(formationsResponse.getBody().containsKey("Error")) {
+						jo.put("Error" , formationsResponse.getBody().get("Error"));
+						return jo;
+					}else {
+						LinkedHashMap f = (LinkedHashMap) formationsResponse.getBody().get("Formation");
+						listFormations.add(f);
+					}
+				}
+				jo.put("Parcour", parcour);
+				jo.put("Formations", listFormations);
+				listJSON.add(jo);
+			}
+			joo.put("Results", listJSON);
+			return joo;
+		}else {
+			jo.put("Error", "Vous n'avez pas de parcour !");
+			return jo;
+		}
+	}
+	
 	
 	/*********************************** API FORMATION BY ID ***************************************/
 	public ResponseEntity<JSONObject> getFormationByID(String uri , int id) {

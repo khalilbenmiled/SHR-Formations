@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.soprahr.models.TypeTheme"/>
-<fullyQualifiedTypeName name="javax.persistence.Table"/>
-<fullyQualifiedTypeName name="javax.persistence.Lob"/>
-<fullyQualifiedTypeName name="Repository.DocRepository"/>
 <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
 <fullyQualifiedTypeName name="models.Doc"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
@@ -34,7 +30,6 @@
 <fullyQualifiedTypeName name="javax.persistence.Id"/>
 <fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.NotificationsRepository"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
@@ -55,9 +50,14 @@
 <fullyQualifiedTypeName name="com.soprahr.Services.ParcourService"/>
 <fullyQualifiedTypeName name="java.util.LinkedHashMap"/>
 <fullyQualifiedTypeName name="org.hibernate.mapping.Array"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Collaborateur"/>
+<fullyQualifiedTypeName name="org.springframework.context.annotation.Bean"/>
+<fullyQualifiedTypeName name="org.springframework.web.filter.CorsFilter"/>
+<fullyQualifiedTypeName name="org.springframework.web.cors.UrlBasedCorsConfigurationSource"/>
+<fullyQualifiedTypeName name="org.springframework.web.cors.CorsConfiguration"/>
 <fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
 </qualifiedTypeNameHistroy>
