@@ -133,13 +133,22 @@ public class UsersService {
 		if(repository.getUserByEmail(user.getEmail()) == null) {
 			Utils utils = new Utils();
 			String password = utils.generatePassword();
-			user.setPassword(password);
+			
+			
+			try {
+				String passswordHashed = Utils.toMD5(password);
+				user.setPassword(passswordHashed);
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 			user.setPasswordChanged(false);
 			
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo("khalilbenmiled93@gmail.com");
-		    message.setSubject("Test Simple Email");
-		    message.setText("Hello, Im testing Simple Email");
+		    message.setSubject("Inscription SHR-Formation");
+		    message.setText("Bonjour, vous etes inscrit sur la plateform SHR-Formation. Votre mot de passe est :"+password);
 		    this.emailSender.send(message);
 		    
 			jo.put("Collaborateur", repository.save(user));

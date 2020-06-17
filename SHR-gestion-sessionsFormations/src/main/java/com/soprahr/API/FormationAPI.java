@@ -155,6 +155,11 @@ public class FormationAPI {
 		return service.getFormationsByUser(id);
 	}
 	
+	@PostMapping(value = "/setFormateurCabinet" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject setFormateur(@Param(value = "idFormation") int idFormation , @Param(value = "formateurCabinet") int formateurCabinet) {
+		return service.setFormateur(idFormation,formateurCabinet);
+	}
+	
 	
 	
 	

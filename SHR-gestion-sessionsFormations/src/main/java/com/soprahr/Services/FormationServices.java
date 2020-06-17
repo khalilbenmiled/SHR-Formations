@@ -443,6 +443,20 @@ public class FormationServices {
 		return response;
 	}
 	
+	/*********************************** SET FORMATEUR ***************************************/
+	public JSONObject setFormateur(int idFormation,int formateurCabinet) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(idFormation).isPresent()) {
+			Formation formation = repository.findById(idFormation).get();
+			formation.setIdCF(formateurCabinet);
+			jo.put("Formation", repository.save(formation));
+			return jo;
+		}else {
+			jo.put("Error", "Formation n'existe pas !");
+			return jo;
+		}
+	}
+	
 	/*********************************** API ALL COLLABORATEUR ***************************************/
 	public ResponseEntity<JSONObject> getAllCollaborateur() {
 		

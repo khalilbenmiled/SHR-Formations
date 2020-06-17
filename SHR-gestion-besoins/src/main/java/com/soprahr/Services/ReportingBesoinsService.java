@@ -37,7 +37,7 @@ public class ReportingBesoinsService {
 		
 	/*********************************** BESOINS DEMANDER PAR FILTER SERVICEFORMATION ***************************************/
 	@SuppressWarnings({ "rawtypes" })
-	public JSONObject filterFormationDemander(String bu , int quarter , String theme) {
+	public JSONObject filterFormationDemander(String bu , int quarter , String theme , int annee) {
 		JSONObject jo = new JSONObject();
 		List<Besoins> listBesoins = repository.findAll();
 		List<Besoins> listBesoinsPlanifier = repository.getBesoinPlanifier();
@@ -51,9 +51,13 @@ public class ReportingBesoinsService {
 		if(quarter != 0) {
 			allPredicates.add(b -> b.getQuarter() == quarter);
 		}
+		if(annee != 0) {
+			allPredicates.add(b -> b.getAnnee() == annee);
+		}
 		if(theme != "") {
 			allPredicates.add(b -> b.getTheme().getNom().equals(theme));
 		}
+		
 		
 			List<Besoins> result = listBesoins.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
 			List<Besoins> resultPlanifier = listBesoinsPlanifier.stream().filter(allPredicates.stream().reduce(x->true, Predicate::and)).collect(Collectors.toList());
@@ -82,7 +86,7 @@ public class ReportingBesoinsService {
 	
 	/*********************************** BESOINS DEMANDER PAR FILTER COLLABORATEUR ***************************************/
 	@SuppressWarnings({ "rawtypes" })
-	public JSONObject filterFormationDemanderParCollaborateur(String bu , int quarter , String theme , int idCollaborateur) {
+	public JSONObject filterFormationDemanderParCollaborateur(String bu , int quarter , String theme , int idCollaborateur,int annee) {
 		JSONObject jo = new JSONObject();
 		List<Besoins> listBesoins = repository.getAllBesoinsByCollaborateur(idCollaborateur);
 		List<Besoins> listBesoinsPlanifier = repository.getBesoinPlanifierByCollaborateur(idCollaborateur);
@@ -95,6 +99,9 @@ public class ReportingBesoinsService {
 		}
 		if(quarter != 0) {
 			allPredicates.add(b -> b.getQuarter() == quarter);
+		}
+		if(annee != 0) {
+			allPredicates.add(b -> b.getAnnee() == annee);
 		}
 		if(theme != "") {
 			allPredicates.add(b -> b.getTheme().getNom().equals(theme));
@@ -127,7 +134,7 @@ public class ReportingBesoinsService {
 	
 	/*********************************** BESOINS DEMANDER PAR FILTER TEAMLEAD ***************************************/
 	@SuppressWarnings({ "rawtypes" })
-	public JSONObject filterFormationDemanderParTeamLead(String bu , int quarter , String theme , int idTeamLead) {
+	public JSONObject filterFormationDemanderParTeamLead(String bu , int quarter , String theme , int idTeamLead, int annee) {
 		JSONObject jo = new JSONObject();
 		
 		
@@ -168,6 +175,9 @@ public class ReportingBesoinsService {
 			if(quarter != 0) {
 				allPredicates.add(b -> b.getQuarter() == quarter);
 			}
+			if(annee != 0) {
+				allPredicates.add(b -> b.getAnnee() == annee);
+			}
 			if(theme != "") {
 				allPredicates.add(b -> b.getTheme().getNom().equals(theme));
 			}
@@ -198,9 +208,9 @@ public class ReportingBesoinsService {
 		
 	}
 	
-	/*********************************** BESOINS DEMANDER PAR FILTER TEAMLEAD ***************************************/
+	/*********************************** BESOINS DEMANDER PAR FILTER MANAGER ***************************************/
 	@SuppressWarnings("rawtypes")
-	public JSONObject filterFormationDemanderParManager(String bu , int quarter , String theme , int idManager) {
+	public JSONObject filterFormationDemanderParManager(String bu , int quarter , String theme , int idManager, int annee) {
 		JSONObject jo = new JSONObject();
 		List<TeamLead> listTL = repositoryTL.getTeamLeadByManager(idManager);
 		
@@ -244,6 +254,9 @@ public class ReportingBesoinsService {
 		}
 		if(quarter != 0) {
 			allPredicates.add(b -> b.getQuarter() == quarter);
+		}
+		if(annee != 0) {
+			allPredicates.add(b -> b.getAnnee() == annee);
 		}
 		if(theme != "") {
 			allPredicates.add(b -> b.getTheme().getNom().equals(theme));

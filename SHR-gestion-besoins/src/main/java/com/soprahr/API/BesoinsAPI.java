@@ -35,7 +35,13 @@ public class BesoinsAPI {
 		return service.addBesoinByCollaborateur(besoin);
 	}
 	
-	@PostMapping(value = "/addByTL" , produces = MediaType.APPLICATION_JSON_VALUE )
+	@PostMapping(value = "/test" ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
+	public int test(@Param(value = "quarter") int quarter) {
+		return service.getAnnee(quarter);
+	}
+	
+	
+	@PostMapping(value = "/addByTL" , produces = MediaType.APPLICATION_JSON_VALUE  )
 	public JSONObject addBesoinByTeamLead(@RequestBody Besoins besoin) {
 		return service.addBesoinByTeamLead(besoin);
 	}
@@ -149,23 +155,23 @@ public class BesoinsAPI {
 	}
 	
 	@PostMapping(value = "/reporting/byFilter", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject filterFormationDemander(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme) {
-		return reporting.filterFormationDemander(bu,quarter,theme);
+	public JSONObject filterFormationDemander(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "annee") int annee) {
+		return reporting.filterFormationDemander(bu,quarter,theme,annee);
 	}
 	
 	@PostMapping(value = "/reporting/byFilterCollaborateur", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject filterFormationDemanderParCollaborateur(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id) {
-		return reporting.filterFormationDemanderParCollaborateur(bu,quarter,theme,id);
+	public JSONObject filterFormationDemanderParCollaborateur(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id , @Param(value = "annee") int annee) {
+		return reporting.filterFormationDemanderParCollaborateur(bu,quarter,theme,id,annee);
 	}
 	
 	@PostMapping(value = "/reporting/byFilterTeamLead", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject filterFormationDemanderParTeamLead(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id) {
-		return reporting.filterFormationDemanderParTeamLead(bu,quarter,theme,id);
+	public JSONObject filterFormationDemanderParTeamLead(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id , @Param(value = "annee") int annee) {
+		return reporting.filterFormationDemanderParTeamLead(bu,quarter,theme,id,annee);
 	}
 	
 	@PostMapping(value = "/reporting/byFilterManager", produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public JSONObject filterFormationDemanderParManager(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id) {
-		return reporting.filterFormationDemanderParManager(bu,quarter,theme,id);
+	public JSONObject filterFormationDemanderParManager(@Param(value = "bu") String bu,@Param(value = "quarter") int quarter , @Param(value = "theme") String theme , @Param(value = "id") int id , @Param(value = "annee") int annee) {
+		return reporting.filterFormationDemanderParManager(bu,quarter,theme,id,annee);
 	}
 	
 	

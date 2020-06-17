@@ -29,6 +29,7 @@ public class Besoins implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private BU bu;
 	private int quarter;
+	private int annee;
 	private int nbrPrevu;
 	private int priorite;
 	private boolean validerTL;
@@ -43,6 +44,7 @@ public class Besoins implements Serializable{
 	private boolean publier;
 	private boolean planifier;
 	private boolean sendToSF;
+	 
 	public int getId() {
 		return id;
 	}
@@ -129,6 +131,13 @@ public class Besoins implements Serializable{
 	}
 	public void setSendToSF(boolean sendToSF) {
 		this.sendToSF = sendToSF;
+	}
+	
+	public int getAnnee() {
+		return annee;
+	}
+	public void setAnnee(int annee) {
+		this.annee = annee;
 	}
 	public Besoins(int id, BU bu, int quarter, int nbrPrevu, int priorite, boolean validerTL, boolean validerMG,
 			Projet projet, Theme theme, List<Participants> listParticipants, int idUser, boolean publier,

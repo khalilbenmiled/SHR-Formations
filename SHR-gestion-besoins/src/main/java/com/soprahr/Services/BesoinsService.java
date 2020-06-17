@@ -2,8 +2,9 @@ package com.soprahr.Services;
 
 
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,7 @@ public class BesoinsService {
 				besoinToUpdate.setValiderTL(false);
 				besoinToUpdate.setValiderMG(false);
 				besoinToUpdate.setListParticipants(besoin.getListParticipants());
-				
+								
 				jo.put("Besoin", repository.save(besoinToUpdate));
 				return jo;
 			}
@@ -103,11 +104,16 @@ public class BesoinsService {
 				besoinToUpdate.setListParticipants(besoin.getListParticipants());
 				besoinToUpdate.setProjet(besoin.getProjet());
 				
+				int annee = getAnnee(besoin.getQuarter());
+				besoinToUpdate.setAnnee(annee);
+				
 				jo.put("Besoin", repository.save(besoinToUpdate));
 				return jo;
 			}
 
 		}else {
+			int annee = getAnnee(besoin.getQuarter());
+			besoin.setAnnee(annee);
 			jo.put("Besoin", repository.save(besoin));
 			return jo;
 		}
@@ -122,6 +128,20 @@ public class BesoinsService {
 			}
 		}
 		return false;
+	}
+	
+	/*********************************** SET ANNEE PAR RAPPORT TRIMESTRE ***************************************/
+	public int getAnnee(int trimestre) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		int month = c.get(Calendar.MONTH);
+		int quarter = (month / 3) + 1;
+		if(trimestre < quarter) {
+			return c.get(Calendar.YEAR) + 1;
+		}else {
+			return c.get(Calendar.YEAR);
+		}
+		
 	}
 	
 	
@@ -233,6 +253,9 @@ public class BesoinsService {
 				besoin.setProjet(projet);	
 				besoin.setValiderMG(validerMG);
 				besoin.setNbrPrevu(1);
+				
+				int annee = getAnnee(trimestre);
+				besoin.setAnnee(annee);
 				jo.put("Besoin", repository.save(besoin));
 				return jo;
 				
@@ -255,6 +278,7 @@ public class BesoinsService {
 			besoin.setQuarter(0);
 			besoin.setProjet(null);
 			besoin.setValiderMG(false);
+			besoin.setAnnee(0);
 			jo.put("Besoin", repository.save(besoin));
 			return jo;
 		}else {
