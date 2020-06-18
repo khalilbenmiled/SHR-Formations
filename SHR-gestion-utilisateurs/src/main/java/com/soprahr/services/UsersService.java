@@ -100,12 +100,14 @@ public class UsersService {
 		}
 	}
 	
-	/*********************************** SUPPRIMER UN USER ***************************************/
+	/*********************************** DESACTIVER UN USER ***************************************/
 	public JSONObject deleteUser(int id) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
-			repository.delete(repository.findById(id).get());
-			jo.put("Success", "User supprimé");
+			User user = repository.findById(id).get();
+			user.setDeleted(true);
+			
+			jo.put("User", repository.save(user));
 			return jo;
 		}else {
 			jo.put("Error" , "User n'existe pas !");
@@ -113,7 +115,20 @@ public class UsersService {
 		}
 	}
 	
-
+	/*********************************** ACTIVER UN USER ***************************************/
+	public JSONObject activateUser(int id) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			User user = repository.findById(id).get();
+			user.setDeleted(false);
+			
+			jo.put("User",repository.save(user));
+			return jo;
+		}else {
+			jo.put("Error" , "User n'existe pas !");
+			return jo;
+		}
+	}
 	
 	/*********************************** RECHERCHER UN USER PAR ID ***************************************/
 	public JSONObject getUserById(int id) {
@@ -194,6 +209,7 @@ public class UsersService {
 	public JSONObject logIn(String email, String password) {
 			JSONObject jo = new JSONObject();
 			User user = repository.getUserByEmail(email);
+			
 			if(user == null) {
 				jo.put("Error", "User's email n'existe pas !");
 				return jo;

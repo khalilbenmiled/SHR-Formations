@@ -27,6 +27,7 @@ public class User implements Serializable {
 	private String tel;
 	private boolean isConnected;
 	private boolean passwordChanged;
+	private boolean deleted;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@Enumerated(EnumType.STRING)
@@ -96,6 +97,13 @@ public class User implements Serializable {
 	}
 	public void setPasswordChanged(boolean passwordChanged) {
 		this.passwordChanged = passwordChanged;
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	public User(int id, String nom, String prenom, String email, String password, String adresse, String tel,
 			boolean isConnected, boolean passwordChanged, Role role, BU bu) {

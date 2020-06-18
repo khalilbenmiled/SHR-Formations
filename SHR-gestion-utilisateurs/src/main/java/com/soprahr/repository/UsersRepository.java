@@ -10,7 +10,7 @@ import com.soprahr.models.User;
 
 public interface UsersRepository extends JpaRepository<User, Integer> {
 	
-	@Query(value = "SELECT * FROM User u WHERE u.email = :email", nativeQuery = true)		
+	@Query(value = "SELECT * FROM User u WHERE u.email = :email and u.deleted = false", nativeQuery = true)		
 	public User getUserByEmail(@Param("email") String email);
 	
 	@Query(value = "SELECT * FROM User u WHERE u.role = 'COLLABORATEUR'", nativeQuery = true)		
@@ -25,6 +25,9 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
 	
 	@Query(value = "SELECT * FROM User u WHERE u.role = 'MANAGER'", nativeQuery = true)		
 	public List<User> findAllManager();
+	
+	@Query(value = "SELECT * FROM User u WHERE u.deleted = false", nativeQuery = true)		
+	public List<User> findAllUsers();
 
 	
 }

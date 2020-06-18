@@ -119,6 +119,11 @@ public class UsersAPI {
 		return service.getFreeTL();
 	}
 	
+	@PostMapping(value = "/activate", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public JSONObject activateUser(@Param(value = "id") int id) {
+		return service.activateUser(id);
+	}
+	
 	
 	
 
