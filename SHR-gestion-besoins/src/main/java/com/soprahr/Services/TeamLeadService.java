@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.soprahr.Repository.TeamLeadRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.model.TeamLead;
 
 import net.minidev.json.JSONObject;
@@ -92,7 +93,7 @@ public class TeamLeadService {
 			MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
 			map.add("id", id);
 			HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
-			restTemplate.postForEntity( "http://localhost:8383/collaborateurs/deleteTeamLead", request , JSONObject.class );
+			restTemplate.postForEntity(PROXY.Collaborateurs+"/collaborateurs/deleteTeamLead", request , JSONObject.class );
 			jo.put("Success", "TeamLead supprimé");
 			return jo;
 		}else {

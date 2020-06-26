@@ -2,6 +2,7 @@ package com.soprahr.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,8 @@ public class Quiz implements Serializable{
 	private int nbrQuestion;
 	@OneToMany(cascade = CascadeType.REMOVE)
 	private List<Question> listQuestions = new ArrayList<Question>();
+	private boolean deleted;
+	private Date date;
 	public int getId() {
 		return id;
 	}
@@ -57,6 +60,19 @@ public class Quiz implements Serializable{
 		this.nbrQuestion = nbrQuestion;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	public Quiz(int id, int idFormation, String nomQuiz, int nbrQuestion, List<Question> listQuestions) {
 		super();
 		this.id = id;

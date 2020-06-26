@@ -26,6 +26,7 @@ public class Theme implements Serializable{
 	private TypeTheme type;
 	@OneToMany
 	private List<Module> listModules;
+	private boolean deleted;
 	public int getId() {
 		return id;
 	}
@@ -49,6 +50,12 @@ public class Theme implements Serializable{
 	}
 	public void setListModules(List<Module> listModules) {
 		this.listModules = listModules;
+	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	public Theme(int id, String nom, TypeTheme type, List<Module> listModules) {
 		super();

@@ -2,10 +2,17 @@ package com.soprahr.services;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Properties;
 
-
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -20,9 +27,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.soprahr.RabbitMQ.RabbitMQSender;
+import com.soprahr.models.BU;
 import com.soprahr.models.Role;
 import com.soprahr.models.User;
 import com.soprahr.repository.UsersRepository;
+import com.soprahr.utils.PROXY;
 import com.soprahr.utils.Utils;
 
 import net.minidev.json.JSONObject;
@@ -174,6 +183,72 @@ public class UsersService {
 		}
 	}
 	
+	/*********************************** INSCRIRE FROM FILE COLLABORATEUR ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject registerFromFile(ArrayList users) {
+//		JSONObject jo = new JSONObject();
+		
+		
+	
+		try {
+			Properties properties = System.getProperties();
+		    properties.put("mail.smtp.host", "smtp.gmail.com");
+		    properties.put("mail.smtp.port", "" + 587);
+		    properties.put("mail.smtp.starttls.enable", "true");
+		    Session session = Session.getInstance(properties);
+			Transport transport = session.getTransport("smtp");
+			transport.connect("smtp.gmail.com", "khalil.benmiled@esprit.tn", "05494282");
+			
+			for(Object object : users) {
+				LinkedHashMap obj = (LinkedHashMap) object;
+				String nom = (String) obj.get("Nom");
+				String prenom = (String) obj.get("Prenom");	
+				String email = (String) obj.get("Email");
+				String role = (String) obj.get("Role");
+				String bu = (String) obj.get("Bu");
+				
+				
+				User user = new User();
+				if(repository.getUserByEmail(email) == null) {
+					Utils utils = new Utils();
+					String password = utils.generatePassword();
+					user.setNom(nom);
+					user.setPrenom(prenom);
+					user.setEmail(email);
+					user.setRole(Role.valueOf(role));
+					user.setBu(BU.valueOf(bu));
+
+					String passswordHashed = Utils.toMD5(password);
+					user.setPassword(passswordHashed);
+					user.setPasswordChanged(false);
+					
+					repository.save(user);
+					
+					Message message = new MimeMessage(session);
+					message.setFrom(new InternetAddress("khalil.benmiled@esprit.tn"));
+					InternetAddress[] address = {new InternetAddress("khalilbenmiled93@gmail.com")};
+					message.setRecipients(Message.RecipientType.TO, address);
+					message.setSubject("SHR-Formation convocation"); 
+					message.setSentDate(new Date());
+					
+					
+					message.setText("Bonjour, vous etes inscrit sur la plateform SHR-Formation. Votre mot de passe est :"+password);                  
+					message.saveChanges();
+				    transport.sendMessage(message, address);
+					
+				  
+				}
+			}
+			return null;
+		} catch (MessagingException | NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+
+		return null;
+	}
+	
 
 	
 	/*********************************** UPDATE PASSWORD ***************************************/
@@ -266,7 +341,7 @@ public class UsersService {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
 			if(repository.findById(id).get().getRole() == Role.COLLABORATEUR) {
-				ResponseEntity<JSONObject> response  = getUserAPI("http://localhost:8383/collaborateurs/getTLCollaborateur" , id);
+				ResponseEntity<JSONObject> response  = getUserAPI(PROXY.Collaborateurs+"/collaborateurs/getTLCollaborateur" , id);
 				
 				if(response.getBody().containsKey("Error")) {
 					jo.put("Error" , response.getBody().get("Error"));
@@ -276,7 +351,7 @@ public class UsersService {
 					if(repository.findById(idTeamLead).isPresent()) {
 						
 						User teamlead = repository.findById(idTeamLead).get();
-						ResponseEntity<JSONObject> response2  = getUserAPI("http://localhost:8686/teamlead/getManagerTL" , teamlead.getId());
+						ResponseEntity<JSONObject> response2  = getUserAPI(PROXY.Besoins+"/teamlead/getManagerTL" , teamlead.getId());
 						
 						if(response2.getBody().containsKey("Error")) {
 							jo.put("Error" , response2.getBody().get("Error"));
@@ -315,7 +390,7 @@ public class UsersService {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
 			User teamlead = repository.findById(id).get();
-			ResponseEntity<JSONObject> response  = getUserAPI("http://localhost:8686/teamlead/getManagerTL" , teamlead.getId());
+			ResponseEntity<JSONObject> response  = getUserAPI(PROXY.Besoins+"/teamlead/getManagerTL" , teamlead.getId());
 			
 			if(response.getBody().containsKey("Error")) {
 				jo.put("Error" , response.getBody().get("Error"));
@@ -343,7 +418,7 @@ public class UsersService {
 		JSONObject jo = new JSONObject();
 		List<User> listFreeTL = new ArrayList<User>();
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<JSONObject> response = restTemplate.getForEntity("http://localhost:8686/teamlead/getFreeTL", JSONObject.class );
+		ResponseEntity<JSONObject> response = restTemplate.getForEntity(PROXY.Besoins+"/teamlead/getFreeTL", JSONObject.class );
 		if(response.getBody().containsKey("Error")) {
 			jo.put("Error" , response.getBody().get("Error"));
 			return jo;
@@ -360,6 +435,20 @@ public class UsersService {
 	}
 	
 	
+	/*********************************** API USER BY EMAIL ***************************************/
+	
+	public ResponseEntity<JSONObject> getUserAPIByEmail(String uri , String email) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+		map.add("id", email);
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		return response;
+	}
 	
 	/*********************************** API USER BY ID ***************************************/
 	public ResponseEntity<JSONObject> getUserAPI(String uri , int id) {

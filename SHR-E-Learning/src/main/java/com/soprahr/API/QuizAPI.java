@@ -34,9 +34,9 @@ public class QuizAPI {
 		String nomQuiz = quiz.getAsString("nomQuiz");
 		String nbrQuestion = quiz.getAsString("nbrQuestion");
 		String idFormation = quiz.getAsString("idFormation");
-			
+		String date = quiz.getAsString("date");
 		ArrayList listQuestionReponse = (ArrayList) quiz.get("listQuestionReponse");
-		return service.ajouterQuiz(nomQuiz, Integer.parseInt(nbrQuestion), Integer.parseInt(idFormation), listQuestionReponse);
+		return service.ajouterQuiz(nomQuiz, Integer.parseInt(nbrQuestion), Integer.parseInt(idFormation), listQuestionReponse , date);
 	}
 	
 	@PutMapping(value = "/" , produces = MediaType.APPLICATION_JSON_VALUE)

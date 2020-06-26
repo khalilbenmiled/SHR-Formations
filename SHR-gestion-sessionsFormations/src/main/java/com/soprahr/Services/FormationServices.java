@@ -7,7 +7,16 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.stream.Collectors;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -25,6 +34,7 @@ import com.soprahr.Repository.ModuleRepository;
 import com.soprahr.Repository.RatingRepository;
 import com.soprahr.Repository.SessionRepository;
 import com.soprahr.Repository.ThemeRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.models.Formation;
 import com.soprahr.models.ModulesFormation;
 import com.soprahr.models.Participants;
@@ -48,7 +58,7 @@ public class FormationServices {
 	public RatingRepository repositoryR;
 	@Autowired
 	public RabbitMQSender rabbitMQSender;
-	
+
 	
 	/*********************************** AJOUTER UNE FORMATION ***************************************/
 	public JSONObject addFormation(Formation formation) {
@@ -66,6 +76,18 @@ public class FormationServices {
 	/*********************************** LISTE FORMATIONS ***************************************/
 	public JSONObject getAllFormations() {
 		JSONObject jo = new JSONObject();
+		if ( repository.findAllFormations().size() != 0 ) {
+			jo.put("Formations" , repository.findAllFormations());
+			return jo;
+		}else {
+			jo.put("Error" , "La liste des formations est vide");
+			return jo;
+		}
+	}
+	
+	/*********************************** LISTE FORMATIONS WITHOUT DELETED ***************************************/
+	public JSONObject getAllFormationsWithDeleted() {
+		JSONObject jo = new JSONObject();
 		if ( repository.findAll().size() != 0 ) {
 			jo.put("Formations" , repository.findAll());
 			return jo;
@@ -75,12 +97,57 @@ public class FormationServices {
 		}
 	}
 	
+	/*********************************** MODIFIER UNE FORMATION ***************************************/
+	public JSONObject modifierFormation(JSONObject formation) {
+	
+		
+		try {
+			JSONObject jo = new JSONObject();
+			String id = formation.getAsString("id");
+			String dateDebutStr = formation.getAsString("dateDebut");
+			String dateFinStr = formation.getAsString("dateFin");
+			String maxParticipants = formation.getAsString("maxParticipants");
+			
+			
+			
+
+			if(repository.findById(Integer.parseInt(id)).isPresent()) {
+				Formation f = repository.findById(Integer.parseInt(id)).get();
+				if(dateDebutStr != null) {
+					Date dateDebut=new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(dateDebutStr);
+					f.setDateDebut(dateDebut);
+				}
+				if(dateFinStr != null) {
+					Date dateFin=new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(dateFinStr);
+					f.setDateFin(dateFin);
+				}
+				if(maxParticipants != null) {
+					f.setMaxParticipants(Integer.parseInt(maxParticipants));
+				}
+				
+				
+				jo.put("Formation" , repository.save(f));
+				return jo;
+			}else {
+				jo.put("Error" , "Formation n'existe pas !");
+				return jo;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	
 	/*********************************** SUPPRIMER UNE FORMATION ***************************************/
 	public JSONObject deleteFormation(int id) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
-			
-			repository.delete(repository.findById(id).get());
+			Formation formation = repository.findById(id).get();
+			formation.setDeleted(true);
+			repository.save(formation);
 			
 			jo.put("Success", "Formation supprimé");
 			return jo;
@@ -260,7 +327,7 @@ public class FormationServices {
 			List<Object> tabs = new ArrayList<Object>();
 			List<Participants> list = repository.findById(id).get().getListParticipants();
 			for(Participants participant : list) {
-				ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId", participant.getIdParticipant());
+				ResponseEntity<JSONObject> user = getUserAPI(PROXY.Utilisateurs+"/users/byId", participant.getIdParticipant());
 				if(user.getBody().containsKey("Error")) {
 					jo.put("Error" , user.getBody().get("Error"));
 					return jo;
@@ -281,8 +348,8 @@ public class FormationServices {
 	public JSONObject getFormationByParticipant(int idCollaborateur) {
 		JSONObject jo = new JSONObject();
 		List<Formation> listFormation = new ArrayList<Formation>();
-		if(repository.findAll().size() != 0) {
-			for(Formation formation : repository.findAll()) {
+		if(repository.findAllFormations().size() != 0) {
+			for(Formation formation : repository.findAllFormations()) {
 				Optional<Participants> part = formation.getListParticipants().stream().filter(p -> p.getIdParticipant() == idCollaborateur).findFirst();
 				if(part.isPresent()) {
 					listFormation.add(formation);
@@ -349,10 +416,10 @@ public class FormationServices {
 	@SuppressWarnings("rawtypes")
 	public JSONObject getFormationsByUser(int id) {
 		JSONObject jo = new JSONObject();
-		List<Formation> allFormations = repository.findAll();
+		List<Formation> allFormations = repository.findAllFormations();
 		
 		if(allFormations.size() != 0) {
-			ResponseEntity<JSONObject> response = getUserAPI("http://localhost:8181/users/byId", id);
+			ResponseEntity<JSONObject> response = getUserAPI(PROXY.Utilisateurs+"/users/byId", id);
 			LinkedHashMap user = (LinkedHashMap) response.getBody().get("User");
 			List<Formation> listFormationByUser = new ArrayList<Formation>();
 
@@ -364,7 +431,7 @@ public class FormationServices {
 					}
 				}
 			} else if(user.get("role").equals("TEAMLEAD")) {
-				final String uri = "http://localhost:8383/collaborateurs/parTL";
+				final String uri = PROXY.Collaborateurs+"/collaborateurs/parTL";
 				RestTemplate restTemplate = new RestTemplate();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -387,7 +454,7 @@ public class FormationServices {
 				}
 				listFormationByUser = listFormationByUser.stream().distinct().collect(Collectors.toList());
 			}else {
-				final String uri = "http://localhost:8686/teamlead/byManager";
+				final String uri = PROXY.Besoins+"/teamlead/byManager";
 				RestTemplate restTemplate = new RestTemplate();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -400,7 +467,7 @@ public class FormationServices {
 				for(Object obj : listTeamLead) {
 					LinkedHashMap object = (LinkedHashMap) obj;
 					int idTeamLead = (int) object.get("idTeamLead");
-					final String uri2 = "http://localhost:8383/collaborateurs/parTL";
+					final String uri2 = PROXY.Collaborateurs+"/collaborateurs/parTL";
 					MultiValueMap<String, Integer> map2= new LinkedMultiValueMap<String, Integer>();
 					map2.add("id", idTeamLead);
 					HttpEntity<MultiValueMap<String, Integer>> request2 = new HttpEntity<MultiValueMap<String, Integer>>(map2, headers);
@@ -457,13 +524,71 @@ public class FormationServices {
 		}
 	}
 	
+	/*********************************** CONVOQUER PARTICIPANTS ***************************************/
+	@SuppressWarnings("rawtypes")
+	public JSONObject convoquerParticipants(ArrayList participants , LinkedHashMap formation) {
+		JSONObject jo = new JSONObject();
+		
+	    try {
+	    	Properties properties = System.getProperties();
+		    properties.put("mail.smtp.host", "smtp.gmail.com");
+		    properties.put("mail.smtp.port", "" + 587);
+		    properties.put("mail.smtp.starttls.enable", "true");
+		    Session session = Session.getInstance(properties);
+			Transport transport = session.getTransport("smtp");
+			transport.connect("smtp.gmail.com", "khalil.benmiled@esprit.tn", "05494282");
+			
+	
+			String dateDebut = (String) formation.get("dateDebut");
+			String dateFin = (String) formation.get("dateFin");
+	    
+		for(Object object : participants) {
+			LinkedHashMap obj = (LinkedHashMap) object;
+			int id = (int) obj.get("idParticipant");
+			ResponseEntity<JSONObject> user = getUserAPI(PROXY.Utilisateurs+"/users/byId", id);
+			
+			if(user.getBody().containsKey("Error")) {
+				jo.put("Error" , user.getBody().get("Error"));
+				return jo;
+			}else {
+				LinkedHashMap partBody = (LinkedHashMap) user.getBody().get("User");
+				String email = (String) partBody.get("email");
+				
+				
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("khalil.benmiled@esprit.tn"));
+				InternetAddress[] address = {new InternetAddress("khalilbenmiled93@gmail.com")};
+				message.setRecipients(Message.RecipientType.TO, address);
+				message.setSubject("SHR-Formation convocation"); 
+				message.setSentDate(new Date());
+				
+				
+				message.setText("Bonjour "+ (String) partBody.get("prenom") + ", Vous etes convoquer à la formation "+(String) formation.get("nomTheme") + " Du : " + dateDebut + " Au : " + dateFin);                       
+				message.saveChanges();
+			    transport.sendMessage(message, address);
+				
+			}
+		
+		}
+		} catch (NoSuchProviderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/*********************************** API ALL COLLABORATEUR ***************************************/
 	public ResponseEntity<JSONObject> getAllCollaborateur() {
 		
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<JSONObject> response = restTemplate.getForEntity("http://localhost:8181/users/collaborateurs", JSONObject.class );
+		ResponseEntity<JSONObject> response = restTemplate.getForEntity(PROXY.Utilisateurs+"/users/collaborateurs", JSONObject.class );
 		return response;
 	}
+	
+
 	
 	
 	

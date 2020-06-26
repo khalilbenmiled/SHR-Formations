@@ -33,6 +33,11 @@ public class ThemeAPI {
 	public JSONObject getAllThemes() {
 		return service.getAllThemes();
 	}
+	
+	@PostMapping(value = "/modifier" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject modifierTheme(@RequestBody Theme theme) {
+		return service.modifierTheme(theme);
+	}
 
 	@DeleteMapping(value="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject deleteTheme(@PathVariable(value = "id") int id) {

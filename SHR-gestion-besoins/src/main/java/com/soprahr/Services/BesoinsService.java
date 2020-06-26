@@ -29,6 +29,7 @@ import com.soprahr.Repository.BesoinsPublierRepository;
 import com.soprahr.Repository.BesoinsRepository;
 import com.soprahr.Repository.ProjetRepository;
 import com.soprahr.Repository.TeamLeadRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.model.BU;
 import com.soprahr.model.Besoins;
 import com.soprahr.model.BesoinsPublier;
@@ -128,6 +129,41 @@ public class BesoinsService {
 			}
 		}
 		return false;
+	}
+	
+	/*********************************** MODIFIER UN BESOIN ***************************************/
+	public JSONObject modifierBesoin(Besoins besoin) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(besoin.getId()).isPresent()) {
+			Besoins b = repository.findById(besoin.getId()).get();
+		
+
+			if(besoin.getTheme().getNom() != null) {
+				b.setTheme(besoin.getTheme());
+			}
+			if(besoin.getProjet().getNom() != null) {
+				Projet p = repositoryP.findById(besoin.getProjet().getId()).get();
+				b.setProjet(p);
+			}
+			if(besoin.getQuarter() != 0) {
+				
+				if(besoin.getQuarter() == -1) {
+					b.setQuarter(0);
+					b.setAnnee(0);
+				}
+				b.setQuarter(besoin.getQuarter());
+				int annee = getAnnee(besoin.getQuarter());
+				b.setAnnee(annee);
+			}
+			
+			b.setValiderTL(besoin.isValiderTL());
+			b.setValiderMG(besoin.isValiderMG());
+			jo.put("Besoin", repository.save(b));
+			return jo;
+		}else {
+			jo.put("Error", "Besoin n'existe pas !");
+			return jo;
+		}
 	}
 	
 	/*********************************** SET ANNEE PAR RAPPORT TRIMESTRE ***************************************/
@@ -292,7 +328,7 @@ public class BesoinsService {
 	public JSONObject getBesoinsByTLForManager(int idTL) {
 		
 		JSONObject jo = new JSONObject();
-		final String uri = "http://localhost:8383/collaborateurs/ByTL";
+		final String uri = PROXY.Collaborateurs+"/collaborateurs/ByTL";
 				
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -335,7 +371,7 @@ public class BesoinsService {
 	public JSONObject getBesoinsByTL(int idTL) {
 		
 		JSONObject jo = new JSONObject();
-		final String uri = "http://localhost:8383/collaborateurs/ByTL";
+		final String uri = PROXY.Collaborateurs+"/collaborateurs/ByTL";
 				
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -704,7 +740,7 @@ public class BesoinsService {
 		List<Object> tabs = new ArrayList<Object>();
 		if(repository.findById(idBesoin).isPresent()) {
 			int idUser = repository.findById(idBesoin).get().getIdUser();
-			ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId", idUser);
+			ResponseEntity<JSONObject> user = getUserAPI(PROXY.Utilisateurs+"/users/byId", idUser);
 			if(user.getBody().containsKey("Error")) {
 				jo.put("Error" , user.getBody().get("Error"));
 				return jo;
@@ -714,7 +750,7 @@ public class BesoinsService {
 					List<Participants> listParticipants = repository.findById(idBesoin).get().getListParticipants();
 					for (Participants participant : listParticipants) {
 						if(!participant.isParticipe()) {
-							ResponseEntity<JSONObject> part = getUserAPI("http://localhost:8181/users/byId", participant.getIdParticipant());
+							ResponseEntity<JSONObject> part = getUserAPI(PROXY.Utilisateurs+"/users/byId", participant.getIdParticipant());
 							LinkedHashMap partBody = (LinkedHashMap) part.getBody().get("User");
 							tabs.add(partBody);
 						}
@@ -741,7 +777,7 @@ public class BesoinsService {
 			List<Besoins> listBesoins = besoinPublier.getListBesoins();
 			if(listBesoins.size() != 0) {
 				for (Besoins besoin : listBesoins) {
-					ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId", besoin.getIdUser());
+					ResponseEntity<JSONObject> user = getUserAPI(PROXY.Utilisateurs+"/users/byId", besoin.getIdUser());
 					
 					if(user.getBody().containsKey("Error")) {
 						jo.put("Error" , user.getBody().get("Error"));
@@ -751,7 +787,7 @@ public class BesoinsService {
 						if(userBody.get("role").equals("TEAMLEAD")) {
 							
 							for (Participants participant : besoin.getListParticipants()) {
-								ResponseEntity<JSONObject> collaborateur = getUserAPI("http://localhost:8181/users/byId", participant.getIdParticipant());
+								ResponseEntity<JSONObject> collaborateur = getUserAPI(PROXY.Utilisateurs+"/users/byId", participant.getIdParticipant());
 								if(collaborateur.getBody().containsKey("Error")) {
 									jo.put("Error" , collaborateur.getBody().get("Error"));
 									return jo;

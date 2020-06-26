@@ -27,11 +27,28 @@ public class ThemeServices {
 		return jo;
 	}
 	
+	/*********************************** MODIFIER UN THEME ***************************************/
+	public JSONObject modifierTheme (Theme theme) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(theme.getId()).isPresent()) {
+			Theme t = repository.findById(theme.getId()).get();
+			t.setType(theme.getType());
+			t.setNom(theme.getNom());
+			
+			
+			jo.put("Theme" , repository.save(t));
+			return jo;
+		}else {
+			jo.put("Error" , "Theme n'existe pas !");
+			return jo;
+		}
+	}
+	
 	/*********************************** LISTE THEMES ***************************************/
 	public JSONObject getAllThemes() {
 		JSONObject jo = new JSONObject();
-		if ( repository.findAll().size() != 0 ) {
-			jo.put("Theme" , repository.findAll());
+		if ( repository.findAllThemes().size() != 0 ) {
+			jo.put("Theme" , repository.findAllThemes());
 			return jo;
 		}else {
 			jo.put("Error" , "La liste des themes est vide");
@@ -43,7 +60,9 @@ public class ThemeServices {
 	public JSONObject deleteTheme(int id) {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
-			repository.delete(repository.findById(id).get());
+			Theme theme = repository.findById(id).get();
+			theme.setDeleted(true);
+			repository.save(theme);
 			jo.put("Success", "Theme supprimé");
 			return jo;
 		}else {

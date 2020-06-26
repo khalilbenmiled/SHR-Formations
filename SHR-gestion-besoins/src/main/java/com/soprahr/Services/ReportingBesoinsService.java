@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.soprahr.Repository.BesoinsRepository;
 import com.soprahr.Repository.TeamLeadRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.model.BU;
 import com.soprahr.model.Besoins;
 import com.soprahr.model.TeamLead;
@@ -138,7 +139,7 @@ public class ReportingBesoinsService {
 		JSONObject jo = new JSONObject();
 		
 		
-		final String uri = "http://localhost:8383/collaborateurs/ByTL";
+		final String uri = PROXY.Collaborateurs+"/collaborateurs/ByTL";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -219,7 +220,7 @@ public class ReportingBesoinsService {
 		List<Besoins> allBesoinsNonPlanifier = new ArrayList<Besoins>();
 		for (TeamLead tl : listTL) {
 			
-			final String uri = "http://localhost:8383/collaborateurs/ByTL";
+			final String uri = PROXY.Collaborateurs+"/collaborateurs/ByTL";
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

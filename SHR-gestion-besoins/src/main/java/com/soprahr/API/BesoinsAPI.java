@@ -35,6 +35,11 @@ public class BesoinsAPI {
 		return service.addBesoinByCollaborateur(besoin);
 	}
 	
+	@PostMapping(value = "/modifier" , produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject modifierBesoin(@RequestBody Besoins besoin) {
+		return service.modifierBesoin(besoin);
+	}
+	
 	@PostMapping(value = "/test" ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
 	public int test(@Param(value = "quarter") int quarter) {
 		return service.getAnnee(quarter);

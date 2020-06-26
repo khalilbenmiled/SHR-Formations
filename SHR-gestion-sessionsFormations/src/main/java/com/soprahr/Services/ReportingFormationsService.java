@@ -23,6 +23,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.soprahr.Repository.FormationRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.models.Formation;
 import net.minidev.json.JSONObject;
 
@@ -236,7 +237,7 @@ public class ReportingFormationsService {
 		JSONObject jo = new JSONObject();
 		List<Predicate<Formation>> allPredicates = new ArrayList<Predicate<Formation>>();
 		
-		final String uri = "http://localhost:8383/collaborateurs/parTL";
+		final String uri = PROXY.Collaborateurs+"/collaborateurs/parTL";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -348,7 +349,7 @@ public class ReportingFormationsService {
 		JSONObject jo = new JSONObject();
 		List<Predicate<Formation>> allPredicates = new ArrayList<Predicate<Formation>>();
 		
-		final String uri = "http://localhost:8686/teamlead/byManager";
+		final String uri = PROXY.Besoins+"/teamlead/byManager";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -364,7 +365,7 @@ public class ReportingFormationsService {
 		for(Object obj : listTeamLead) {
 			LinkedHashMap object = (LinkedHashMap) obj;
 			int idTeamLead = (int) object.get("idTeamLead");
-			final String uri2 = "http://localhost:8383/collaborateurs/parTL";
+			final String uri2 = PROXY.Collaborateurs+"/collaborateurs/parTL";
 			MultiValueMap<String, Integer> map2= new LinkedMultiValueMap<String, Integer>();
 			map2.add("id", idTeamLead);
 			HttpEntity<MultiValueMap<String, Integer>> request2 = new HttpEntity<MultiValueMap<String, Integer>>(map2, headers);

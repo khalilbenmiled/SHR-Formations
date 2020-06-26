@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="models.Doc"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
-<fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartFile"/>
-<fullyQualifiedTypeName name="org.springframework.http.ResponseEntity"/>
-<fullyQualifiedTypeName name="org.springframework.http.MediaType"/>
-<fullyQualifiedTypeName name="org.springframework.http.HttpHeaders"/>
-<fullyQualifiedTypeName name="org.springframework.core.io.ByteArrayResource"/>
-<fullyQualifiedTypeName name="com.soprahr.Repository.QuizRepository"/>
-<fullyQualifiedTypeName name="com.soprahr.Repository.DocsRepository"/>
-<fullyQualifiedTypeName name="com.soprahr.Services.UploadService"/>
-<fullyQualifiedTypeName name="Service.DocService"/>
-<fullyQualifiedTypeName name="com.soprahr.models.Docs"/>
 <fullyQualifiedTypeName name="org.springframework.core.io.InputStreamResource"/>
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.CrossOrigin"/>
@@ -30,7 +18,6 @@
 <fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.NotificationsRepository"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
 <fullyQualifiedTypeName name="com.soprahr.models.MyNotification"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
@@ -39,14 +26,12 @@
 <fullyQualifiedTypeName name="com.soprahr.Repository.ParcourRepository"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.CollaborateurRepository"/>
 <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
-<fullyQualifiedTypeName name="com.soprahr.models.Formation"/>
 <fullyQualifiedTypeName name="com.soprahr.Repository.FormationRepository"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Parcour"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
 <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="com.soprahr.Services.ParcourService"/>
-<fullyQualifiedTypeName name="java.util.LinkedHashMap"/>
 <fullyQualifiedTypeName name="org.hibernate.mapping.Array"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Collaborateur"/>
@@ -55,9 +40,24 @@
 <fullyQualifiedTypeName name="org.springframework.web.cors.UrlBasedCorsConfigurationSource"/>
 <fullyQualifiedTypeName name="org.springframework.web.cors.CorsConfiguration"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
 <fullyQualifiedTypeName name="java.util.Calendar"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
+<fullyQualifiedTypeName name="javax.mail.Session"/>
+<fullyQualifiedTypeName name="javax.mail.Transport"/>
+<fullyQualifiedTypeName name="javax.mail.Message"/>
+<fullyQualifiedTypeName name="javax.mail.internet.MimeMessage"/>
+<fullyQualifiedTypeName name="javax.mail.internet.InternetAddress"/>
+<fullyQualifiedTypeName name="java.util.LinkedHashMap"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.soprahr.models.BU"/>
+<fullyQualifiedTypeName name="com.soprahr.models.Theme"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
+<fullyQualifiedTypeName name="com.soprahr.models.Formation"/>
 <fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="com.soprahr.utils.PROXY"/>
+<fullyQualifiedTypeName name="com.soprahr.Utils.PROXY"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.Locale"/>
 </qualifiedTypeNameHistroy>

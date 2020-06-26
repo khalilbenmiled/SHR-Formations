@@ -43,6 +43,7 @@ public class Formation implements Serializable {
 	private int idCF; // cabinet ou formateur de cette formation
 	@OneToOne
 	private Rating rating;
+	private boolean deleted;
 
 	public int getId() {
 		return id;
@@ -124,6 +125,12 @@ public class Formation implements Serializable {
 		this.rating = rating;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public Formation(int id, Date dateDebut, Date dateFin, String nomTheme, String typeTheme,
 			List<ModulesFormation> listModules, int maxParticipants, List<Participants> listParticipants, int duree,
 			float prix, EtatFormation etat, int idCF, Rating rating) {

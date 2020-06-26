@@ -2,7 +2,7 @@ package com.soprahr.API;
 
 
 import java.util.ArrayList;
-
+import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.soprahr.Services.FormationServices;
 import com.soprahr.Services.ReportingFormationsService;
-
 import net.minidev.json.JSONObject;
 
 @RestController
@@ -34,9 +33,20 @@ public class FormationAPI {
 		return service.getAllFormations();
 	}
 	
+	@GetMapping(value = "/allFormations" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject getAllFormationsWithDeleted() {
+		return service.getAllFormationsWithDeleted();
+	}
+	
 	@PostMapping(value="/delete" , produces = MediaType.APPLICATION_JSON_VALUE ,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject deleteFormation(@Param(value = "id") int id) {
 		return service.deleteFormation(id);
+	}
+	
+	@PostMapping(value="/modifier" , produces = MediaType.APPLICATION_JSON_VALUE )
+	public JSONObject modifierFormation(@RequestBody JSONObject formation) {
+		
+		return service.modifierFormation(formation);
 	}
 
 	@PostMapping(value = "/byId" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -65,6 +75,15 @@ public class FormationAPI {
 		ArrayList arrayParticipants = (ArrayList) formation.get("listParticipants");
 
 		return service.ajouterFormation(nomTheme,typeTheme,dateDebut, dateFin, Integer.parseInt(maxParticipants), Integer.parseInt(duree) , Integer.parseInt(idSession),Integer.parseInt(quarter) , modules , arrayParticipants,Integer.parseInt(idCF));
+	}
+	
+	@PostMapping(value = "/convoquer" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@SuppressWarnings("rawtypes")
+	public JSONObject convoquerParticipants(@RequestBody JSONObject input) {
+		ArrayList arrayParticipant = (ArrayList) input.get("listParticipants");
+		LinkedHashMap formation = (LinkedHashMap) input.get("formation");
+		
+		return service.convoquerParticipants(arrayParticipant , formation);
 	}
 	
 	@PostMapping(value = "/participants" , produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

@@ -15,6 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import com.soprahr.Repository.CollaborateurRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.models.Collaborateur;
 
 import net.minidev.json.JSONArray;
@@ -83,7 +84,7 @@ public class CollaborateurServices {
 		JSONArray ja = new JSONArray();
 		if(repository.getCollaborateurByTL(idTL).size() != 0 ) {
 			
-			final String uri = "http://localhost:8181/users/byId";
+			final String uri = PROXY.Utilisateurs+"/users/byId";
 			
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();

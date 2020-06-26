@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import com.soprahr.Repository.CollaborateurRepository;
 import com.soprahr.Repository.FormationRepository;
 import com.soprahr.Repository.ParcourRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.models.Collaborateur;
 import com.soprahr.models.Formation;
 import com.soprahr.models.Parcour;
@@ -82,7 +83,7 @@ public class ParcourService {
 			
 			for(Formation formation : parcour.getListFormations()) {
 				int idFormation = formation.getIdFormation();
-				ResponseEntity<JSONObject> formationsResponse = getFormationByID("http://localhost:8585/formations/byId",idFormation);
+				ResponseEntity<JSONObject> formationsResponse = getFormationByID(PROXY.SessionsFormations+"/formations/byId",idFormation);
 				if(formationsResponse.getBody().containsKey("Error")) {
 					jo.put("Error" , formationsResponse.getBody().get("Error"));
 					return jo;
@@ -118,7 +119,7 @@ public class ParcourService {
 				
 				for(Formation formation : parcour.getListFormations()) {
 					int idFormation = formation.getIdFormation();
-					ResponseEntity<JSONObject> formationsResponse = getFormationByID("http://localhost:8585/formations/byId",idFormation);
+					ResponseEntity<JSONObject> formationsResponse = getFormationByID(PROXY.SessionsFormations+"/formations/byId",idFormation);
 					if(formationsResponse.getBody().containsKey("Error")) {
 						jo.put("Error" , formationsResponse.getBody().get("Error"));
 						return jo;

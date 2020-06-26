@@ -1,5 +1,7 @@
 package com.soprahr.API;
 
+import java.util.ArrayList;
+
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +124,14 @@ public class UsersAPI {
 	@PostMapping(value = "/activate", produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public JSONObject activateUser(@Param(value = "id") int id) {
 		return service.activateUser(id);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping(value = "/registerFromFile", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject registerFromFile(@RequestBody JSONObject users) {
+	
+		ArrayList arrayUsers = (ArrayList) users.get("users");
+		return service.registerFromFile(arrayUsers);
 	}
 	
 	

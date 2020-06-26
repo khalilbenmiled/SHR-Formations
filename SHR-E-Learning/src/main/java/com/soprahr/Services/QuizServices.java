@@ -1,6 +1,9 @@
 package com.soprahr.Services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +22,7 @@ import com.soprahr.Repository.QuestionRepository;
 import com.soprahr.Repository.QuizRepository;
 import com.soprahr.Repository.ReponseRepository;
 import com.soprahr.Repository.ScoreRepository;
+import com.soprahr.Utils.PROXY;
 import com.soprahr.models.Question;
 import com.soprahr.models.Quiz;
 import com.soprahr.models.Reponse;
@@ -40,7 +44,7 @@ public class QuizServices {
 	
 	/*********************************** AJOUTER UN QUIZ PAR PARAM ***************************************/
 	@SuppressWarnings("rawtypes")
-	public JSONObject ajouterQuiz(String nomQuiz , int nbrQuestions , int idFormation , ArrayList listQuestionsReponses ) {
+	public JSONObject ajouterQuiz(String nomQuiz , int nbrQuestions , int idFormation , ArrayList listQuestionsReponses , String date ) {
 		JSONObject jo = new JSONObject();
 			
 		List<Question> listQuestion = new ArrayList<Question>();
@@ -72,13 +76,25 @@ public class QuizServices {
 				
 			
 		}
-		Quiz newQuiz = new Quiz();
-		newQuiz.setNomQuiz(nomQuiz);
-		newQuiz.setNbrQuestion(nbrQuestions);
-		newQuiz.setIdFormation(idFormation);
-		newQuiz.setListQuestions(listQuestion);
-		jo.put("Quiz" , repository.save(newQuiz));
-		return jo;
+	
+		
+		try {
+			Quiz newQuiz = new Quiz();
+			newQuiz.setNomQuiz(nomQuiz);
+			newQuiz.setNbrQuestion(nbrQuestions);
+			newQuiz.setIdFormation(idFormation);
+			newQuiz.setListQuestions(listQuestion);
+			Date dateQuiz =new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(date);
+			newQuiz.setDate(dateQuiz);
+			
+			jo.put("Quiz" , repository.save(newQuiz));
+			return jo;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	
 	}
 	
 	/*********************************** AFFICHER TOUS LES QUIZ ***************************************/
@@ -88,10 +104,10 @@ public class QuizServices {
 		List<JSONObject> allQuiz = new ArrayList<JSONObject>();
 		
 		if(repository.findAll().size() != 0) {
-			List<Quiz> listQuiz = repository.findAll();
+			List<Quiz> listQuiz = repository.findAllQuiz();
 			for(Quiz quiz : listQuiz) {
 				JSONObject joo = new JSONObject();
-				ResponseEntity<JSONObject> response = getFormationByID("http://localhost:8585/formations/byId", quiz.getIdFormation());
+				ResponseEntity<JSONObject> response = getFormationByID(PROXY.SessionsFormations+"/formations/byId", quiz.getIdFormation());
 
 				if(response.getBody().containsKey("Error")) {
 					jo.put("Error" , response.getBody().get("Error"));
@@ -120,8 +136,8 @@ public class QuizServices {
 		JSONObject jo = new JSONObject();
 		if(repository.findById(id).isPresent()) {
 			Quiz quiz = repository.findById(id).get();
-			
-			repository.delete(quiz);
+			quiz.setDeleted(true);
+			repository.save(quiz);
 			jo.put("Success" , "Quiz supprimé");
 			return jo;
 		}else {
@@ -233,7 +249,7 @@ public class QuizServices {
 	public JSONObject getListQuizCollaborateur (int idCollaborateur) {
 		JSONObject jo = new JSONObject();
 		List<Quiz> listQuizCollaborateur = new ArrayList<Quiz>();
-		ResponseEntity<JSONObject> formationsResponse = getFormationsByCollaborateur("http://localhost:8585/formations/byCollaborateur" , idCollaborateur);
+		ResponseEntity<JSONObject> formationsResponse = getFormationsByCollaborateur(PROXY.SessionsFormations+"/formations/byCollaborateur" , idCollaborateur);
 		
 		
 		if(formationsResponse.getBody().containsKey("Error")) {
@@ -241,7 +257,7 @@ public class QuizServices {
 			return jo;
 		}else {
 			ArrayList formations = (ArrayList) formationsResponse.getBody().get("Formations");
-			List<Quiz> listQuiz = repository.findAll();
+			List<Quiz> listQuiz = repository.findAllQuiz();
 			List<Score> listScores = repositoryS.findAll();
 			for(Object object : formations) {
 				LinkedHashMap formation = (LinkedHashMap) object;
@@ -268,14 +284,17 @@ public class QuizServices {
 		List<JSONObject> listScore = new ArrayList<JSONObject>();
 		if(repositoryS.findAll().size() != 0 ) {
 			for(Score score : repositoryS.findAll() ) {
-				ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId" , score.getIdCollaborateur());
+				ResponseEntity<JSONObject> user = getUserAPI(PROXY.Utilisateurs+"/users/byId" , score.getIdCollaborateur());
 				if(user.getBody().containsKey("Error")) {
 					jo.put("Error" , user.getBody().get("Error"));
 					return jo;
 				}else {
+					ResponseEntity<JSONObject> formation = getFormationByID(PROXY.SessionsFormations+"/formations/byId",score.getQuiz().getIdFormation());
+					LinkedHashMap formationBody = (LinkedHashMap) formation.getBody().get("Formation");
 					LinkedHashMap userBody = (LinkedHashMap) user.getBody().get("User");
 					JSONObject joo = new JSONObject();
 					joo.put("Score" , score);
+					joo.put("Formation" , formationBody);
 					joo.put("User" , userBody);
 					listScore.add(joo);
 				}
@@ -296,16 +315,20 @@ public class QuizServices {
 		if(repositoryS.getScoreByCollaborateur(idCollaborateur).size() != 0) {
 			List<Score> listScore = repositoryS.getScoreByCollaborateur(idCollaborateur);
 			
-			ResponseEntity<JSONObject> user = getUserAPI("http://localhost:8181/users/byId" , idCollaborateur);
+			ResponseEntity<JSONObject> user = getUserAPI(PROXY.Utilisateurs+"/users/byId" , idCollaborateur);
 			if(user.getBody().containsKey("Error")) {
 				jo.put("Error" , user.getBody().get("Error"));
 				return jo;
 			}else {
 				for(Score score : listScore) {
+					ResponseEntity<JSONObject> formation = getFormationByID(PROXY.SessionsFormations+"/formations/byId",score.getQuiz().getIdFormation());
+					LinkedHashMap formationBody = (LinkedHashMap) formation.getBody().get("Formation");
 					JSONObject joo = new JSONObject();
 					LinkedHashMap userBody = (LinkedHashMap) user.getBody().get("User");
+					joo.put("Formation" , formationBody);
 					joo.put("User", userBody);
 					joo.put("Score" , score);
+					
 					newListScore.add(joo);
 				}
 				
