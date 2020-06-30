@@ -1,6 +1,7 @@
 package com.soprahr.API;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.websocket.server.PathParam;
 
@@ -37,6 +38,12 @@ public class UsersAPI {
 	@PostMapping(value="/updatePassword" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject updatePassword(@Param(value ="id") int id , @Param(value = "oldPassword") String oldPassword,@Param(value = "newPassword") String newPassword) {
 		return service.updatePassword(id, oldPassword,newPassword);
+	}
+	
+	@PostMapping(value="/modifier" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject modifierUtilisateur(@RequestBody JSONObject user) {
+		
+		return service.modifierUtilisateur(user);
 	}
 	
 	
@@ -132,6 +139,11 @@ public class UsersAPI {
 	
 		ArrayList arrayUsers = (ArrayList) users.get("users");
 		return service.registerFromFile(arrayUsers);
+	}
+	
+	@PostMapping(value = "/sendEmail", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject registerFromFile(@RequestBody List<User> users) {
+		return service.sendMail(users);
 	}
 	
 	

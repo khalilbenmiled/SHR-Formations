@@ -150,6 +150,53 @@ public class UsersService {
 			return jo;
 		}
 	}
+	
+	/*********************************** MODIFIER UTILISATEUR ***************************************/
+	public JSONObject modifierUtilisateur(JSONObject user) {
+		JSONObject jo = new JSONObject();
+		String id = user.getAsString("id");
+		String nom = user.getAsString("nom");
+		String prenom = user.getAsString("prenom");
+		String email = user.getAsString("email");
+		String adresse = user.getAsString("adresse");
+		String tel = user.getAsString("tel");
+		String bu = user.getAsString("bu");
+		
+		
+		if(repository.findById(Integer.parseInt(id)).isPresent()) {
+			User utilisateur = repository.findById(Integer.parseInt(id)).get();
+			if(!nom.equals("")) {
+				utilisateur.setNom(nom);
+			}
+			if(!prenom.equals("")) {
+				utilisateur.setPrenom(prenom);
+			}
+			if(!tel.equals("")) {
+				utilisateur.setTel(tel);
+			}
+			if(!adresse.equals("")) {
+				utilisateur.setAdresse(adresse);
+			}
+			if(!bu.equals("")) {
+				utilisateur.setBu(BU.valueOf(bu));
+			}
+			if( (!email.equals("") && repository.getUserByEmail(email) == null) || repository.getUserByEmail(email) == utilisateur) {
+				utilisateur.setEmail(email);
+			}
+			
+			if(repository.getUserByEmail(email) != null && repository.getUserByEmail(email) != utilisateur) {
+				jo.put("Error" , "Email existe deja !");
+				return jo;
+			}
+			jo.put("User", repository.save(utilisateur));
+			return jo;
+		}else {
+			jo.put("Error" , "User n'existe pas !");
+			return jo;
+		}
+		
+		
+	}
 
 	/*********************************** INSCRIRE COLLABORATEUR ***************************************/
 	public JSONObject addCollaborateur(User user) {
@@ -168,7 +215,7 @@ public class UsersService {
 			}
 		
 			user.setPasswordChanged(false);
-			
+			user.setCreated(true);
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo("khalilbenmiled93@gmail.com");
 		    message.setSubject("Inscription SHR-Formation");
@@ -186,8 +233,103 @@ public class UsersService {
 	/*********************************** INSCRIRE FROM FILE COLLABORATEUR ***************************************/
 	@SuppressWarnings("rawtypes")
 	public JSONObject registerFromFile(ArrayList users) {
-//		JSONObject jo = new JSONObject();
+		JSONObject jo = new JSONObject();
+		List<User> listUsers = new ArrayList<User>();
 		
+	
+		for(Object object : users) {
+			LinkedHashMap obj = (LinkedHashMap) object;
+			String nom = (String) obj.get("Surname");
+			String prenom = (String) obj.get("Name");	
+			String email = (String) obj.get("Mail");
+			String role = (String) obj.get("Role");
+			String bu = (String) obj.get("Bu");
+			String emailTeamLead = (String) obj.get("ORG.U.MGER");
+			String emailManager = (String) obj.get("MANAGER");
+			
+			
+			if(repository.getUserByEmail(email) == null) {
+				User user = new User();
+				Utils utils = new Utils();
+				String password = utils.generatePassword();
+				user.setNom(nom);
+				user.setPrenom(prenom);
+				user.setEmail(email);
+				user.setRole(Role.valueOf(role));
+				if(!role.equals("SERVICEFORMATIONS")) {
+					user.setBu(BU.valueOf(bu));
+				}
+				
+
+//					String passswordHashed = Utils.toMD5(password);
+				user.setPassword(password);
+				user.setPasswordChanged(false);				
+				user.setCreated(true);
+				User newUser = repository.save(user);
+				
+				if(role.equals("COLLABORATEUR")) {
+					addCollaborateur(newUser.getId() , emailTeamLead);
+				}
+				
+				if(role.equals("TEAMLEAD")) {
+					addTeamLead(newUser.getId() ,emailManager );
+				}
+				listUsers.add(newUser);
+//					sendMail(password,session,transport);
+				
+			  
+			}else {
+				if(!repository.getUserByEmail(email).isCreated() && repository.getUserByEmail(email).getRole().equals(Role.TEAMLEAD)) {
+					User teamlead = repository.getUserByEmail(email);
+					Utils utils = new Utils();
+					String password = utils.generatePassword();
+					teamlead.setNom(nom);
+					teamlead.setPrenom(prenom);
+					teamlead.setEmail(email);
+					teamlead.setRole(Role.valueOf(role));
+					teamlead.setBu(BU.valueOf(bu));
+					
+//						String passswordHashed = Utils.toMD5(password);
+					teamlead.setPassword(password);
+					teamlead.setPasswordChanged(false);				
+					teamlead.setCreated(true);
+					
+					addTeamLead(repository.save(teamlead).getId() ,emailManager );
+					listUsers.add(teamlead);
+//						sendMail(password,session,transport);
+
+				}
+				
+				if(!repository.getUserByEmail(email).isCreated() && repository.getUserByEmail(email).getRole().equals(Role.MANAGER)) {
+					User manager = repository.getUserByEmail(email);
+					Utils utils = new Utils();
+					String password = utils.generatePassword();
+					manager.setNom(nom);
+					manager.setPrenom(prenom);
+					manager.setEmail(email);
+					manager.setRole(Role.valueOf(role));
+					manager.setBu(BU.valueOf(bu));
+					
+//						String passswordHashed = Utils.toMD5(password);
+					manager.setPassword(password);
+					manager.setPasswordChanged(false);				
+					manager.setCreated(true);
+					
+					repository.save(manager);
+					listUsers.add(manager);
+//						sendMail(password,session,transport);
+				}
+				
+			}
+		}
+		jo.put("Users", listUsers);
+		return jo;
+		
+
+	}
+	
+	/*********************************** SEND PASSWORD MAIL ***************************************/
+	public JSONObject sendMail(List<User> users) {
 		
 	
 		try {
@@ -199,57 +341,82 @@ public class UsersService {
 			Transport transport = session.getTransport("smtp");
 			transport.connect("smtp.gmail.com", "khalil.benmiled@esprit.tn", "05494282");
 			
-			for(Object object : users) {
-				LinkedHashMap obj = (LinkedHashMap) object;
-				String nom = (String) obj.get("Nom");
-				String prenom = (String) obj.get("Prenom");	
-				String email = (String) obj.get("Email");
-				String role = (String) obj.get("Role");
-				String bu = (String) obj.get("Bu");
+			for(User user : users) {
+				
+				String prenom = user.getPrenom();
+				String password = user.getPassword();
+				
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("khalil.benmiled@esprit.tn"));
+				InternetAddress[] address = {new InternetAddress("khalilbenmiled93@gmail.com")};
+				message.setRecipients(Message.RecipientType.TO, address);
+				message.setSubject("SHR-Formation inscription"); 
+				message.setSentDate(new Date());
 				
 				
-				User user = new User();
-				if(repository.getUserByEmail(email) == null) {
-					Utils utils = new Utils();
-					String password = utils.generatePassword();
-					user.setNom(nom);
-					user.setPrenom(prenom);
-					user.setEmail(email);
-					user.setRole(Role.valueOf(role));
-					user.setBu(BU.valueOf(bu));
-
-					String passswordHashed = Utils.toMD5(password);
-					user.setPassword(passswordHashed);
-					user.setPasswordChanged(false);
-					
-					repository.save(user);
-					
-					Message message = new MimeMessage(session);
-					message.setFrom(new InternetAddress("khalil.benmiled@esprit.tn"));
-					InternetAddress[] address = {new InternetAddress("khalilbenmiled93@gmail.com")};
-					message.setRecipients(Message.RecipientType.TO, address);
-					message.setSubject("SHR-Formation convocation"); 
-					message.setSentDate(new Date());
-					
-					
-					message.setText("Bonjour, vous etes inscrit sur la plateform SHR-Formation. Votre mot de passe est :"+password);                  
-					message.saveChanges();
-				    transport.sendMessage(message, address);
-					
-				  
-				}
+				message.setText("Bonjour " + prenom +", vous etes inscrit sur la plateform SHR-Formation. Votre mot de passe est :"+password);                  
+				message.saveChanges();
+			    transport.sendMessage(message, address);
 			}
-			return null;
-		} catch (MessagingException | NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
-
+	/*********************************** ADD COLLABORATEUR TO MS-COLLABORATEUR ***************************************/
+	public void addCollaborateur(int id , String emailTeamLead) {
+		if(repository.getUserByEmail(emailTeamLead) != null) { 
+			 addCollaborateurToMs(PROXY.Collaborateurs+"/collaborateurs/" , id , repository.getUserByEmail(emailTeamLead).getId());
+		}else if(emailTeamLead == null || emailTeamLead.equals("")) {
+			addCollaborateurToMs(PROXY.Collaborateurs+"/collaborateurs/" , id ,0);
+		}else {
+		
+			try {
+				User user = new User();
+				user.setEmail(emailTeamLead);
+				user.setRole(Role.TEAMLEAD);
+				Utils utils = new Utils();
+				String password = utils.generatePassword();
+				String passswordHashed = Utils.toMD5(password);
+				user.setPassword(passswordHashed);
+				user.setCreated(false);
+				addCollaborateurToMs(PROXY.Collaborateurs+"/collaborateurs/" , id ,repository.save(user).getId());
+				
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		}
+	}
+	
+	/*********************************** ADD TEAMLEAD TO MS-BESOIN ***************************************/
+	public void addTeamLead(int id , String emailManager) {
+	
+			try {
+				if(repository.getUserByEmail(emailManager) != null) {
+					addTeamLeadToMs(PROXY.Besoins+"/teamlead/", id, repository.getUserByEmail(emailManager).getId());
+				}else if (emailManager == null || emailManager.equals("")) {
+					addTeamLeadToMs(PROXY.Besoins+"/teamlead/", id, 0);
+				}else {
+					User user = new User();
+					user.setEmail(emailManager);
+					user.setRole(Role.MANAGER);
+					Utils utils = new Utils();
+					String password = utils.generatePassword();
+					String passswordHashed = Utils.toMD5(password);
+					user.setPassword(passswordHashed);
+					user.setCreated(false);
+					addTeamLeadToMs(PROXY.Besoins+"/teamlead/", id, repository.save(user).getId());
+				}
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 	
 	/*********************************** UPDATE PASSWORD ***************************************/
 	public JSONObject updatePassword(int id , String oldPassword,String newPassword) {
@@ -459,6 +626,36 @@ public class UsersService {
 		
 		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
 		map.add("id", id);
+		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		return response;
+	}
+	
+	/*********************************** API ADD COLLABORATEUR TO MS-COLLABORATEUR ***************************************/
+	public ResponseEntity<JSONObject> addCollaborateurToMs(String uri , int idCollaborateur , int idTeamLead) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+		map.add("idCollaborateur", idCollaborateur);
+		map.add("idTeamLead", idTeamLead);
+		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
+		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
+		return response;
+	}
+	
+	/*********************************** API ADD TEAMLEAD TO MS-COLLABORATEUR ***************************************/
+	public ResponseEntity<JSONObject> addTeamLeadToMs(String uri , int idTL , int idMG) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, Integer> map= new LinkedMultiValueMap<String, Integer>();
+		map.add("idTL", idTL);
+		map.add("idMG", idMG);
 		HttpEntity<MultiValueMap<String, Integer>> request = new HttpEntity<MultiValueMap<String, Integer>>(map, headers);
 		ResponseEntity<JSONObject> response = restTemplate.postForEntity( uri, request , JSONObject.class );
 		return response;

@@ -77,22 +77,32 @@ public class QuizServices {
 			
 		}
 	
-		
-		try {
+		if(date != null && date != "") {
+			try {
+				Quiz newQuiz = new Quiz();
+				newQuiz.setNomQuiz(nomQuiz);
+				newQuiz.setNbrQuestion(nbrQuestions);
+				newQuiz.setIdFormation(idFormation);
+				newQuiz.setListQuestions(listQuestion);
+				
+				Date dateQuiz =new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(date);
+				newQuiz.setDate(dateQuiz);
+				jo.put("Quiz" , repository.save(newQuiz));
+				return jo;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
 			Quiz newQuiz = new Quiz();
 			newQuiz.setNomQuiz(nomQuiz);
 			newQuiz.setNbrQuestion(nbrQuestions);
 			newQuiz.setIdFormation(idFormation);
 			newQuiz.setListQuestions(listQuestion);
-			Date dateQuiz =new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(date);
-			newQuiz.setDate(dateQuiz);
-			
 			jo.put("Quiz" , repository.save(newQuiz));
 			return jo;
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		
 		return null;
 	
 	}
@@ -262,9 +272,10 @@ public class QuizServices {
 			for(Object object : formations) {
 				LinkedHashMap formation = (LinkedHashMap) object;
 				
-				Optional<Quiz> quizCollaborateur = listQuiz.stream().filter(q->q.getIdFormation() == (int) formation.get("id")).findFirst();
+				Optional<Quiz> quizCollaborateur = listQuiz.stream().filter(q->q.getIdFormation() == (int) formation.get("id") && q.getDate().compareTo(new Date()) < 0 ).findFirst();
 				if(quizCollaborateur.isPresent()) {
 					Optional<Score> scoreCollaborateur = listScores.stream().filter(s->s.getQuiz().getId() == quizCollaborateur.get().getId() && s.getIdCollaborateur() == idCollaborateur).findFirst();
+					
 					if(quizCollaborateur.isPresent() && !scoreCollaborateur.isPresent()) {
 						listQuizCollaborateur.add(quizCollaborateur.get());
 					}
@@ -369,6 +380,28 @@ public class QuizServices {
 			jo.put("Score", repositoryS.save(score));
 			return jo;
 
+		}else {
+			jo.put("Error", "Quiz n'existe pas !");
+			return jo;
+		}
+	}
+	
+	/*********************************** MODIFIER DATE QUIZ BY ID  ***************************************/
+	public JSONObject modifierDateQuiz(int id , String date) {
+		JSONObject jo = new JSONObject();
+		if(repository.findById(id).isPresent()) {
+			Quiz quiz = repository.findById(id).get();
+			
+			try {
+				Date dateQuiz =new SimpleDateFormat("dd/MM/yy HH:mm" ).parse(date);
+				quiz.setDate(dateQuiz);
+				jo.put("Quiz", repository.save(quiz));
+				return jo;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}else {
 			jo.put("Error", "Quiz n'existe pas !");
 			return jo;

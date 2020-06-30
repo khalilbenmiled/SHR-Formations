@@ -52,12 +52,12 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.soprahr.models.BU"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Theme"/>
-<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
 <fullyQualifiedTypeName name="com.soprahr.models.Formation"/>
-<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="com.soprahr.utils.PROXY"/>
 <fullyQualifiedTypeName name="com.soprahr.Utils.PROXY"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.util.Locale"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
+<fullyQualifiedTypeName name="net.minidev.json.JSONObject"/>
 </qualifiedTypeNameHistroy>

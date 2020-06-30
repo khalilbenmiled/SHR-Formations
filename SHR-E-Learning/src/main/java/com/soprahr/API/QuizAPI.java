@@ -39,6 +39,14 @@ public class QuizAPI {
 		return service.ajouterQuiz(nomQuiz, Integer.parseInt(nbrQuestion), Integer.parseInt(idFormation), listQuestionReponse , date);
 	}
 	
+	@PostMapping(value = "/modifierDate" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONObject modifierDateQuiz(@RequestBody JSONObject input) {
+		String id = input.getAsString("id");
+		String date = input.getAsString("date");
+		return service.modifierDateQuiz(Integer.parseInt(id), date);
+	}
+	
+	
 	@PutMapping(value = "/" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject updateQuiz(
 			@RequestBody JSONObject quiz

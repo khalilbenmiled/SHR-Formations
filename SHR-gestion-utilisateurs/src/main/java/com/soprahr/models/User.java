@@ -32,6 +32,7 @@ public class User implements Serializable {
 	private Role role;
 	@Enumerated(EnumType.STRING)
 	private BU bu;
+	private boolean created;
 	public int getId() {
 		return id;
 	}
@@ -104,6 +105,13 @@ public class User implements Serializable {
 	}
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+	
+	public boolean isCreated() {
+		return created;
+	}
+	public void setCreated(boolean created) {
+		this.created = created;
 	}
 	public User(int id, String nom, String prenom, String email, String password, String adresse, String tel,
 			boolean isConnected, boolean passwordChanged, Role role, BU bu) {
